@@ -42,3 +42,36 @@ body {
 /* a clipped box would hide an offset shadow, so hover reads through the border and fill instead */
 .tcard:hover, .quote:hover, .svc:hover, .pcard:hover, .pcard:focus-visible, .btn:hover { box-shadow: none; }
 .tcard:hover, .quote:hover, .svc:hover, .pcard:hover { background-color: color-mix(in srgb, var(--bg) 88%, var(--accent)); }
+
+/* ---------- journey: black and white, follows the theme accent ---------- */
+.journey {
+  --leaf: var(--accent);
+  --leaf-dim: var(--line-strong);
+}
+.journey .now {
+  border-color: var(--leaf-dim);
+  background: var(--surface);
+}
+.journey .now .when,
+.journey .now .kicker { color: var(--leaf); }
+.journey .now h3 { color: var(--bright); }
+.journey .bar { background: var(--leaf); height: 4px; }
+/* the progress bar ends in a bright pixel, like a sprout tip */
+.journey .bar::after { content: ""; position: absolute; right: 0; top: 0; width: 4px; height: 4px; background: var(--bright); }
+.journey ol { border-left: 2px solid var(--leaf-dim); padding-left: 0; }
+.journey li { border-left: 0; position: relative; padding-left: var(--s-5); }
+.journey li::before {
+  content: ""; position: absolute; left: -5px; top: 50%; width: 8px; height: 8px; margin-top: -4px;
+  background: var(--bg); border: 2px solid var(--leaf-dim);
+}
+.journey li.done { color: var(--mid); }
+.journey li.done::before { background: var(--leaf-dim); border-color: var(--leaf-dim); }
+.journey li[aria-current="step"] { color: var(--bright); }
+.journey li[aria-current="step"]::before { background: var(--leaf); border-color: var(--leaf); box-shadow: 0 0 0 4px color-mix(in srgb, var(--leaf) 25%, transparent); /* white halo */ }
+.journey li[aria-current="step"] strong { color: var(--leaf); }
+/* detail inside the journey card */
+.journey .now .pts { list-style: none; margin: var(--s-3) 0; padding: 0; display: grid; gap: var(--s-2); }
+.journey .now .pts li { padding: 0 0 0 var(--s-4); border: 0; transform: none; position: relative; color: var(--mid); }
+.journey .now .pts li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 6px; height: 6px; margin: 0; border: 0; background: var(--leaf); box-shadow: none; }
+.journey .now .chips { margin: var(--s-3) 0 var(--s-4); gap: 0; }
+.journey .now .tag { border-color: var(--leaf-dim); color: var(--leaf); }

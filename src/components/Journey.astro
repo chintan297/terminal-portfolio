@@ -11,12 +11,14 @@ const { steps, heading = "JOURNEY" } = Astro.props;
       <h3 data-now-title>{steps[0].title}</h3>
       <div class="kicker" data-now-org>{steps[0].org}</div>
       <p data-now-body>{steps[0].body}</p>
+      <ul class="pts" data-now-points>{(steps[0].points ?? []).map((t) => <li>{t}</li>)}</ul>
+      <div class="chips" data-now-stack>{(steps[0].stack ?? []).map((t) => <span class="tag">{t}</span>)}</div>
       <div class="bar"></div>
     </div>
     <ol>
       {
         steps.map((s, i) => (
-          <li aria-current={i === 0 ? "step" : undefined}>
+          <li aria-current={i === 0 ? "step" : undefined} data-points={JSON.stringify(s.points ?? [])} data-stack={JSON.stringify(s.stack ?? [])}>
             <strong>{s.when}</strong> · <span data-title>{s.title}</span> <span class="kicker">({s.org})</span>
             <span class="step-detail">{s.body}</span>
           </li>
@@ -39,6 +41,8 @@ const { steps, heading = "JOURNEY" } = Astro.props;
       title: li.querySelector("[data-title]")!.textContent!,
       org: li.querySelector(".kicker")!.textContent!.replace(/[()]/g, ""),
       body: li.querySelector(".step-detail")!.textContent!,
+      points: JSON.parse(li.dataset.points || "[]") as string[],
+      stack: JSON.parse(li.dataset.stack || "[]") as string[],
     }));
     let current = -1;
     let queued = false;
@@ -52,11 +56,14 @@ const { steps, heading = "JOURNEY" } = Astro.props;
       if (idx === current) return;
       current = idx;
       items.forEach((li, i) => (i === idx ? li.setAttribute("aria-current", "step") : li.removeAttribute("aria-current")));
+      items.forEach((li, i) => li.classList.toggle("done", i < idx)); // steps already passed stay green
       const s = steps[idx];
       text("[data-now-when]").textContent = s.when;
       text("[data-now-title]").textContent = s.title;
       text("[data-now-org]").textContent = s.org;
       text("[data-now-body]").textContent = s.body;
+      text("[data-now-points]").replaceChildren(...s.points.map((t) => Object.assign(document.createElement("li"), { textContent: t })));
+      text("[data-now-stack]").replaceChildren(...s.stack.map((t) => Object.assign(document.createElement("span"), { className: "tag", textContent: t })));
     };
     const onScroll = () => {
       if (queued) return;
