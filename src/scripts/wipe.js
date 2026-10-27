@@ -1,12 +1,12 @@
 import { prefersReducedMotion } from "./motion.js";
 
 // Page change on PHONES (screens narrower than 720px; desktop uses the letter morph in morph.js): a field of pixel
-// squares grows over the screen from the top-left, the next page is fetched and swapped underneath, then the squares
-// shrink away towards the bottom-right. Quick on purpose; the "$ cd" line is shown only if the next page is slow.
+// squares grows over the screen from the top-left, a "$ cd ~/page" line types in the middle while the next page is
+// fetched and swapped underneath, then the squares shrink away towards the bottom-right. Unhurried on purpose.
 // One persistent canvas and a few listeners for the whole session. Skipped for reduced motion.
-const COVER = 240; // ms until the screen is fully covered
-const REVEAL = 260; // ms to uncover
-const GROW = 100; // ms one square takes to grow or shrink
+const COVER = 380; // ms until the screen is fully covered
+const REVEAL = 420; // ms to uncover
+const GROW = 150; // ms one square takes to grow or shrink
 const CELL = 28;
 const SAFETY = 3000; // if anything goes wrong, the overlay is removed after this long
 const FONT = '16px "Departure Mono", monospace';
@@ -15,8 +15,6 @@ const isPhone = () => innerWidth < 720;
 let cvs, ctx, cols, rows, delays, bg, accent, fg, dpr;
 let state = "idle"; // idle | covering | covered | revealing
 let label = "";
-let labelOn = false;
-let labelTimer = 0;
 let safetyTimer = 0;
 let raf = 0;
 
@@ -63,18 +61,23 @@ function paint(t, revealing) {
       ctx.fillRect(c * CELL + (CELL - s) / 2, r * CELL + (CELL - s) / 2, s, s);
     }
   }
-  if (labelOn && label && !revealing) drawLabel();
+  // the "$ cd" line types in as the screen fills up, and stays while the page loads
+  const covered = revealing ? 1 - t : t;
+  if (covered > 0.55 && label) drawLabel(clamp((covered - 0.55) / 0.45));
 }
 
-function drawLabel() {
+function drawLabel(a) {
   const text = `$ cd ${label}`;
+  const n = Math.ceil(text.length * clamp(a * 1.3));
   ctx.font = FONT;
   ctx.textBaseline = "middle";
+  ctx.globalAlpha = Math.min(1, a * 1.5);
   ctx.fillStyle = fg;
   const w = ctx.measureText(text).width;
   const x = (innerWidth - w) / 2, y = innerHeight / 2;
-  ctx.fillText(text, x, y);
-  if (Math.floor(performance.now() / 380) % 2 === 0) ctx.fillRect(x + w + 3, y - 9, 9, 18);
+  ctx.fillText(text.slice(0, n), x, y);
+  if (Math.floor(performance.now() / 380) % 2 === 0) ctx.fillRect(x + ctx.measureText(text.slice(0, n)).width + 3, y - 9, 9, 18);
+  ctx.globalAlpha = 1;
 }
 
 function run(revealing) {
@@ -103,10 +106,8 @@ function holdCovered() {
 }
 
 function release() {
-  clearTimeout(labelTimer);
   clearTimeout(safetyTimer);
   cancelAnimationFrame(raf);
-  labelOn = false;
   if (ctx && cvs) ctx.clearRect(0, 0, cvs.width / dpr, cvs.height / dpr);
   if (cvs) cvs.style.pointerEvents = "none";
   state = "idle";
@@ -122,8 +123,6 @@ async function cover(to) {
   safetyTimer = setTimeout(release, SAFETY);
   await run(false);
   state = "covered";
-  clearTimeout(labelTimer);
-  labelTimer = setTimeout(() => { labelOn = true; }, 250);
   holdCovered();
 }
 
@@ -131,8 +130,6 @@ async function reveal() {
   if (state !== "covered" && state !== "covering") return;
   while (state === "covering") await new Promise((r) => setTimeout(r, 16));
   cancelAnimationFrame(raf);
-  clearTimeout(labelTimer);
-  labelOn = false;
   state = "revealing";
   setup(); // the new page may be a different size or theme
   await run(true);

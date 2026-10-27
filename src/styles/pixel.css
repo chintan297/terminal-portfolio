@@ -2371,3 +2371,7 @@ html {
 
 /* phone page-change canvas (wipe.js) */
 .page-wipe { position: fixed; inset: 0; width: 100%; height: 100%; z-index: calc(var(--z-splash) - 1); pointer-events: none; }
+
+/* a page that arrives through the letter morph stands still from the first frame: no sliding/fading entrances */
+.morph-static .reveal, .morph-static .scroll-in, .morph-static .home-card .btn, .morph-static .home-card .socials a { animation: none !important; opacity: 1 !important; }
+.morph-static .scroll-in:not(.in) { transform: none !important; transition: none !important; }

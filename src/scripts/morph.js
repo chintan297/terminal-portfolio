@@ -229,7 +229,10 @@ export function bindMorph() {
   document.addEventListener("astro:after-swap", () => {
     if (!snapshot?.words.length) return;
     waiting = true;
-    root.classList.add("morph-wait");
+    // entrance animations of the new page are switched off for this visit: the page must already stand where it will
+    // stay, otherwise the letters would land on positions that move a few pixels afterwards (a jolt at the very end).
+    // The class goes away by itself with the next page swap.
+    root.classList.add("morph-wait", "morph-static");
     // keep the old page on screen right away (the copy is added to the layer in play(); until then show it directly)
     layer = document.createElement("div");
     layer.className = "morph-layer";
