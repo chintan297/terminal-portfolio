@@ -70,7 +70,7 @@ export const about = {
     "React Three Fiber", "REST APIs", "Material-UI", "Tailwind", "Turborepo", "Git",
   ],
   building: [
-    { name: "this-portfolio", note: "Astro, Canvas" },
+    { name: "this-portfolio", note: "Canvas, CSS" },
     { name: "Vasana", note: "health platform" },
   ],
   interests: ["Frontend performance", "3D on the web", "AI products", "Mentoring"],

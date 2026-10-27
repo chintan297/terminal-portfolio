@@ -1,9 +1,9 @@
 ---
 title: "Building this terminal portfolio with an AI assistant"
-description: "What worked, what needed a human, and the small technical lessons from building a pixel-styled Astro site in pair-programming sessions."
+description: "What worked, what needed a human, and the small technical lessons from building a pixel-styled portfolio in pair-programming sessions."
 date: 2026-10-27
 mins: 5
-tags: ["AI", "ASTRO", "FRONT-END"]
+tags: ["AI", "FRONT-END", "PORTFOLIO"]
 ---
 
 I built this site together with an AI coding assistant. The short version: it is very good at the tedious parts and fast at trying ideas, and it still needs someone to decide what "right" looks like.
@@ -26,13 +26,13 @@ I built this site together with an AI coding assistant. The short version: it is
 
 Draw the text once to an off-screen canvas, then keep only whole grid cells. Pick the font size so that one pixel of the font equals a whole number of cells, or strokes end up uneven.
 
-### Persistent layers with Astro view transitions
+### Persistent layers across page transitions
 
-Elements created from script are dropped when the next page does not contain them. Put the element in the layout markup with `transition:persist` and look it up by id.
+With client-side page transitions, elements created from script are dropped when the next page does not contain them. Put the element in the shared layout, mark it as persistent, and look it up by id.
 
 ### A missing tsconfig looks like many small errors
 
-If the editor reports "implicitly has an any type" on content collections, check that `tsconfig.json` exists and that `.astro/types.d.ts` is included, then run `astro sync`.
+If the editor reports "implicitly has an any type" on content collections, check that `tsconfig.json` exists and includes the generated type definitions, then run the framework's type sync.
 
 ### Easing is global
 

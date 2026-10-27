@@ -90,9 +90,9 @@ export const series = [
 export const bits = [
   {
     date: "2026-10-27",
-    title: "Astro: persist layers by markup, not script",
-    body: "With view transitions, an element created from JavaScript is dropped on navigation unless the next page also contains it. Put it in the layout with transition:persist and fetch it by id.",
-    code: '<canvas id="cursor-trail" transition:persist></canvas>',
+    title: "Persist layers by markup, not script",
+    body: "With client-side page transitions, an element created from JavaScript is dropped on navigation unless the next page also contains it. Put it in the shared layout, mark it persistent and fetch it by id.",
+    code: 'const layer = document.getElementById("cursor-trail");',
   },
   {
     date: "2026-10-27",
@@ -103,8 +103,8 @@ export const bits = [
   {
     date: "2026-10-27",
     title: "Implicit any on content collections",
-    body: "No tsconfig.json means the editor cannot see Astro's generated types. Add one that includes .astro/types.d.ts, then sync.",
-    code: "npx astro sync",
+    body: "No tsconfig.json means the editor cannot see the generated types. Add one that includes them, then run the type sync.",
+    code: '"include": ["src/**/*"]',
   },
   {
     date: "2026-10-20",
