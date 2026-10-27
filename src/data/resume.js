@@ -28,6 +28,7 @@ export const resumeData = {
       org: "Tagline Infotech LLP, Surat (Full-time)",
       when: "Jan 2023 - Present",
       points: [
+        "Currently working on the company's own product, building and shipping frontend features with React.js and Next.js.",
         "Developed and maintained web applications with React.js, Next.js, Redux and TypeScript.",
         "Handled client communication, requirement gathering and technical solutioning, with off-hours support for critical issues and releases.",
         "Worked closely with designers and product managers to build clean, responsive, user-friendly UI.",
@@ -132,5 +133,13 @@ export const journey = [
     body: "Full-time remote role on a mental and behavioural health diagnostic platform, building accessible, reliable interfaces and integrating diagnostic tools (to Aug 2026).",
     points: ["Feature development and UI improvements", "Integration of diagnostic tools", "Accessible, reliable interfaces"],
     stack: ["React.js", "TypeScript", "Accessibility"],
+  },
+  {
+    when: "Now",
+    title: "Company product",
+    org: "Tagline Infotech LLP",
+    body: "Currently working on the company's own product at Tagline Infotech LLP, building and shipping frontend features with React.js and Next.js.",
+    points: ["Frontend feature development", "Working with designers, product and backend teams", "Code quality with ESLint and Husky"],
+    stack: ["React.js", "Next.js", "TypeScript"],
   },
 ];
