@@ -10,6 +10,7 @@ Everything you normally change lives in a few files. Nothing else needs touching
 | Projects (case studies) | `src/content/projects/*.mdx` |
 | Blog posts | `src/content/blog/*.mdx` |
 | Big pixel title on the home page | `heroLines` in `src/data/profile.js` |
+| Photo pop-out ("surprise": image, video, sound) | `surprise` in `src/data/profile.js`, files in `public/media/` |
 
 Pages import everything through `src/data/site.js`, so you never need to change imports.
 

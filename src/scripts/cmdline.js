@@ -96,7 +96,7 @@ export function bindCmdline() {
 
 // Global keyboard handling (registered once).
 addEventListener("keydown", (e) => {
-  if (!$("cmd")) return;
+  if (!$("cmd") || document.documentElement.classList.contains("photo-open")) return; // the full-screen surprise owns the keyboard
   if (isOpen()) {
     if (e.key === "Escape") closeCmd();
     else if (e.key === "ArrowDown") { sel = Math.min(sel + 1, rows.length - 1); render(); e.preventDefault(); }

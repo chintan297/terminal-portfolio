@@ -205,13 +205,16 @@ function createField(hero, canvas, bloom) {
           Math.round(
             (th / 2 + (i - (rowsTxt.length - 1) / 2) * pitch + fs / 2) / cell,
           ) * cell;
-        // a second copy one cell right and down fattens every stroke by one cell: thicker than a bare font pixel, still on the grid
-        for (const [ex, ey] of [
-          [0, 0],
-          [cell, 0],
-          [0, cell],
-          [cell, cell],
-        ])
+        // desktop: extra copies one cell right and down fatten every stroke by one cell (still on the grid).
+        // phones: the title is small, so strokes stay one font pixel wide and the letters read as light, clean pixels.
+        for (const [ex, ey] of narrow
+          ? [[0, 0]]
+          : [
+              [0, 0],
+              [cell, 0],
+              [0, cell],
+              [cell, cell],
+            ])
           o.fillText(l, x + dx + ex, y + dy + ey);
       });
     };

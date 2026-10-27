@@ -1414,3 +1414,79 @@ html {
   .card .lead, .home-card .lead, .quote-list blockquote p, .pj-title, .entry-title, strong, b { color: var(--bright); }
   h3 { font-size: var(--step-0); }
 }
+
+/* surprise pop-out: sound switch next to the ESC badge */
+.photo-sound { position: absolute; top: calc(var(--bar-top) + var(--s-3)); right: var(--s-4); min-height: 40px; padding: 0 var(--s-3); background: var(--surface); color: var(--mid); border: 1px solid var(--line-strong); font: inherit; font-size: var(--fs-xs); letter-spacing: 0.08em; cursor: pointer; }
+.photo-sound[aria-pressed="true"] { color: var(--dim); text-decoration: line-through; }
+
+/* avatar monogram button: hover lift, and a pulsing "?" until the surprise has been opened once */
+.photo-btn { position: relative; }
+.photo-btn::after { content: "?"; position: absolute; right: -7px; top: -7px; width: 18px; height: 18px; display: grid; place-items: center; background: var(--accent); color: var(--bg); font-size: 12px; line-height: 1; animation: avatar-hint 1.4s steps(1) infinite; pointer-events: none; }
+.photo-btn.seen::after { display: none; }
+@keyframes avatar-hint { 50% { transform: translate(1px, -1px); background: var(--bright); } }
+@media (prefers-reduced-motion: reduce) { .photo-btn::after { animation: none; } }
+
+/* the avatar can be a tiny photo: keep it crisp-pixelated in the thumbnail and in the pop-out */
+.photo-btn img, .photo-big { image-rendering: pixelated; }
+
+/* surprise show: still/gif and video share one square stage; the video fades in over the gif; the backdrop flickers */
+.photo-stage { position: relative; width: min(90vw, 720px); aspect-ratio: 16 / 9; }
+.photo-stage .photo-src { position: absolute; width: 2px; height: 2px; opacity: 0; pointer-events: none; }
+@media (max-width: 720px) { .photo-stage { width: min(90vw, 440px); aspect-ratio: 1; } }
+.photo-stage .photo-big, .photo-stage .photo-video { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; object-fit: contain; }
+.photo-stage .photo-video { opacity: 0; transition: opacity 0.5s var(--ease); image-rendering: auto; filter: drop-shadow(6px 6px 0 rgba(0, 0, 0, 0.6)); }
+.photo-stage .photo-video.on { opacity: 1; }
+.photo-pop.show-video .photo-big { opacity: 0; transition: opacity 0.4s var(--ease); }
+.photo-pop.flicker { animation: photo-flicker 1.2s steps(1) infinite; }
+.photo-pop.show-video { animation: none; }
+@keyframes photo-flicker { 0%, 100% { background: color-mix(in srgb, var(--bg) 62%, transparent); } 20% { background: color-mix(in srgb, var(--bg) 20%, transparent); } 24% { background: color-mix(in srgb, var(--fg) 14%, transparent); } 28% { background: color-mix(in srgb, var(--bg) 62%, transparent); } 60% { background: color-mix(in srgb, var(--bg) 35%, transparent); } 64% { background: color-mix(in srgb, var(--bg) 62%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .photo-pop.flicker { animation: none; } }
+.photo-big { image-rendering: pixelated; }
+.photo-pop:has(.photo-big[src$=".gif"]) .photo-big { image-rendering: auto; }
+
+/* a live cat from the API is a photo: smooth, not pixelated */
+.photo-pop.cat-live .photo-big { image-rendering: auto; }
+
+/* ---------- the surprise takes over the whole screen ---------- */
+.photo-pop { background: color-mix(in srgb, var(--bg) 88%, transparent); }
+.photo-stage { position: fixed; inset: 0; width: 100%; height: 100dvh; aspect-ratio: auto; }
+.photo-stage .photo-big, .photo-stage .photo-video { object-fit: contain; }
+/* nothing is shown until the first real picture has arrived, so a 40px avatar is never blown up to full screen */
+.photo-pop:not(.media-ready) .photo-big { opacity: 0; }
+.photo-pop.media-ready .photo-big { transition: opacity 0.25s var(--ease); }
+/* reduced motion: a small still picture, no takeover */
+.photo-pop.still-only .photo-stage { position: relative; inset: auto; width: min(62vmin, 440px); height: auto; aspect-ratio: 1; }
+.photo-pop.still-only .photo-big { opacity: 1; }
+@media (max-width: 720px) { .photo-stage { width: 100%; aspect-ratio: auto; } .photo-pop.still-only .photo-stage { width: min(90vw, 440px); } }
+/* portrait phones: the video fills the height of the screen (the subject sits in the middle of the frame) */
+@media (max-width: 720px) { .photo-pop:not(.still-only) .photo-stage .photo-video { object-fit: cover; } }
+
+/* ---------- surprise: a true full-screen takeover, nothing of the site shows ---------- */
+.photo-pop { background: #000; z-index: calc(var(--z-cursor) - 1); }
+.photo-pop.flicker { animation: photo-flicker-full 1.2s steps(1) infinite; }
+.photo-pop.show-video { animation: none; background: #000; }
+@keyframes photo-flicker-full { 0%, 100% { background: #000; } 20% { background: #1c1c1c; } 24% { background: #000; } 60% { background: #101010; } 64% { background: #000; } }
+.photo-stage .photo-video { filter: none; object-fit: cover; width: 100%; height: 100%; }
+.photo-pop.show-video .photo-stage .photo-big { opacity: 0; }
+.photo-esc, .photo-sound { z-index: 2; }
+@media (prefers-reduced-motion: reduce) { .photo-pop.flicker { animation: none; } }
+
+/* ---------- surprise: the site shows through behind the gif, and goes fully black when the video starts ---------- */
+.photo-pop { background: rgba(0, 0, 0, 0.5); }
+.photo-pop.flicker { animation: photo-flicker-soft 1.2s steps(1) infinite; }
+@keyframes photo-flicker-soft { 0%, 100% { background: rgba(0, 0, 0, 0.5); } 20% { background: rgba(0, 0, 0, 0.78); } 24% { background: rgba(0, 0, 0, 0.3); } 28% { background: rgba(0, 0, 0, 0.5); } 60% { background: rgba(0, 0, 0, 0.7); } 64% { background: rgba(0, 0, 0, 0.5); } }
+.photo-pop.show-video { animation: none; background: #000; }
+.photo-pop.show-video .photo-big { opacity: 0; }
+/* no close control when it cannot be closed (the calm reduced-motion picture keeps its ESC badge) */
+.photo-pop[data-closable="false"]:not(.still-only) .photo-esc { display: none; }
+.photo-pop[data-closable="false"]:not(.still-only) { cursor: default; }
+
+/* when it cannot be closed there are no controls on screen at all: no ESC badge and no sound switch */
+.photo-pop[data-closable="false"]:not(.still-only) .photo-sound { display: none; }
+
+/* no ghost cat: the gif and the video never overlap (the swap is instant), and nothing is drawn as a shadow or reflection */
+.photo-stage .photo-big, .photo-stage .photo-video { filter: none; }
+.photo-stage .photo-video { transition: none; }
+.photo-pop.show-video .photo-big { opacity: 0 !important; transition: none !important; visibility: hidden; }
+/* Astro's dev toolbar (development only) would peek out under the full-screen takeover */
+.photo-open astro-dev-toolbar { display: none !important; }

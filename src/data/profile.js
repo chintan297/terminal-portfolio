@@ -12,9 +12,32 @@ export const site = {
   role: "Frontend Developer at Tagline Infotech LLP, building fast and responsive interfaces.",
   roles: ["Frontend Developer", "React.js Developer", "Next.js Developer", "Three.js Developer"],
   summary: "High-performance, responsive user interfaces with React.js, Next.js and TypeScript.",
-  photo: "/avatar.svg",
-  // Image shown big when the photo on the home page is clicked. Use a transparent PNG cut-out in public/ for the pop-out look.
-  photoPopup: "/avatar.svg",
+  // Avatar on the home page. A random funny cat from cataas.com (every load can be a different cat); if it cannot be
+  // loaded the site falls back to the CA monogram in /avatar.svg. Use "/avatar.svg" or your own photo in public/ to stop that.
+  photo: "https://cataas.com/cat/funny?width=40&height=40&s=71",
+  // What happens when the avatar on the home page is clicked ("Click for a surprise"). Every part is optional.
+  // Files go in public/media/ and should be your own or ones you have the right to use.
+  //   image : shown first, and used when motion is reduced ("" = the avatar itself)
+  //   gif   : an animated picture shown the moment it opens
+  //   video : a clip that fades in over the gif when the intro sound ends (played muted and looping)
+  //   intro : a short sound that plays once when it opens; its end triggers the video and the music
+  //   music : the long sound that loops from the moment the video starts
+  //   flicker : ms after opening when the backdrop starts flickering
+  //   videoDelay : ms after opening when the video starts if there is no intro sound (or it cannot play)
+  //   volume: 0 to 1
+  surprise: {
+    image: "",
+    gif: "/media/cat.gif",
+    video: "/media/catvideo.mp4",
+    intro: "/media/oiia.mp3",
+    music: "/media/cataudio.mp3",
+    // false: once opened it cannot be closed (no ESC, no click); a page refresh is the only way out. true: ESC, the ESC badge
+    // or a click anywhere closes it. With reduced motion the calm still picture is always closable.
+    closable: false,
+    flicker: 4000,
+    videoDelay: 8000,
+    volume: 0.25,
+  },
   email: "chintanakbari7706@gmail.com",
   user: "chintan@tagline", // shown in the top bar
   // Add a social link by adding one line. `icon` is a simple-icons name (github, x, medium, ...).

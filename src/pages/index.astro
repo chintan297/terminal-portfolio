@@ -8,12 +8,25 @@ import { site } from "../data/site.js";
 <Layout showFooter={false}>
   <main class="page home">
     <Hero />
-    <section class="card home-card reveal" style="--i:2" id="intro" aria-label="About me">
+    <section
+      class="card home-card reveal"
+      style="--i:2"
+      id="intro"
+      aria-label="About me"
+    >
       <span class="label l">TTY1</span>
       <span class="label r">{site.location}</span>
       <div class="whoami">
-        <button class="photo-btn" type="button" id="photo-btn" aria-haspopup="dialog" aria-controls="photo-pop" aria-label={`Open photo of ${site.name}`}>
-          <img src={site.photo} alt="" width="64" height="64" />
+        <button
+          class="photo-btn"
+          type="button"
+          id="photo-btn"
+          title="Click for a surprise"
+          aria-haspopup="dialog"
+          aria-controls="photo-pop"
+          aria-label={`${site.name}: click for a surprise`}
+        >
+          <img id="photo-thumb" src={site.photo} alt="" width="64" height="64" crossorigin="anonymous" referrerpolicy="no-referrer" />
         </button>
         <div>
           <div class="prompt">$ whoami</div>
@@ -22,14 +35,27 @@ import { site } from "../data/site.js";
         </div>
       </div>
       <div class="btns">
-        <a class="btn primary" style="--i:0" href="/projects">PROJECTS <small>ALT+3</small></a>
-        <a class="btn" style="--i:1" href="/tutorials">TUTORIALS <small>ALT+7</small></a>
-        <a class="btn" style="--i:2" href="/resume">RESUME <small>ALT+6</small></a>
+        <a class="btn primary" style="--i:0" href="/projects"
+          >PROJECTS <small>ALT+3</small></a
+        >
+        <a class="btn" style="--i:1" href="/tutorials"
+          >TUTORIALS <small>ALT+7</small></a
+        >
+        <a class="btn" style="--i:2" href="/resume"
+          >RESUME <small>ALT+6</small></a
+        >
       </div>
       <div class="socials">
         {
           site.socials.map((s, i) => (
-            <a style={`--i:${i + 3}`} href={s.href} rel="noopener" target="_blank" aria-label={s.label} title={s.label}>
+            <a
+              style={`--i:${i + 3}`}
+              href={s.href}
+              rel="noopener"
+              target="_blank"
+              aria-label={s.label}
+              title={s.label}
+            >
               <Icon name={s.icon} />
             </a>
           ))
@@ -38,35 +64,165 @@ import { site } from "../data/site.js";
     </section>
   </main>
 
-  <div class="photo-pop" id="photo-pop" role="dialog" aria-modal="true" aria-label={`Photo of ${site.name}`} hidden>
-    <button class="photo-esc" type="button" id="photo-close"><span class="sr-only">Close photo </span><span aria-hidden="true">ESC</span></button>
-    <img class="photo-big" src={site.photoPopup ?? site.photo} alt={`Portrait of ${site.name}`} />
+  <div
+    class="photo-pop"
+    id="photo-pop"
+    role="dialog"
+    aria-modal="true"
+    aria-label={`A surprise from ${site.name}`}
+    tabindex="-1"
+    data-custom={site.surprise.image}
+    data-gif={site.surprise.gif}
+    data-video={site.surprise.video}
+    data-intro={site.surprise.intro}
+    data-music={site.surprise.music}
+    data-flicker={site.surprise.flicker}
+    data-video-delay={site.surprise.videoDelay}
+    data-volume={site.surprise.volume}
+    data-closable={String(site.surprise.closable)}
+    hidden
+  >
+    <button class="photo-esc" type="button" id="photo-close"
+      ><span class="sr-only">Close </span><span aria-hidden="true">ESC</span></button
+    >
+    {
+      (site.surprise.intro || site.surprise.music) && (
+        <button class="photo-sound" type="button" id="photo-sound" aria-pressed="false">
+          <span class="sr-only">Mute sound </span>
+          <span aria-hidden="true">SOUND ON</span>
+        </button>
+      )
+    }
+    <div class="photo-stage">
+      <img class="photo-big" src={site.surprise.image || site.photo} alt={`Picture of ${site.name}`} crossorigin="anonymous" referrerpolicy="no-referrer" />
+      {
+        site.surprise.video && (
+          <video class="photo-video" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true" />
+        )
+      }
+    </div>
   </div>
 </Layout>
 
 <script>
-  // Click the photo: the page dims and the picture grows out of the thumbnail to the middle of the screen.
-  // ESC, the ESC badge, a click anywhere or a swipe-free tap closes it. Focus moves into the dialog and back.
+  // Click the avatar ("Click for a surprise"). The page dims and the picture grows out of the thumbnail to fill the screen;
+  // then, like a short show: the gif and the short intro sound start at once, the backdrop flickers after `flicker` ms,
+  // and when the intro sound ends the video fades in over the gif while the long music loops. ESC, the ESC badge or a
+  // click anywhere closes it and stops everything. Heavy files load on the first open only. All of it is configured in
+  // `surprise` in src/data/profile.js. With reduced motion only the still picture is shown.
   function init() {
     const btn = document.getElementById("photo-btn");
     const pop = document.getElementById("photo-pop");
     const close = document.getElementById("photo-close");
+    const stage = pop?.querySelector<HTMLElement>(".photo-stage");
     const big = pop?.querySelector<HTMLImageElement>(".photo-big");
-    if (!btn || !pop || !close || !big || btn.dataset.bound) return;
+    const video = pop?.querySelector<HTMLVideoElement>(".photo-video") ?? null;
+    const soundBtn = document.getElementById("photo-sound");
+    if (!btn || !pop || !close || !stage || !big || btn.dataset.bound) return;
     btn.dataset.bound = "1";
+    // the dialog lives on <body>, not inside the page wrapper, so it covers the top and status bars too
+    if (pop.parentElement !== document.body) document.body.append(pop);
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const root = document.documentElement;
-    let anim: Animation | undefined;
+    const d = pop.dataset;
+
+    // the avatar may be a random remote picture: if it fails, fall back to the monogram; once it has loaded, the popup's
+    // still picture is that very same one (copied through a canvas) instead of another random fetch
+    const thumb = document.getElementById("photo-thumb") as HTMLImageElement | null;
+    let still = big.src;
+    if (thumb) {
+      const copy = () => {
+        if (d.custom) return;
+        try {
+          const c = document.createElement("canvas");
+          c.width = thumb.naturalWidth || 40;
+          c.height = thumb.naturalHeight || 40;
+          c.getContext("2d")!.drawImage(thumb, 0, 0);
+          still = c.toDataURL("image/png");
+          big.src = still;
+        } catch { /* image not readable: the popup keeps its own source */ }
+      };
+      thumb.addEventListener("error", () => {
+        if (!thumb.src.endsWith("/avatar.svg")) { thumb.src = "/avatar.svg"; still = "/avatar.svg"; big.src = still; }
+      }, { once: true });
+      if (thumb.complete && thumb.naturalWidth) copy(); else thumb.addEventListener("load", copy, { once: true });
+    }
+
+    // a small pulsing "?" invites the first click; it stays gone once the surprise has been opened (per browser)
+    const SEEN = "avatar-surprise-seen";
+    try { if (localStorage.getItem(SEEN)) btn.classList.add("seen"); } catch { /* storage blocked: the hint just stays */ }
+
+    // sounds are created on the first open, so nothing is downloaded until someone asks for the surprise
+    let intro: HTMLAudioElement | undefined;
+    let music: HTMLAudioElement | undefined;
+    let muted = false;
+    let timers: number[] = [];
+    const vol = () => Number(d.volume ?? 0.25);
+    const make = (src: string, loop = false) => Object.assign(new Audio(src), { preload: "auto", loop, volume: vol(), muted });
+
+    const stopAll = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+      for (const a of [intro, music]) if (a) { a.onended = null; a.pause(); a.currentTime = 0; }
+      if (video) { video.pause(); video.removeAttribute("src"); video.load(); video.classList.remove("on"); }
+      pop.classList.remove("flicker", "show-video", "cat-live", "media-ready", "still-only");
+      big.onerror = big.onload = null;
+      big.src = still;
+    };
+    soundBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      muted = !muted;
+      for (const a of [intro, music]) if (a) a.muted = muted;
+      soundBtn.setAttribute("aria-pressed", String(muted));
+      soundBtn.querySelector("[aria-hidden]")!.textContent = muted ? "SOUND OFF" : "SOUND ON";
+    });
+
+    function startShow() {
+      // 1. the spinning gif and the short intro sound start together
+      if (d.gif) {
+        big!.onload = () => pop!.classList.add("media-ready");
+        big!.src = d.gif;
+      }
+      // 2. when the short sound ends, the video and the long music take over (a timer covers a missing or failed sound)
+      let started = false;
+      const beginVideo = () => {
+        if (started) return;
+        started = true;
+        if (video && d.video) {
+          video.src = d.video;
+          video.play().then(() => { video.classList.add("on"); pop!.classList.add("show-video"); }).catch(() => {});
+        }
+        if (d.music) { music ??= make(d.music, true); music.currentTime = 0; music.play().catch(() => {}); }
+      };
+      const fallback = () => timers.push(window.setTimeout(beginVideo, Number(d.videoDelay ?? 8000)));
+      if (d.intro) {
+        intro ??= make(d.intro);
+        intro.currentTime = 0;
+        intro.onended = beginVideo;
+        intro.play().catch(fallback);
+      } else fallback();
+      timers.push(window.setTimeout(() => pop!.classList.add("flicker"), Number(d.flicker ?? 4000)));
+    }
+
+    // closable: set in profile.js. The calm (reduced-motion) still picture can always be closed.
+    const canClose = () => d.closable !== "false" || pop.classList.contains("still-only");
+    const behind = () => [...document.querySelectorAll<HTMLElement>("#main, .topbar, .statusbar, #cmd, #menu-panel, #menu-scrim, .to-top")];
+    const lock = (on: boolean) => behind().forEach((el) => { el.inert = on; });
 
     function open() {
+      btn!.classList.add("seen");
+      try { localStorage.setItem(SEEN, "1"); } catch { /* ignore */ }
       pop!.hidden = false;
       root.classList.add("photo-open");
-      close!.focus({ preventScroll: true });
-      if (reduce) return;
+      // the page behind stays visible during the gif, but nothing behind it can be reached by keyboard or screen reader
+      lock(true);
+      (canClose() || reduce ? close! : pop!).focus({ preventScroll: true });
+      if (reduce) { pop!.classList.add("still-only", "media-ready"); return; } // calm version: just the small picture
+      startShow();
       const from = btn!.getBoundingClientRect();
-      const to = big!.getBoundingClientRect();
+      const to = stage!.getBoundingClientRect();
       const s = from.width / to.width;
-      anim = big!.animate(
+      stage!.animate(
         [
           { transform: `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ${from.top + from.height / 2 - (to.top + to.height / 2)}px) scale(${s})`, opacity: 0.4 },
           { transform: "translate(0, 0) scale(1.06)", opacity: 1, offset: 0.75 },
@@ -76,17 +232,25 @@ import { site } from "../data/site.js";
       );
     }
     function shut() {
-      anim?.cancel();
+      stage!.getAnimations().forEach((a) => a.cancel());
+      stopAll();
       pop!.hidden = true;
+      lock(false);
       root.classList.remove("photo-open");
       btn!.focus({ preventScroll: true });
     }
     btn.addEventListener("click", open);
-    pop.addEventListener("click", shut);
+    pop.addEventListener("click", () => { if (canClose()) shut(); });
     close.addEventListener("click", (e) => { e.stopPropagation(); shut(); });
     pop.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") { e.preventDefault(); shut(); }
-      else if (e.key === "Tab") { e.preventDefault(); close.focus(); } // the badge is the only control, keep focus on it
+      if (e.key === "Escape") { e.preventDefault(); if (canClose()) shut(); }
+      else if (e.key === "Tab") {
+        e.preventDefault();
+        // the ESC badge and the sound switch exist only when the dialog can be closed; otherwise there is no control at all
+        const order = [canClose() ? close : null, canClose() ? soundBtn : null].filter(Boolean) as HTMLElement[];
+        const i = order.indexOf(document.activeElement as HTMLElement);
+        (order[(i + 1) % Math.max(order.length, 1)] ?? pop).focus();
+      }
     });
   }
   document.addEventListener("astro:page-load", init);
