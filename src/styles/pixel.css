@@ -1689,16 +1689,6 @@ html {
   }
 }
 
-/* ---------- page transition canvas ---------- */
-.page-wipe {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: calc(var(--z-splash) - 1);
-  pointer-events: none;
-}
-
 /* phones: the pixel font is wide and bright on a small dark screen, so body copy gets a calmer tone and slightly smaller size */
 @media (max-width: 720px) {
   body {
@@ -2071,41 +2061,313 @@ html {
 
 /* phones: the floating back-to-top button is smaller and see-through so it covers less text */
 @media (max-width: 720px) {
-  .to-top { width: 40px; height: 40px; right: var(--s-3); background: color-mix(in srgb, var(--bg) 82%, transparent); }
-  .to-top.show, .to-top[data-show="true"] { opacity: 0.9; }
+  .to-top {
+    width: 40px;
+    height: 40px;
+    right: var(--s-3);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+  }
+  .to-top.show,
+  .to-top[data-show="true"] {
+    opacity: 0.9;
+  }
 }
 
 /* ---------- social icons: equal tiles that fill the row, one icon size, same look as the buttons above ---------- */
-.socials { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 16px; }
-.socials a { width: auto; height: 48px; min-height: 48px; display: grid; place-items: center; color: var(--mid); background: none; border: 1px solid var(--line-strong); }
-.socials a svg { width: 22px; height: 22px; display: block; fill: currentColor; }
-.socials a:hover, .socials a:focus-visible { background: var(--accent); color: var(--bg); border-color: var(--accent); transform: none; }
-@media (max-width: 720px) { .socials { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px; } .socials a { height: 48px; } }
+.socials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 16px;
+}
+.socials a {
+  width: auto;
+  height: 48px;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  color: var(--mid);
+  background: none;
+  border: 1px solid var(--line-strong);
+}
+.socials a svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  fill: currentColor;
+}
+.socials a:hover,
+.socials a:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  transform: none;
+}
+@media (max-width: 720px) {
+  .socials {
+    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+    gap: 12px;
+  }
+  .socials a {
+    height: 48px;
+  }
+}
 
 /* "NEW CAT": the last tile at the right end of the social links row, icon only, same size and look as the other tiles */
-.socials .cat-new { height: 48px; min-height: 48px; display: grid; place-items: center; padding: 0; background: none; color: var(--mid); border: 1px solid var(--line-strong); cursor: pointer; }
-.socials .cat-new svg { width: 22px; height: 22px; display: block; }
-.socials .cat-new:hover, .socials .cat-new:focus-visible { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-.socials .cat-new:disabled { opacity: 0.6; cursor: progress; }
-.socials .cat-new.busy svg { animation: cat-bob 0.5s steps(4) infinite; }
-@keyframes cat-bob { 50% { transform: translateY(-3px) rotate(-8deg); } }
-@media (prefers-reduced-motion: reduce) { .socials .cat-new.busy svg { animation: none; } }
+.socials .cat-new {
+  height: 48px;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: none;
+  color: var(--mid);
+  border: 1px solid var(--line-strong);
+  cursor: pointer;
+}
+.socials .cat-new svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+.socials .cat-new:hover,
+.socials .cat-new:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+.socials .cat-new:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.socials .cat-new.busy svg {
+  animation: cat-bob 0.5s steps(4) infinite;
+}
+@keyframes cat-bob {
+  50% {
+    transform: translateY(-3px) rotate(-8deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .socials .cat-new.busy svg {
+    animation: none;
+  }
+}
 
 /* phones: five tiles share one row, and the pause button sits in the free strip above the title instead of over the icons */
 @media (max-width: 720px) {
-  .socials { grid-template-columns: repeat(auto-fit, minmax(48px, 1fr)); gap: 8px; }
-  .hero .pause { top: 6px; bottom: auto; right: 8px; width: 44px; height: 44px; }
+  .socials {
+    grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+    gap: 8px;
+  }
+  .hero .pause {
+    top: 6px;
+    bottom: auto;
+    right: 8px;
+    width: 44px;
+    height: 44px;
+  }
 }
 
 /* phone status bar: every control stays visible; on the narrowest screens the buttons simply get tighter */
 @media (max-width: 720px) {
-  .statusbar #keys-btn { min-width: 48px; justify-content: center; }
-  .statusbar #scrollpct { min-width: 48px; }
+  .statusbar #keys-btn {
+    min-width: 48px;
+    justify-content: center;
+  }
+  .statusbar #scrollpct {
+    min-width: 48px;
+  }
 }
 @media (max-width: 360px) {
-  .statusbar > *, .statusbar button { padding: 0 var(--s-2); }
-  .statusbar .mode { padding: 0 var(--s-2); }
-  .statusbar #fx-btn, .statusbar #search-btn, .statusbar #keys-btn { min-width: 40px; }
-  .statusbar #scrollpct { min-width: 44px; }
-  .statusbar { font-size: 0.6875rem; }
+  .statusbar > *,
+  .statusbar button {
+    padding: 0 var(--s-2);
+  }
+  .statusbar .mode {
+    padding: 0 var(--s-2);
+  }
+  .statusbar #fx-btn,
+  .statusbar #search-btn,
+  .statusbar #keys-btn {
+    min-width: 40px;
+  }
+  .statusbar #scrollpct {
+    min-width: 44px;
+  }
+  .statusbar {
+    font-size: 0.6875rem;
+  }
 }
+
+/* ---------- page change: words travel from the old page to the new one (see morph.js) ---------- */
+.morph-wait #main {
+  opacity: 0;
+}
+.morphing #main,
+.morphing #main * {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+.morph-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 45;
+  overflow: hidden;
+}
+.morph-word {
+  position: absolute;
+  white-space: pre;
+  margin: 0;
+  padding: 0;
+}
+
+/* the kept copy of the old page: its text is hidden (the ghost words carry it), its entrance animations are off */
+.morph-clone,
+.morph-clone * {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+.morph-clone .reveal,
+.morph-clone .scroll-in,
+.morph-clone.reveal {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+.morph-clone {
+  overflow: hidden;
+}
+
+/* ---------- phone menu animation: open, select, close ---------- */
+@media (max-width: 720px) {
+  .topbar .menu-btn .mb-icon {
+    display: inline-block;
+    transition: transform 0.25s var(--ease);
+  }
+  .topbar .menu-btn[aria-expanded="true"] .mb-icon {
+    transform: rotate(90deg);
+  }
+
+  .menu-scrim:not([hidden]) {
+    animation: menu-fade-in 0.22s ease-out both;
+  }
+  .menu-scrim.closing {
+    animation: menu-fade-out 0.22s ease-in both;
+  }
+
+  .menu-panel.card:not([hidden]) {
+    animation: menu-drop-in 0.28s var(--ease) both;
+    transform-origin: top center;
+  }
+  .menu-panel.card.closing {
+    animation: menu-lift-out 0.22s ease-in both;
+    pointer-events: none;
+  }
+
+  /* rows arrive one after another */
+  .menu-panel:not(.closing) li {
+    animation: menu-row-in 0.3s var(--ease) both;
+    animation-delay: calc(var(--n, 0) * 32ms + 80ms);
+  }
+  .menu-panel.closing li {
+    animation: none;
+  }
+
+  /* the chosen row flashes, the others step back */
+  .menu-panel li a {
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .menu-panel.picking li {
+    transition: opacity 0.18s ease;
+  }
+  .menu-panel.picking li:not(:has(.picked)) {
+    opacity: 0.3;
+  }
+  .menu-panel a.picked {
+    animation: menu-picked 0.17s steps(2) both;
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .menu-panel a.picked :is(.num, .ttl, small, kbd) {
+    color: var(--bg);
+  }
+}
+@keyframes menu-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes menu-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes menu-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scaleY(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes menu-lift-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-14px) scaleY(0.96);
+  }
+}
+@keyframes menu-row-in {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes menu-picked {
+  0% {
+    filter: none;
+  }
+  50% {
+    filter: invert(1);
+  }
+  100% {
+    filter: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .topbar .menu-btn .mb-icon {
+    transition: none;
+  }
+  .menu-scrim,
+  .menu-panel.card,
+  .menu-panel li,
+  .menu-panel a.picked {
+    animation: none !important;
+  }
+}
+
+/* the browser's own page cross-fade is switched off: the letter morph is the transition, and capturing two full-screen snapshots costs a visible hitch */
+::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+
+/* phone page-change canvas (wipe.js) */
+.page-wipe { position: fixed; inset: 0; width: 100%; height: 100%; z-index: calc(var(--z-splash) - 1); pointer-events: none; }

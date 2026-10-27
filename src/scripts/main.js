@@ -7,6 +7,7 @@ import { initCursor } from "./cursor.js";
 import { runBoot } from "./boot.js";
 import { bindNavFx } from "./navfx.js";
 import { bindMobileMenu } from "./mobilemenu.js";
+import { bindMorph } from "./morph.js";
 import { bindWipe } from "./wipe.js";
 
 // Runs on first load and after every client-side navigation.
@@ -24,4 +25,5 @@ document.addEventListener("astro:page-load", onPage);
 runBoot();
 bindNavFx();
 bindMobileMenu();
+bindMorph();
 bindWipe();

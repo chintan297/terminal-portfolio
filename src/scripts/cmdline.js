@@ -1,3 +1,4 @@
+import { navigate } from "astro:transitions/client";
 import { state, cycleTheme, toggleFx, setKeys } from "./theme.js";
 import { scrollToTop } from "./motion.js";
 
@@ -9,7 +10,8 @@ let sel = 0;
 let opener = null;
 
 const $ = (id) => document.getElementById(id);
-const go = (href) => { location.href = href; };
+// Search results and Alt+number shortcuts go through the router too, so they get the same page-change effect (and no full reload)
+const go = (href) => navigate(href);
 
 function data() {
   const el = $("cmd");

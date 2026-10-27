@@ -1,16 +1,23 @@
 import { prefersReducedMotion } from "./motion.js";
 
-// Page transition: when you navigate, a field of pixel squares grows over the screen from the top-left, the page swaps
-// underneath while a "$ cd ~/file" line types in the middle, then the squares shrink away towards the bottom-right.
-// One persistent canvas and a few event listeners for the whole session. Skipped for reduced motion.
-const COVER = 380; // ms until the screen is fully covered
-const REVEAL = 420; // ms to uncover
-const GROW = 150; // ms one square takes to grow or shrink
+// Page change on PHONES (screens narrower than 720px; desktop uses the letter morph in morph.js): a field of pixel
+// squares grows over the screen from the top-left, the next page is fetched and swapped underneath, then the squares
+// shrink away towards the bottom-right. Quick on purpose; the "$ cd" line is shown only if the next page is slow.
+// One persistent canvas and a few listeners for the whole session. Skipped for reduced motion.
+const COVER = 240; // ms until the screen is fully covered
+const REVEAL = 260; // ms to uncover
+const GROW = 100; // ms one square takes to grow or shrink
+const CELL = 28;
+const SAFETY = 3000; // if anything goes wrong, the overlay is removed after this long
 const FONT = '16px "Departure Mono", monospace';
+const isPhone = () => innerWidth < 720;
 
-let cvs, ctx, cols, rows, cell, delays, bg, accent, fg, dpr;
+let cvs, ctx, cols, rows, delays, bg, accent, fg, dpr;
 let state = "idle"; // idle | covering | covered | revealing
 let label = "";
+let labelOn = false;
+let labelTimer = 0;
+let safetyTimer = 0;
 let raf = 0;
 
 const clamp = (v) => Math.min(1, Math.max(0, v));
@@ -24,16 +31,14 @@ function setup() {
   cvs.width = w * dpr;
   cvs.height = h * dpr;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  cell = w < 720 ? 28 : 36;
-  cols = Math.ceil(w / cell);
-  rows = Math.ceil(h / cell);
-  // diagonal sweep with a little noise so the edge looks like pixels arriving, not a straight line
+  cols = Math.ceil(w / CELL);
+  rows = Math.ceil(h / CELL);
+  // a diagonal sweep with a little noise, so the edge looks like pixels arriving rather than a straight line
   delays = new Float32Array(cols * rows);
   const span = 1 - GROW / COVER;
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) delays[r * cols + c] = clamp((c / cols) * 0.6 + (r / rows) * 0.4 + (Math.random() - 0.5) * 0.12) * span;
   const cs = getComputedStyle(document.documentElement);
-  const probe = document.body;
-  bg = getComputedStyle(probe).backgroundColor;
+  bg = getComputedStyle(document.body).backgroundColor;
   accent = cs.getPropertyValue("--accent").trim() || "#fff";
   const p = document.createElement("span");
   p.style.cssText = "position:absolute;visibility:hidden;color:var(--bright)";
@@ -45,38 +50,31 @@ function setup() {
 
 // t = 0..1 across the phase. covering: squares grow in delay order. revealing: they shrink in the same order.
 function paint(t, revealing) {
-  const total = revealing ? REVEAL : COVER;
-  const ms = t * total;
-  ctx.clearRect(0, 0, cvs.width / dpr, cvs.height / dpr);
   const span = revealing ? REVEAL : COVER;
+  const ms = t * span;
+  ctx.clearRect(0, 0, cvs.width / dpr, cvs.height / dpr);
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const d = delays[r * cols + c] * span;
-      const p = clamp((ms - d) / GROW);
+      const p = clamp((ms - delays[r * cols + c] * span) / GROW);
       const size = revealing ? 1 - p : p;
       if (size <= 0) continue;
-      const s = Math.ceil(cell * size) + (size >= 1 ? 1 : 0);
-      const x = c * cell + (cell - s) / 2, y = r * cell + (cell - s) / 2;
+      const s = Math.ceil(CELL * size) + (size >= 1 ? 1 : 0);
       ctx.fillStyle = size >= 1 ? bg : accent; // the leading edge is bright, the settled squares are the page colour
-      ctx.fillRect(x, y, s, s);
+      ctx.fillRect(c * CELL + (CELL - s) / 2, r * CELL + (CELL - s) / 2, s, s);
     }
   }
-  const covered = revealing ? 1 - t : t;
-  if (covered > 0.55 && label) drawLabel(clamp((covered - 0.55) / 0.45), revealing ? 1 : t);
+  if (labelOn && label && !revealing) drawLabel();
 }
 
-function drawLabel(a, typeT) {
+function drawLabel() {
   const text = `$ cd ${label}`;
-  const n = Math.ceil(text.length * clamp(a * 1.3));
   ctx.font = FONT;
   ctx.textBaseline = "middle";
-  ctx.globalAlpha = Math.min(1, a * 1.5);
   ctx.fillStyle = fg;
   const w = ctx.measureText(text).width;
   const x = (innerWidth - w) / 2, y = innerHeight / 2;
-  ctx.fillText(text.slice(0, n), x, y);
-  if (Math.floor(performance.now() / 380) % 2 === 0) ctx.fillRect(x + ctx.measureText(text.slice(0, n)).width + 3, y - 9, 9, 18);
-  ctx.globalAlpha = 1;
+  ctx.fillText(text, x, y);
+  if (Math.floor(performance.now() / 380) % 2 === 0) ctx.fillRect(x + w + 3, y - 9, 9, 18);
 }
 
 function run(revealing) {
@@ -94,7 +92,7 @@ function run(revealing) {
   });
 }
 
-// keep the "covered" state painted (and the cursor blinking) while the next page loads
+// keep the covered state painted while the next page loads
 function holdCovered() {
   const frame = () => {
     if (state !== "covered") return;
@@ -104,14 +102,28 @@ function holdCovered() {
   raf = requestAnimationFrame(frame);
 }
 
+function release() {
+  clearTimeout(labelTimer);
+  clearTimeout(safetyTimer);
+  cancelAnimationFrame(raf);
+  labelOn = false;
+  if (ctx && cvs) ctx.clearRect(0, 0, cvs.width / dpr, cvs.height / dpr);
+  if (cvs) cvs.style.pointerEvents = "none";
+  state = "idle";
+}
+
 async function cover(to) {
   if (state !== "idle" || !setup()) return;
   const link = [...document.querySelectorAll("#menu-panel a")].find((a) => a.getAttribute("href") === to.pathname);
   label = link ? `~/${link.querySelector("small")?.textContent.replace("~/", "")}` : to.pathname;
   state = "covering";
   cvs.style.pointerEvents = "auto"; // block double taps while the page swaps
+  clearTimeout(safetyTimer);
+  safetyTimer = setTimeout(release, SAFETY);
   await run(false);
   state = "covered";
+  clearTimeout(labelTimer);
+  labelTimer = setTimeout(() => { labelOn = true; }, 250);
   holdCovered();
 }
 
@@ -119,12 +131,12 @@ async function reveal() {
   if (state !== "covered" && state !== "covering") return;
   while (state === "covering") await new Promise((r) => setTimeout(r, 16));
   cancelAnimationFrame(raf);
+  clearTimeout(labelTimer);
+  labelOn = false;
   state = "revealing";
   setup(); // the new page may be a different size or theme
   await run(true);
-  ctx.clearRect(0, 0, cvs.width / dpr, cvs.height / dpr);
-  cvs.style.pointerEvents = "none";
-  state = "idle";
+  release();
 }
 
 export function bindWipe() {
@@ -132,7 +144,7 @@ export function bindWipe() {
   window.__wipeBound = true;
   document.addEventListener("astro:before-preparation", (e) => {
     const to = e.to;
-    if (!to || to.pathname === location.pathname) return;
+    if (!isPhone() || !to || to.pathname === location.pathname) return;
     const load = e.loader;
     // fetch the next page while the squares grow; the swap happens only once the screen is covered
     e.loader = async () => { await Promise.all([load(), cover(to)]); };
