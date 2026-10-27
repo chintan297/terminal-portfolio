@@ -1,7 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "@fontsource/jetbrains-mono/latin-400.css";
-import "@fontsource/press-start-2p/latin-400.css";
 import "../styles/tokens.css";
 import "../styles/base.css";
 import "../styles/layout.css";
@@ -11,7 +10,6 @@ import "../styles/polish.css";
 import "../styles/pixel.css";
 import Footer from "../components/Footer.astro";
 import Cursor from "../components/Cursor.astro";
-import pixel from "@fontsource/press-start-2p/files/press-start-2p-latin-400-normal.woff2?url";
 import Seo from "../components/Seo.astro";
 import { getCollection } from "astro:content";
 import { site, nav, quotes, series, bits } from "../data/site.js";
@@ -100,7 +98,6 @@ const index = [
       href="/fonts/DepartureMono-Regular.woff2"
       crossorigin
     />
-    <link rel="preload" as="font" type="font/woff2" href={pixel} crossorigin />
     <Seo title={title} description={description} />
     <script is:inline src="/theme-init.js"></script>
     <ClientRouter />

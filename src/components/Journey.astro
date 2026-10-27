@@ -1,6 +1,12 @@
 ---
 // Scroll story: the section is tall, an inner panel sticks, and scroll progress picks the active step.
 // Below 720px it becomes a plain list (no pinning).
+import type { JourneyStep } from "../types";
+
+interface Props {
+  steps: JourneyStep[];
+  heading?: string;
+}
 const { steps, heading = "JOURNEY" } = Astro.props;
 ---
 

@@ -318,7 +318,6 @@ function createField(hero, canvas, bloom) {
   function launchVolley() {
     if (!titleCells.length) return;
     const side = SIDE_ORDER[sideIdx++ % 4];
-    const target = titleCells[Math.floor(Math.random() * titleCells.length)];
     const [tc, tr] = openSpot();
     const start = openSpot(box.y1 + 5); // shots leave from the open area below the name, never from the top edge
     const mid = [(start[0] + tc) / 2, (start[1] + tr) / 2];
@@ -328,23 +327,6 @@ function createField(hero, canvas, bloom) {
     const ctrl = [mid[0] + dir[0] * push, mid[1] + dir[1] * push];
     const path = samplePath(bezier(start, ctrl, [tc, tr], Math.ceil(len)));
     addHead(path, FLIGHT_S, () => {
-      addBurst(tc, tr, burstRadius());
-      addChaff(tc, tr, cols < 130 ? 10 : CHAFF, true);
-    });
-  }
-
-  // Click: a shot leaves the clicked cell on a curve, lands on a random stroke of the name and bursts there.
-  function launchFrom(sc, sr) {
-    if (!titleCells.length) return;
-    const target = titleCells[Math.floor(Math.random() * titleCells.length)];
-    const tc = target % cols, tr = Math.floor(target / cols);
-    const dx = tc - sc, dy = tr - sr;
-    const len = Math.max(1, Math.hypot(dx, dy));
-    const push = Math.min(len * 0.2, cols < 130 ? 10 : 30) * (Math.random() < 0.5 ? -1 : 1);
-    const ctrl = [(sc + tc) / 2 - (dy / len) * push, (sr + tr) / 2 + (dx / len) * push];
-    const path = samplePath(bezier([sc, sr], ctrl, [tc, tr], Math.ceil(len)));
-    addBurst(sc, sr, Math.round(burstRadius() * 0.4));
-    addHead(path, Math.min(CAP_MAX, Math.max(CAP_MIN, len / CAP_SPEED)), () => {
       addBurst(tc, tr, burstRadius());
       addChaff(tc, tr, cols < 130 ? 10 : CHAFF, true);
     });
@@ -374,8 +356,6 @@ function createField(hero, canvas, bloom) {
       const R = Math.round(burstRadius() * (at ? rand(1, 1.2) : rand(0.8, 1.1)));
       addBurst(tc, tr, R, 14 + Math.floor(Math.random() * 9));
       addChaff(tc, tr, cols < 130 ? 12 : 26, true);
-      // a smaller second pop, like a double-break shell
-      if (false) timers.push(setTimeout(() => { if (!paused) { addBurst(tc, tr, Math.round(R * 0.55), 10); addChaff(tc, tr, 16); } }, 220));
     });
   }
 
