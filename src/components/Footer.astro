@@ -1,0 +1,37 @@
+---
+import Icon from "./Icon.astro";
+import { site, nav } from "../data/site.js";
+---
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>
+      <h2>{site.name}</h2>
+      <p>{site.role}</p>
+      <div class="btns" style="margin-top:var(--s-3)">
+        <button class="btn" type="button" data-copy={site.email}>
+          <span data-label>{site.email}</span><span class="arrow" aria-hidden="true">⧉</span>
+        </button>
+      </div>
+    </div>
+    <nav aria-label="Footer">
+      <h2>Pages</h2>
+      <ul>{nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+    </nav>
+    <div>
+      <h2>Elsewhere</h2>
+      <ul>
+        {
+          site.socials.slice(0, 5).map((s) => (
+            <li><a href={s.href} rel="noopener" target="_blank"><Icon name={s.icon} />&nbsp;{s.label}</a></li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <div class="legal">
+    <span>© <span id="year-footer">{new Date().getFullYear()}</span> {site.name}</span>
+    {site.sample && <span>Sample content: replace it in <code>src/data/site.js</code></span>}
+    <span>Built with Astro</span>
+  </div>
+</footer>

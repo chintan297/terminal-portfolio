@@ -1,0 +1,44 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { site, quotes } from "../data/site.js";
+---
+
+<Layout title={`Quotes | ${site.name}`}>
+  <main class="page">
+    <PageHeader
+      path="QUOTES"
+      cmd="quotes --random"
+      title="Quotes"
+      sub="Quotes worth keeping on engineering, computing, and how to think."
+    />
+    <div class="grid2" style="margin-top:28px">
+      {
+        quotes.map((q, i) => (
+          <div class="quote reveal" style={`--i:${i + 4}`}>
+            <span class="kicker">QUOTE/{String(i + 1).padStart(2, "0")}</span>
+            <p>“{q.text}”</p>
+            <span class="by">-- {q.by.toUpperCase()}</span>
+            <button class="copy" type="button" data-id={i + 1}>
+              copy link
+            </button>
+          </div>
+        ))
+      }
+    </div>
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLButtonElement>(".copy").forEach((b) => {
+      b.onclick = async () => {
+        await navigator.clipboard?.writeText(
+          `${location.origin}/quotes#${b.dataset.id}`,
+        );
+        b.textContent = "copied!";
+        setTimeout(() => (b.textContent = "copy link"), 1200);
+      };
+    });
+  });
+</script>

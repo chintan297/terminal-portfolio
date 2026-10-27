@@ -1,0 +1,10 @@
+---
+import { Icon as AstroIcon } from "astro-icon/components";
+
+// astro-icon pulls the SVG from the iconify packages at build time.
+// `name` is either a simple-icons slug ("github") or a full "set:name" id ("lucide:server").
+const { name, size = 22 } = Astro.props;
+const id = name.includes(":") ? name : `simple-icons:${name}`;
+---
+
+<AstroIcon name={id} width={size} height={size} aria-hidden="true" />

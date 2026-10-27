@@ -1,0 +1,18 @@
+---
+import { site } from "../data/site.js";
+---
+
+<section class="hero" data-lines={JSON.stringify(site.heroLines)} aria-label="Introduction">
+  <span class="path">~/{site.host}</span>
+  <i class="br tl" aria-hidden="true"></i><i class="br tr" aria-hidden="true"></i><i class="br bl" aria-hidden="true"></i><i class="br brr" aria-hidden="true"></i>
+  <div class="glow" aria-hidden="true"></div>
+  <canvas class="field" aria-hidden="true"></canvas>
+  <canvas class="bloom" aria-hidden="true"></canvas>
+  <h1 class="sr-only">{site.name}</h1>
+  <button class="pause" type="button" aria-pressed="false"><span class="sr-only">Pause hero animation </span><span aria-hidden="true">II</span></button>
+</section>
+
+<script>
+  import { initHero } from "../scripts/hero-field.js";
+  document.addEventListener("astro:page-load", initHero);
+</script>

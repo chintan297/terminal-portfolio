@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { site } from "../../data/site.js";
+
+const projects = (await getCollection("projects")).sort((a, b) => b.data.year - a.data.year);
+const techs = [...new Set(projects.flatMap((p) => p.data.stack))].sort((a, b) => a.localeCompare(b));
+---
+
+<Layout title={`Projects | ${site.name}`} description="Case studies of things I have built.">
+  <main class="page wide">
+    <PageHeader path="PROJECTS" cmd="projects --list" title="Projects" sub="Case studies: the problem, my role, the stack and what I learned." />
+
+    <div class="chips reveal" style="--i:4" role="group" aria-label="Filter by technology">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">All ({projects.length})</button>
+      {techs.map((t) => <button class="chip" type="button" data-filter={t.toLowerCase()} aria-pressed="false">{t}</button>)}
+    </div>
+    <p id="filter-status" class="sr-only" role="status" aria-live="polite"></p>
+
+    <div class="pgrid reveal" style="--i:5" id="pgrid">
+      {projects.map((p) => <ProjectCard project={p} level={2} />)}
+    </div>
+    <p class="empty" id="empty" hidden>No projects use that technology yet.</p>
+  </main>
+</Layout>
+
+<script>
+  // Filter chips: fade cards out, then hide them, so the grid reflows without a jump. State lives in the URL hash.
+  function init() {
+    const chips = [...document.querySelectorAll<HTMLButtonElement>(".chip")];
+    const cards = [...document.querySelectorAll<HTMLElement>(".pcard")];
+    const empty = document.getElementById("empty");
+    const status = document.getElementById("filter-status");
+    if (!chips.length) return;
+
+    function apply(filter: string, push = true) {
+      let shown = 0;
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.filter === filter)));
+      cards.forEach((card) => {
+        const match = filter === "all" || card.dataset.stack!.split("|").includes(filter);
+        if (match) shown++;
+        if (match && card.hidden) {
+          card.hidden = false;
+          card.classList.add("is-leaving");
+          requestAnimationFrame(() => requestAnimationFrame(() => card.classList.remove("is-leaving")));
+        } else if (!match && !card.hidden) {
+          card.classList.add("is-leaving");
+          setTimeout(() => { if (card.classList.contains("is-leaving")) card.hidden = true; }, 260);
+        }
+      });
+      if (empty) empty.hidden = shown > 0;
+      if (status) status.textContent = `${shown} project${shown === 1 ? "" : "s"} shown`;
+      if (push) history.replaceState(null, "", filter === "all" ? location.pathname : `#${encodeURIComponent(filter)}`);
+    }
+    chips.forEach((chip) => chip.addEventListener("click", () => apply(chip.dataset.filter!)));
+    const initial = decodeURIComponent(location.hash.slice(1));
+    if (initial && chips.some((c) => c.dataset.filter === initial)) apply(initial, false);
+  }
+  document.addEventListener("astro:page-load", init);
+</script>

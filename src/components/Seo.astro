@@ -1,0 +1,22 @@
+---
+import { SEO } from "astro-seo";
+import { site } from "../data/site.js";
+
+const { title = site.title, description = site.summary } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<SEO
+  title={title}
+  description={description}
+  canonical={canonical.href}
+  openGraph={{
+    basic: { title, type: "website", image: new URL("/og.svg", Astro.site).href, url: canonical.href },
+    optional: { description, siteName: site.name },
+  }}
+  twitter={{ card: "summary_large_image" }}
+  extend={{
+    link: [{ rel: "icon", href: "/favicon.svg" }, { rel: "sitemap", href: "/sitemap-index.xml" }],
+    meta: [{ name: "theme-color", content: "#000000" }],
+  }}
+/>

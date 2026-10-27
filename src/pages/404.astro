@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site, nav, fortunes } from "../data/site.js";
+const f = fortunes[Math.floor(Math.random() * fortunes.length)];
+---
+
+<Layout title={`404 | ${site.name}`}>
+  <main class="page">
+    <section class="card reveal">
+      <span class="label l">~/404</span>
+      <div class="prompt cursor">$ cd ./requested-page</div>
+      <h1>404: Not Found</h1>
+      <p>
+        bash: cd: no such file or directory. The page moved or never existed.
+      </p>
+      <div class="btns">
+        {
+          nav.map((n, i) => (
+            <a class="btn" style={`--i:${i};min-width:0`} href={n.href}>
+              {n.label}
+            </a>
+          ))
+        }
+      </div>
+    </section>
+    <section class="card reveal" style="--i:3">
+      <span class="label l">FORTUNE</span>
+      <p>“{f.text}”</p>
+      <span class="by prompt">-- {f.by.toUpperCase()}</span>
+    </section>
+  </main>
+</Layout>

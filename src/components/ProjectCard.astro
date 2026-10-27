@@ -1,0 +1,18 @@
+---
+import BrowserMockup from "./BrowserMockup.astro";
+
+const { project, level = 3 } = Astro.props;
+const Heading = `h${level}`;
+const d = project.data;
+---
+
+<a class="pcard spot" href={`/projects/${project.id}`} data-stack={d.stack.map((s) => s.toLowerCase()).join("|")} data-cursor="view">
+  {d.sample && <span class="badge">SAMPLE</span>}
+  <div class="media"><BrowserMockup url={`${project.id}.example.com`} alt={`${d.title} preview`} /></div>
+  <div class="body">
+    <div class="kicker">{d.year} · {d.status.toUpperCase()}</div>
+    <Heading>{d.title}</Heading>
+    <p>{d.summary}</p>
+    <div>{d.stack.map((t) => <span class="tag">{t}</span>)}</div>
+  </div>
+</a>

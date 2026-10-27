@@ -1,0 +1,76 @@
+---
+// Scroll story: the section is tall, an inner panel sticks, and scroll progress picks the active step.
+// Below 720px it becomes a plain list (no pinning).
+const { steps, heading = "JOURNEY" } = Astro.props;
+---
+
+<section class="journey" style={`--steps:${steps.length}`} aria-label={heading} data-journey>
+  <div class="stick">
+    <div class="now" aria-hidden="true">
+      <div class="when" data-now-when>{steps[0].when}</div>
+      <h3 data-now-title>{steps[0].title}</h3>
+      <div class="kicker" data-now-org>{steps[0].org}</div>
+      <p data-now-body>{steps[0].body}</p>
+      <div class="bar"></div>
+    </div>
+    <ol>
+      {
+        steps.map((s, i) => (
+          <li aria-current={i === 0 ? "step" : undefined}>
+            <strong>{s.when}</strong> · <span data-title>{s.title}</span> <span class="kicker">({s.org})</span>
+            <span class="step-detail">{s.body}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<script>
+  let cleanup: (() => void) | null = null;
+  function init() {
+    cleanup?.();
+    const root = document.querySelector<HTMLElement>("[data-journey]");
+    if (!root) return;
+    const items = [...root.querySelectorAll<HTMLElement>("li")];
+    const text = (sel: string) => root.querySelector<HTMLElement>(sel)!;
+    const steps = items.map((li) => ({
+      when: li.querySelector("strong")!.textContent!,
+      title: li.querySelector("[data-title]")!.textContent!,
+      org: li.querySelector(".kicker")!.textContent!.replace(/[()]/g, ""),
+      body: li.querySelector(".step-detail")!.textContent!,
+    }));
+    let current = -1;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const r = root.getBoundingClientRect();
+      const span = r.height - innerHeight * 0.6;
+      const p = Math.min(1, Math.max(0, -(r.top - 80) / Math.max(span, 1)));
+      root.style.setProperty("--p", p.toFixed(3));
+      const idx = Math.min(items.length - 1, Math.floor(p * items.length));
+      if (idx === current) return;
+      current = idx;
+      items.forEach((li, i) => (i === idx ? li.setAttribute("aria-current", "step") : li.removeAttribute("aria-current")));
+      const s = steps[idx];
+      text("[data-now-when]").textContent = s.when;
+      text("[data-now-title]").textContent = s.title;
+      text("[data-now-org]").textContent = s.org;
+      text("[data-now-body]").textContent = s.body;
+    };
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    update();
+    cleanup = () => {
+      removeEventListener("scroll", onScroll);
+      removeEventListener("resize", onScroll);
+    };
+  }
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:before-swap", () => cleanup?.());
+</script>

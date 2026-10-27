@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import Icon from "../components/Icon.astro";
+import { site } from "../data/site.js";
+---
+
+<Layout showFooter={false}>
+  <main class="page home">
+    <Hero />
+    <section class="card home-card reveal" style="--i:2" id="intro" aria-label="About me">
+      <span class="label l">TTY1</span>
+      <span class="label r">{site.location}</span>
+      <div class="whoami">
+        <img src={site.photo} alt={`Portrait of ${site.name}`} width="64" height="64" />
+        <div>
+          <div class="prompt">$ whoami</div>
+          <p class="lead">{site.role}</p>
+          <p>{site.summary}</p>
+        </div>
+      </div>
+      <div class="btns">
+        <a class="btn primary" style="--i:0" href="/projects">PROJECTS <small>ALT+3</small></a>
+        <a class="btn" style="--i:1" href="/tutorials">TUTORIALS <small>ALT+7</small></a>
+        <a class="btn" style="--i:2" href="/resume">RESUME <small>ALT+6</small></a>
+      </div>
+      <div class="socials">
+        {
+          site.socials.map((s, i) => (
+            <a style={`--i:${i + 3}`} href={s.href} rel="noopener" target="_blank" aria-label={s.label} title={s.label}>
+              <Icon name={s.icon} />
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</Layout>

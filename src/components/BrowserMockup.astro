@@ -1,0 +1,55 @@
+---
+import { Image } from "astro:assets";
+
+// Browser frame around a project preview. With a real screenshot (`cover` imported image) it renders
+// an optimised <Image>; otherwise it draws a neutral wireframe so sample projects never fake a UI.
+const { url = "example.com", alt = "", cover, device = "desktop", toggle = false } = Astro.props;
+---
+
+<figure class="mock" data-device={device} data-mock>
+  <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>{url}</span></div>
+  <div class="screen">
+    {
+      cover ? (
+        <Image src={cover} alt={alt} widths={[480, 800, 1200]} sizes="(max-width: 720px) 100vw, 800px" loading="lazy" />
+      ) : (
+        <svg viewBox="0 0 160 100" role="img" aria-label={alt || "Placeholder preview"} preserveAspectRatio="xMidYMid slice">
+          <rect width="160" height="100" fill="var(--bg)" />
+          <rect x="8" y="8" width="144" height="8" fill="none" stroke="var(--line)" />
+          <rect x="8" y="24" width="90" height="10" fill="var(--accent)" opacity=".85" />
+          <rect x="8" y="38" width="64" height="4" fill="var(--dim)" opacity=".6" />
+          <rect x="8" y="52" width="44" height="40" fill="none" stroke="var(--line)" />
+          <rect x="58" y="52" width="44" height="40" fill="none" stroke="var(--line)" />
+          <rect x="108" y="52" width="44" height="40" fill="none" stroke="var(--accent)" opacity=".6" />
+        </svg>
+      )
+    }
+  </div>
+  {alt && <figcaption class="sr-only">{alt}</figcaption>}
+</figure>
+{
+  toggle && (
+    <div class="device-toggle" role="group" aria-label="Preview device">
+      <button type="button" data-device-btn="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-device-btn="mobile" aria-pressed="false">Mobile</button>
+    </div>
+  )
+}
+
+<script>
+  // Desktop/mobile preview toggle: swaps the frame width and the pressed state.
+  function bind() {
+    document.querySelectorAll<HTMLElement>(".device-toggle").forEach((group) => {
+      if (group.dataset.bound) return;
+      group.dataset.bound = "1";
+      const mock = group.previousElementSibling as HTMLElement | null;
+      group.querySelectorAll<HTMLButtonElement>("button").forEach((btn) =>
+        btn.addEventListener("click", () => {
+          mock?.setAttribute("data-device", btn.dataset.deviceBtn!);
+          group.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+        }),
+      );
+    });
+  }
+  document.addEventListener("astro:page-load", bind);
+</script>

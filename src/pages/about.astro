@@ -1,0 +1,82 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Journey from "../components/Journey.astro";
+import { site, about, experience, resumeData, journey } from "../data/site.js";
+---
+
+<Layout title={`About | ${site.name}`} description={about.lead}>
+  <main class="page wide">
+    <PageHeader path="ABOUT" cmd="whoami" title={about.heading} sub={about.lead} />
+
+    <div class="about-grid">
+      <div class="col">
+        <section class="card reveal" style="--i:4" aria-labelledby="profile-name">
+          <span class="label l">PROFILE</span>
+          <h2 id="profile-name" class="name">{about.name}</h2>
+          <h3>{about.title}</h3>
+          <p>{about.bio}</p>
+          <div>{about.tags.map((t) => <span class="tag">{t}</span>)}</div>
+        </section>
+
+        <section class="card reveal" style="--i:5" aria-labelledby="exp-h">
+          <span class="label l" id="exp-h">EXPERIENCE</span>
+          <ol class="exp">
+            {
+              experience.map((e, i) => (
+                <li class:list={{ now: i === 0 }}>
+                  <span class="when">{e.when}</span>
+                  <span class="what">{e.what}</span>
+                  <span class="where">{e.where}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
+      </div>
+
+      <section class="card reveal" style="--i:6" aria-labelledby="skills-h">
+        <span class="label l" id="skills-h">SKILLS</span>
+        {
+          about.skills.map((s) => (
+            <div class="gauge">
+              <span>{s.name}</span>
+              <span class="bar" style={`--w:${s.level}%`} role="img" aria-label={`${s.name}: sample level ${s.level} percent`}><i></i></span>
+            </div>
+          ))
+        }
+      </section>
+    </div>
+
+    <div class="grid3">
+      <section class="card reveal" style="--i:7" aria-labelledby="build-h">
+        <span class="label l" id="build-h">BUILDING</span>
+        {
+          about.building.map((s) => (
+            <div class="gauge">
+              <span>{s.name}</span>
+              <span class="bar" style={`--w:${s.level}%`} role="img" aria-label={`${s.name}: sample progress ${s.level} percent`}><i></i></span>
+            </div>
+          ))
+        }
+      </section>
+      <section class="card reveal" style="--i:8" aria-labelledby="int-h">
+        <span class="label l" id="int-h">INTERESTS</span>
+        <div>{about.interests.map((t) => <span class="tag">{t}</span>)}</div>
+      </section>
+      <section class="card reveal" style="--i:9" aria-labelledby="lang-h">
+        <span class="label l" id="lang-h">LANGUAGES</span>
+        {
+          resumeData.languages.map((l) => (
+            <div class="gauge"><span class="prompt">{l.code}</span><span>{l.name} · {l.level}</span></div>
+          ))
+        }
+      </section>
+    </div>
+
+    <section class="scroll-in" aria-labelledby="journey-h">
+      <h2 class="level" id="journey-h">JOURNEY</h2>
+      <Journey steps={journey} />
+    </section>
+  </main>
+</Layout>

@@ -1,0 +1,84 @@
+/* tmux-style top bar */
+.topbar {
+  position: fixed; inset: 0 0 auto 0; z-index: var(--z-bars); height: var(--bar-top);
+  display: flex; align-items: stretch; justify-content: space-between;
+  background: var(--bg); border-bottom: 1px solid var(--line); font-size: var(--fs-sm);
+}
+.topbar nav { display: flex; overflow-x: auto; scrollbar-width: none; }
+.topbar a, .topbar .host { display: flex; align-items: center; padding: 0 10px; text-decoration: none; white-space: nowrap; }
+.topbar .host { background: var(--accent); color: var(--bg); }
+.topbar a { position: relative; transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+/* animated underline that grows from the left on hover, solid block when current */
+.topbar a::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: 6px; height: 1px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform var(--t-base) var(--ease);
+}
+.topbar a:hover::after { transform: scaleX(1); }
+.topbar a[aria-current="page"] { background: var(--accent); color: var(--bg); }
+.topbar a[aria-current="page"]::after { display: none; }
+.topbar .right { display: flex; align-items: stretch; }
+.topbar .right > span { display: flex; align-items: center; padding: 0 14px; border-left: 1px solid var(--line); color: var(--dim); }
+.topbar .right .clock { color: var(--fg); font-weight: 700; }
+.menu-btn {
+  display: none; min-width: 44px; background: none; border: 0; color: var(--fg); font: inherit; padding: 0 12px; cursor: pointer;
+}
+
+/* vim-style status bar */
+.statusbar {
+  position: fixed; inset: auto 0 0 0; z-index: var(--z-bars); height: var(--bar-bottom);
+  display: flex; align-items: stretch; font-size: var(--fs-xs);
+  background: var(--bg); border-top: 1px solid var(--line);
+}
+.statusbar > * { display: flex; align-items: center; padding: 0 12px; border-right: 1px solid var(--line); }
+.statusbar .mode { background: var(--accent); color: var(--bg); }
+.statusbar .grow { flex: 1; }
+.statusbar button { background: none; border: 0; border-right: 1px solid var(--line); color: inherit; font: inherit; padding: 0 12px; cursor: pointer; transition: background-color var(--t-fast) var(--ease); }
+.statusbar button:hover { background: var(--line); }
+.statusbar button:active { background: var(--accent); color: var(--bg); }
+.statusbar #keys-btn.off { text-decoration: line-through; opacity: 0.7; }
+.statusbar #scrollpct { border-right: 0; min-width: 56px; justify-content: center; }
+.statusbar .mode.flick { animation: ui-mode-flick 0.5s steps(1) 1; }
+@keyframes ui-mode-flick {
+  0% { background: none; } 25% { background: var(--fg); } 50% { background: none; } 75%, 100% { background: var(--accent); }
+}
+
+/* bottom command line (replaces the status bar while open) */
+#cmd { position: fixed; inset: auto 0 0 0; z-index: var(--z-cmd); display: none; background: var(--bg); }
+#cmd.open { display: block; }
+#cmd .row { display: flex; gap: 6px; height: var(--bar-bottom); align-items: center; padding: 0 12px; border-top: 1px solid var(--accent); font-size: var(--fs-sm); }
+#cmd input { flex: 1; background: none; border: 0; outline: 0; box-shadow: none; color: var(--fg); font: inherit; caret-color: var(--accent); }
+#cmd ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); background: var(--bg); max-height: 40vh; overflow: auto; }
+#cmd li { display: flex; gap: 14px; padding: 6px 12px; font-size: var(--fs-xs); cursor: pointer; }
+#cmd li .k { width: 64px; flex: none; color: var(--dim); }
+#cmd li .d { color: var(--dim); }
+#cmd li[aria-selected="true"] { background: var(--line); }
+
+/* back to top */
+.to-top {
+  position: fixed; right: var(--s-4); bottom: 46px; z-index: var(--z-totop); width: 44px; height: 44px;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--line-strong); cursor: pointer; font: inherit;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s, transform 0.25s ease, background-color var(--t-base), color var(--t-base);
+}
+.to-top.show { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.to-top:hover { background: var(--accent); color: var(--bg); }
+
+/* site footer */
+.site-footer { position: relative; z-index: var(--z-content); border-top: 1px solid var(--line); margin-top: var(--s-7); padding: var(--s-6) var(--s-4) var(--s-5); }
+.site-footer .inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--s-5); }
+.site-footer h2 { margin: 0 0 var(--s-3); }
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-1); }
+.site-footer a { text-decoration: none; display: inline-flex; align-items: center; min-height: 32px; }
+.site-footer a:hover { color: var(--accent); }
+.site-footer .legal { max-width: 1080px; margin: var(--s-5) auto 0; color: var(--dim); font-size: var(--fs-xs); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2); }
+
+@media (max-width: 720px) {
+  .menu-btn { display: block; }
+  .topbar nav { display: none; position: absolute; top: var(--bar-top); left: 0; right: 0; flex-direction: column; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .topbar nav.open { display: flex; }
+  .topbar nav a, .topbar nav .host { min-height: 48px; padding: 0 var(--s-4); }
+  .topbar .right .hide-m { display: none; }
+  .statusbar .hide-m { display: none; }
+  .statusbar button { min-width: 44px; }
+  .site-footer .inner { grid-template-columns: 1fr; }
+}

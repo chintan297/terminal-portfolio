@@ -1,0 +1,82 @@
+/* Departure Mono (SIL Open Font License 1.1, see /fonts/DepartureMono-LICENSE.txt). Regular weight only. */
+@font-face {
+  font-family: "Departure Mono";
+  src: url("/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Design tokens. Four themes; --accent is the loud colour, --surface a faint lift off the page. */
+:root {
+  --bg: #050505;
+  --fg: oklch(0.925 0.004 250);
+  --mid: oklch(0.815 0.006 250);
+  --dim: oklch(0.745 0.007 250);
+  --bright: oklch(0.985 0.004 250);
+  --line: #2a2a2a;
+  --accent: #f2f2f2;
+
+  /* control borders need 3:1 against the page (WCAG 1.4.11); --line stays for decorative frames */
+  --line-strong: color-mix(in srgb, var(--fg) 50%, var(--bg));
+  --surface: color-mix(in srgb, var(--bg) 94%, var(--fg));
+  --glow: color-mix(in srgb, var(--accent) 22%, transparent);
+
+  --font-mono: "Departure Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --font-pixel: "Press Start 2P", ui-monospace, monospace;
+
+  /* fluid type scale (step 0 is body; steps scale smoothly between 320px and 1920px) */
+  --step--2: clamp(0.75rem, 0.6983rem + 0.09091vw, 0.8438rem);
+  --step--1: clamp(0.8125rem, 0.7869rem + 0.1136vw, 0.9688rem);
+  --step-0: clamp(0.9375rem, 0.8966rem + 0.1818vw, 1.188rem);
+  --step-1: clamp(1.031rem, 0.975rem + 0.25vw, 1.375rem);
+  --step-2: clamp(1.156rem, 1.069rem + 0.3864vw, 1.688rem);
+  --step-3: clamp(1.312rem, 1.18rem + 0.5909vw, 2.125rem);
+  --step-4: clamp(1.5rem, 1.295rem + 0.9091vw, 2.75rem);
+  /* roles: UI and labels use step -1, captions step -2, body step 0 */
+  --fs-xs: var(--step--2);
+  --fs-sm: var(--step--1);
+  --fs-base: var(--step--1);
+  --fs-lg: var(--step-0);
+  --fs-h2: var(--step-1);
+  --fs-h1: var(--step-4);
+  --leading-display: 1.09;
+  --leading-heading: 1.2;
+  --leading-subhead: 1.32;
+  --leading-ui: 1.42;
+  --leading-caption: 1.36;
+  --leading-body: 1.6;
+  --leading-prose: 1.72;
+
+  /* spacing scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 40px;
+  --s-7: 64px;
+
+  /* motion: one set of timings and one easing everywhere */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --t-fast: 0.15s;
+  --t-base: 0.3s;
+  --t-slow: 0.6s;
+
+  --bar-top: 44px;
+  --bar-bottom: 30px;
+
+  /* z-index map */
+  --z-bg: 0;
+  --z-content: 1;
+  --z-fx: 40;
+  --z-bars: 50;
+  --z-totop: 100;
+  --z-noise: 2000;
+  --z-cmd: 2600;
+  --z-cursor: 3000;
+  --z-splash: 3500;
+}
+:root[data-theme="ember"] { --bg: #0b0504; --fg: #ffb08a; --mid: var(--fg); --bright: var(--accent); --dim: #c98a6e; --line: #4a2018; --accent: #ff9360; }
+:root[data-theme="green"] { --bg: #030a05; --fg: #7dffa0; --mid: var(--fg); --bright: var(--accent); --dim: #55b06e; --line: #153d20; --accent: #6bff8c; }
+:root[data-theme="amber"] { --bg: #0a0702; --fg: #ffd36a; --mid: var(--fg); --bright: var(--accent); --dim: #bf9a42; --line: #4a3a12; --accent: #ffc23a; }
