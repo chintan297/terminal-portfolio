@@ -5,6 +5,7 @@ import { bindCopy } from "./copy.js";
 import { initReveal, initSpotlights } from "./motion.js";
 import { initCursor } from "./cursor.js";
 import { runBoot } from "./boot.js";
+import { bindNavFx } from "./navfx.js";
 
 // Runs on first load and after every client-side navigation.
 function onPage() {
@@ -19,3 +20,4 @@ function onPage() {
 
 document.addEventListener("astro:page-load", onPage);
 runBoot();
+bindNavFx();
