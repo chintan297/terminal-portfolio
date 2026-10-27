@@ -6,24 +6,56 @@
 }
 
 /* text and images are never smoothed */
-html { -webkit-font-smoothing: none; font-smooth: never; text-rendering: optimizeSpeed; }
-img, canvas, video { image-rendering: pixelated; }
+html {
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+}
+img,
+canvas,
+video {
+  image-rendering: pixelated;
+}
 
 /* faint pixel grid behind everything */
 body {
   background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--accent) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--accent) 7%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--accent) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent) 7%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 8px 8px;
   background-attachment: fixed;
 }
 
 /* no circles */
-.cursor-dot, .cursor-ring, .mock .bar i { border-radius: 0; }
+.cursor-dot,
+.cursor-ring,
+.mock .bar i {
+  border-radius: 0;
+}
 
 /* hover reads through the border and fill */
-.tcard:hover, .quote:hover, .svc:hover, .pcard:hover, .pcard:focus-visible, .btn:hover { box-shadow: none; }
-.tcard:hover, .quote:hover, .svc:hover, .pcard:hover { background-color: color-mix(in srgb, var(--bg) 88%, var(--accent)); }
+.tcard:hover,
+.quote:hover,
+.svc:hover,
+.pcard:hover,
+.pcard:focus-visible,
+.btn:hover {
+  box-shadow: none;
+}
+.tcard:hover,
+.quote:hover,
+.svc:hover,
+.pcard:hover {
+  background-color: color-mix(in srgb, var(--bg) 88%, var(--accent));
+}
 
 /* ---------- journey: black and white, follows the theme accent ---------- */
 .journey {
@@ -35,76 +67,496 @@ body {
   background: var(--surface);
 }
 .journey .now .when,
-.journey .now .kicker { color: var(--leaf); }
-.journey .now h3 { color: var(--bright); }
-.journey .bar { background: var(--leaf); height: 4px; }
-/* the progress bar ends in a bright pixel, like a sprout tip */
-.journey .bar::after { content: ""; position: absolute; right: 0; top: 0; width: 4px; height: 4px; background: var(--bright); }
-.journey ol { border-left: 2px solid var(--leaf-dim); padding-left: 0; }
-.journey li { border-left: 0; position: relative; padding-left: var(--s-5); }
-.journey li::before {
-  content: ""; position: absolute; left: -5px; top: 50%; width: 8px; height: 8px; margin-top: -4px;
-  background: var(--bg); border: 2px solid var(--leaf-dim);
+.journey .now .kicker {
+  color: var(--leaf);
 }
-.journey li.done { color: var(--mid); }
-.journey li.done::before { background: var(--leaf-dim); border-color: var(--leaf-dim); }
-.journey li[aria-current="step"] { color: var(--bright); }
-.journey li[aria-current="step"]::before { background: var(--leaf); border-color: var(--leaf); box-shadow: 0 0 0 4px color-mix(in srgb, var(--leaf) 25%, transparent); /* white halo */ }
-.journey li[aria-current="step"] strong { color: var(--leaf); }
+.journey .now h3 {
+  color: var(--bright);
+}
+.journey .bar {
+  background: var(--leaf);
+  height: 4px;
+}
+/* the progress bar ends in a bright pixel, like a sprout tip */
+.journey .bar::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 4px;
+  height: 4px;
+  background: var(--bright);
+}
+.journey ol {
+  border-left: 2px solid var(--leaf-dim);
+  padding-left: 0;
+}
+.journey li {
+  border-left: 0;
+  position: relative;
+  padding-left: var(--s-5);
+}
+.journey li::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  background: var(--bg);
+  border: 2px solid var(--leaf-dim);
+}
+.journey li.done {
+  color: var(--mid);
+}
+.journey li.done::before {
+  background: var(--leaf-dim);
+  border-color: var(--leaf-dim);
+}
+.journey li[aria-current="step"] {
+  color: var(--bright);
+}
+.journey li[aria-current="step"]::before {
+  background: var(--leaf);
+  border-color: var(--leaf);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--leaf) 25%, transparent); /* white halo */
+}
+.journey li[aria-current="step"] strong {
+  color: var(--leaf);
+}
 /* detail inside the journey card */
-.journey .now .pts { list-style: none; margin: var(--s-3) 0; padding: 0; display: grid; gap: var(--s-2); }
-.journey .now .pts li { padding: 0 0 0 var(--s-4); border: 0; transform: none; position: relative; color: var(--mid); }
-.journey .now .pts li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 6px; height: 6px; margin: 0; border: 0; background: var(--leaf); box-shadow: none; }
-.journey .now .chips { margin: var(--s-3) 0 var(--s-4); gap: 0; }
-.journey .now .tag { border-color: var(--leaf-dim); color: var(--leaf); }
+.journey .now .pts {
+  list-style: none;
+  margin: var(--s-3) 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-2);
+}
+.journey .now .pts li {
+  padding: 0 0 0 var(--s-4);
+  border: 0;
+  transform: none;
+  position: relative;
+  color: var(--mid);
+}
+.journey .now .pts li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  border: 0;
+  background: var(--leaf);
+  box-shadow: none;
+}
+.journey .now .chips {
+  margin: var(--s-3) 0 var(--s-4);
+  gap: 0;
+}
+.journey .now .tag {
+  border-color: var(--leaf-dim);
+  color: var(--leaf);
+}
 
 /* ---------- top bar: tmux-style hover (same as the reference: a lifted background and brighter text, 0.15s) ---------- */
 .topbar a {
-  transition: color 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    color 0.15s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .topbar a:not([aria-current="page"]):is(:hover, :focus-visible) {
   background: color-mix(in srgb, var(--fg) 12%, var(--bg));
   color: var(--bright);
 }
-.topbar a::after { display: none; }
+.topbar a::after {
+  display: none;
+}
 /* tmux window flag: * marks the current window */
-.topbar a[aria-current="page"]::before { content: "*"; }
+.topbar a[aria-current="page"]::before {
+  content: "*";
+  order: 1;
+}
 
-.cursor-trail { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: var(--z-cursor); color: var(--bright); }
+.cursor-trail {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  color: var(--bright);
+}
 
 /* ---------- cursor: pixel arrow, and a pointing hand over things you can click (3D pixel style, with a drop shadow) ---------- */
 :root {
-  --arrow: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='40' shape-rendering='crispEdges'><rect x='2' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='2' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='4' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='4' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='4' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='4' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='6' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='6' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='6' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='6' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='8' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='36' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='36' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='0' y='0' width='2' height='2' fill='%23000'/><rect x='0' y='2' width='2' height='2' fill='%23000'/><rect x='2' y='2' width='2' height='2' fill='%23000'/><rect x='0' y='4' width='2' height='2' fill='%23000'/><rect x='2' y='4' width='2' height='2' fill='%23fff'/><rect x='4' y='4' width='2' height='2' fill='%23000'/><rect x='0' y='6' width='2' height='2' fill='%23000'/><rect x='2' y='6' width='2' height='2' fill='%23fff'/><rect x='4' y='6' width='2' height='2' fill='%23fff'/><rect x='6' y='6' width='2' height='2' fill='%23000'/><rect x='0' y='8' width='2' height='2' fill='%23000'/><rect x='2' y='8' width='2' height='2' fill='%23fff'/><rect x='4' y='8' width='2' height='2' fill='%23fff'/><rect x='6' y='8' width='2' height='2' fill='%23fff'/><rect x='8' y='8' width='2' height='2' fill='%23000'/><rect x='0' y='10' width='2' height='2' fill='%23000'/><rect x='2' y='10' width='2' height='2' fill='%23fff'/><rect x='4' y='10' width='2' height='2' fill='%23fff'/><rect x='6' y='10' width='2' height='2' fill='%23fff'/><rect x='8' y='10' width='2' height='2' fill='%23fff'/><rect x='10' y='10' width='2' height='2' fill='%23000'/><rect x='0' y='12' width='2' height='2' fill='%23000'/><rect x='2' y='12' width='2' height='2' fill='%23fff'/><rect x='4' y='12' width='2' height='2' fill='%23fff'/><rect x='6' y='12' width='2' height='2' fill='%23fff'/><rect x='8' y='12' width='2' height='2' fill='%23fff'/><rect x='10' y='12' width='2' height='2' fill='%23fff'/><rect x='12' y='12' width='2' height='2' fill='%23000'/><rect x='0' y='14' width='2' height='2' fill='%23000'/><rect x='2' y='14' width='2' height='2' fill='%23fff'/><rect x='4' y='14' width='2' height='2' fill='%23fff'/><rect x='6' y='14' width='2' height='2' fill='%23fff'/><rect x='8' y='14' width='2' height='2' fill='%23fff'/><rect x='10' y='14' width='2' height='2' fill='%23fff'/><rect x='12' y='14' width='2' height='2' fill='%23fff'/><rect x='14' y='14' width='2' height='2' fill='%23000'/><rect x='0' y='16' width='2' height='2' fill='%23000'/><rect x='2' y='16' width='2' height='2' fill='%23fff'/><rect x='4' y='16' width='2' height='2' fill='%23fff'/><rect x='6' y='16' width='2' height='2' fill='%23fff'/><rect x='8' y='16' width='2' height='2' fill='%23fff'/><rect x='10' y='16' width='2' height='2' fill='%23fff'/><rect x='12' y='16' width='2' height='2' fill='%23fff'/><rect x='14' y='16' width='2' height='2' fill='%23fff'/><rect x='16' y='16' width='2' height='2' fill='%23000'/><rect x='0' y='18' width='2' height='2' fill='%23000'/><rect x='2' y='18' width='2' height='2' fill='%23fff'/><rect x='4' y='18' width='2' height='2' fill='%23fff'/><rect x='6' y='18' width='2' height='2' fill='%23fff'/><rect x='8' y='18' width='2' height='2' fill='%23fff'/><rect x='10' y='18' width='2' height='2' fill='%23fff'/><rect x='12' y='18' width='2' height='2' fill='%23fff'/><rect x='14' y='18' width='2' height='2' fill='%23fff'/><rect x='16' y='18' width='2' height='2' fill='%23fff'/><rect x='18' y='18' width='2' height='2' fill='%23000'/><rect x='0' y='20' width='2' height='2' fill='%23000'/><rect x='2' y='20' width='2' height='2' fill='%23fff'/><rect x='4' y='20' width='2' height='2' fill='%23fff'/><rect x='6' y='20' width='2' height='2' fill='%23fff'/><rect x='8' y='20' width='2' height='2' fill='%23fff'/><rect x='10' y='20' width='2' height='2' fill='%23fff'/><rect x='12' y='20' width='2' height='2' fill='%23000'/><rect x='14' y='20' width='2' height='2' fill='%23000'/><rect x='16' y='20' width='2' height='2' fill='%23000'/><rect x='18' y='20' width='2' height='2' fill='%23000'/><rect x='20' y='20' width='2' height='2' fill='%23000'/><rect x='0' y='22' width='2' height='2' fill='%23000'/><rect x='2' y='22' width='2' height='2' fill='%23fff'/><rect x='4' y='22' width='2' height='2' fill='%23fff'/><rect x='6' y='22' width='2' height='2' fill='%23000'/><rect x='8' y='22' width='2' height='2' fill='%23fff'/><rect x='10' y='22' width='2' height='2' fill='%23fff'/><rect x='12' y='22' width='2' height='2' fill='%23000'/><rect x='0' y='24' width='2' height='2' fill='%23000'/><rect x='2' y='24' width='2' height='2' fill='%23fff'/><rect x='4' y='24' width='2' height='2' fill='%23000'/><rect x='8' y='24' width='2' height='2' fill='%23000'/><rect x='10' y='24' width='2' height='2' fill='%23fff'/><rect x='12' y='24' width='2' height='2' fill='%23fff'/><rect x='14' y='24' width='2' height='2' fill='%23000'/><rect x='0' y='26' width='2' height='2' fill='%23000'/><rect x='2' y='26' width='2' height='2' fill='%23000'/><rect x='8' y='26' width='2' height='2' fill='%23000'/><rect x='10' y='26' width='2' height='2' fill='%23fff'/><rect x='12' y='26' width='2' height='2' fill='%23fff'/><rect x='14' y='26' width='2' height='2' fill='%23000'/><rect x='0' y='28' width='2' height='2' fill='%23000'/><rect x='10' y='28' width='2' height='2' fill='%23000'/><rect x='12' y='28' width='2' height='2' fill='%23fff'/><rect x='14' y='28' width='2' height='2' fill='%23fff'/><rect x='16' y='28' width='2' height='2' fill='%23000'/><rect x='10' y='30' width='2' height='2' fill='%23000'/><rect x='12' y='30' width='2' height='2' fill='%23fff'/><rect x='14' y='30' width='2' height='2' fill='%23fff'/><rect x='16' y='30' width='2' height='2' fill='%23000'/><rect x='12' y='32' width='2' height='2' fill='%23000'/><rect x='14' y='32' width='2' height='2' fill='%23000'/></svg>") 0 0, default;
-  --hand: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='38' shape-rendering='crispEdges'><rect x='8' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='10' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='10' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='12' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='12' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='4' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='6' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='6' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='14' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='16' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='18' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='20' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='16' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='18' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='20' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='8' y='0' width='2' height='2' fill='%23000'/><rect x='10' y='0' width='2' height='2' fill='%23000'/><rect x='6' y='2' width='2' height='2' fill='%23000'/><rect x='8' y='2' width='2' height='2' fill='%23fff'/><rect x='10' y='2' width='2' height='2' fill='%23fff'/><rect x='12' y='2' width='2' height='2' fill='%23000'/><rect x='6' y='4' width='2' height='2' fill='%23000'/><rect x='8' y='4' width='2' height='2' fill='%23fff'/><rect x='10' y='4' width='2' height='2' fill='%23fff'/><rect x='12' y='4' width='2' height='2' fill='%23000'/><rect x='6' y='6' width='2' height='2' fill='%23000'/><rect x='8' y='6' width='2' height='2' fill='%23fff'/><rect x='10' y='6' width='2' height='2' fill='%23fff'/><rect x='12' y='6' width='2' height='2' fill='%23000'/><rect x='6' y='8' width='2' height='2' fill='%23000'/><rect x='8' y='8' width='2' height='2' fill='%23fff'/><rect x='10' y='8' width='2' height='2' fill='%23fff'/><rect x='12' y='8' width='2' height='2' fill='%23000'/><rect x='14' y='8' width='2' height='2' fill='%23000'/><rect x='16' y='8' width='2' height='2' fill='%23000'/><rect x='6' y='10' width='2' height='2' fill='%23000'/><rect x='8' y='10' width='2' height='2' fill='%23fff'/><rect x='10' y='10' width='2' height='2' fill='%23fff'/><rect x='12' y='10' width='2' height='2' fill='%23000'/><rect x='14' y='10' width='2' height='2' fill='%23fff'/><rect x='16' y='10' width='2' height='2' fill='%23fff'/><rect x='18' y='10' width='2' height='2' fill='%23000'/><rect x='20' y='10' width='2' height='2' fill='%23000'/><rect x='2' y='12' width='2' height='2' fill='%23000'/><rect x='4' y='12' width='2' height='2' fill='%23000'/><rect x='6' y='12' width='2' height='2' fill='%23000'/><rect x='8' y='12' width='2' height='2' fill='%23fff'/><rect x='10' y='12' width='2' height='2' fill='%23fff'/><rect x='12' y='12' width='2' height='2' fill='%23000'/><rect x='14' y='12' width='2' height='2' fill='%23fff'/><rect x='16' y='12' width='2' height='2' fill='%23fff'/><rect x='18' y='12' width='2' height='2' fill='%23000'/><rect x='20' y='12' width='2' height='2' fill='%23fff'/><rect x='22' y='12' width='2' height='2' fill='%23000'/><rect x='0' y='14' width='2' height='2' fill='%23000'/><rect x='2' y='14' width='2' height='2' fill='%23fff'/><rect x='4' y='14' width='2' height='2' fill='%23fff'/><rect x='6' y='14' width='2' height='2' fill='%23000'/><rect x='8' y='14' width='2' height='2' fill='%23fff'/><rect x='10' y='14' width='2' height='2' fill='%23fff'/><rect x='12' y='14' width='2' height='2' fill='%23fff'/><rect x='14' y='14' width='2' height='2' fill='%23fff'/><rect x='16' y='14' width='2' height='2' fill='%23fff'/><rect x='18' y='14' width='2' height='2' fill='%23fff'/><rect x='20' y='14' width='2' height='2' fill='%23fff'/><rect x='22' y='14' width='2' height='2' fill='%23000'/><rect x='0' y='16' width='2' height='2' fill='%23000'/><rect x='2' y='16' width='2' height='2' fill='%23fff'/><rect x='4' y='16' width='2' height='2' fill='%23fff'/><rect x='6' y='16' width='2' height='2' fill='%23fff'/><rect x='8' y='16' width='2' height='2' fill='%23fff'/><rect x='10' y='16' width='2' height='2' fill='%23fff'/><rect x='12' y='16' width='2' height='2' fill='%23fff'/><rect x='14' y='16' width='2' height='2' fill='%23fff'/><rect x='16' y='16' width='2' height='2' fill='%23fff'/><rect x='18' y='16' width='2' height='2' fill='%23fff'/><rect x='20' y='16' width='2' height='2' fill='%23fff'/><rect x='22' y='16' width='2' height='2' fill='%23000'/><rect x='2' y='18' width='2' height='2' fill='%23000'/><rect x='4' y='18' width='2' height='2' fill='%23fff'/><rect x='6' y='18' width='2' height='2' fill='%23fff'/><rect x='8' y='18' width='2' height='2' fill='%23fff'/><rect x='10' y='18' width='2' height='2' fill='%23fff'/><rect x='12' y='18' width='2' height='2' fill='%23fff'/><rect x='14' y='18' width='2' height='2' fill='%23fff'/><rect x='16' y='18' width='2' height='2' fill='%23fff'/><rect x='18' y='18' width='2' height='2' fill='%23fff'/><rect x='20' y='18' width='2' height='2' fill='%23fff'/><rect x='22' y='18' width='2' height='2' fill='%23000'/><rect x='2' y='20' width='2' height='2' fill='%23000'/><rect x='4' y='20' width='2' height='2' fill='%23fff'/><rect x='6' y='20' width='2' height='2' fill='%23fff'/><rect x='8' y='20' width='2' height='2' fill='%23fff'/><rect x='10' y='20' width='2' height='2' fill='%23fff'/><rect x='12' y='20' width='2' height='2' fill='%23fff'/><rect x='14' y='20' width='2' height='2' fill='%23fff'/><rect x='16' y='20' width='2' height='2' fill='%23fff'/><rect x='18' y='20' width='2' height='2' fill='%23fff'/><rect x='20' y='20' width='2' height='2' fill='%23fff'/><rect x='22' y='20' width='2' height='2' fill='%23000'/><rect x='4' y='22' width='2' height='2' fill='%23000'/><rect x='6' y='22' width='2' height='2' fill='%23fff'/><rect x='8' y='22' width='2' height='2' fill='%23fff'/><rect x='10' y='22' width='2' height='2' fill='%23fff'/><rect x='12' y='22' width='2' height='2' fill='%23fff'/><rect x='14' y='22' width='2' height='2' fill='%23fff'/><rect x='16' y='22' width='2' height='2' fill='%23fff'/><rect x='18' y='22' width='2' height='2' fill='%23fff'/><rect x='20' y='22' width='2' height='2' fill='%23000'/><rect x='4' y='24' width='2' height='2' fill='%23000'/><rect x='6' y='24' width='2' height='2' fill='%23fff'/><rect x='8' y='24' width='2' height='2' fill='%23fff'/><rect x='10' y='24' width='2' height='2' fill='%23fff'/><rect x='12' y='24' width='2' height='2' fill='%23fff'/><rect x='14' y='24' width='2' height='2' fill='%23fff'/><rect x='16' y='24' width='2' height='2' fill='%23fff'/><rect x='18' y='24' width='2' height='2' fill='%23fff'/><rect x='20' y='24' width='2' height='2' fill='%23000'/><rect x='6' y='26' width='2' height='2' fill='%23000'/><rect x='8' y='26' width='2' height='2' fill='%23fff'/><rect x='10' y='26' width='2' height='2' fill='%23fff'/><rect x='12' y='26' width='2' height='2' fill='%23fff'/><rect x='14' y='26' width='2' height='2' fill='%23fff'/><rect x='16' y='26' width='2' height='2' fill='%23fff'/><rect x='18' y='26' width='2' height='2' fill='%23000'/><rect x='6' y='28' width='2' height='2' fill='%23000'/><rect x='8' y='28' width='2' height='2' fill='%23fff'/><rect x='10' y='28' width='2' height='2' fill='%23fff'/><rect x='12' y='28' width='2' height='2' fill='%23fff'/><rect x='14' y='28' width='2' height='2' fill='%23fff'/><rect x='16' y='28' width='2' height='2' fill='%23fff'/><rect x='18' y='28' width='2' height='2' fill='%23000'/><rect x='6' y='30' width='2' height='2' fill='%23000'/><rect x='8' y='30' width='2' height='2' fill='%23000'/><rect x='10' y='30' width='2' height='2' fill='%23000'/><rect x='12' y='30' width='2' height='2' fill='%23000'/><rect x='14' y='30' width='2' height='2' fill='%23000'/><rect x='16' y='30' width='2' height='2' fill='%23000'/><rect x='18' y='30' width='2' height='2' fill='%23000'/></svg>") 9 1, pointer;
+  --arrow:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='40' shape-rendering='crispEdges'><rect x='2' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='2' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='4' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='4' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='4' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='4' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='6' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='6' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='6' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='6' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='8' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='36' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='36' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='0' y='0' width='2' height='2' fill='%23000'/><rect x='0' y='2' width='2' height='2' fill='%23000'/><rect x='2' y='2' width='2' height='2' fill='%23000'/><rect x='0' y='4' width='2' height='2' fill='%23000'/><rect x='2' y='4' width='2' height='2' fill='%23fff'/><rect x='4' y='4' width='2' height='2' fill='%23000'/><rect x='0' y='6' width='2' height='2' fill='%23000'/><rect x='2' y='6' width='2' height='2' fill='%23fff'/><rect x='4' y='6' width='2' height='2' fill='%23fff'/><rect x='6' y='6' width='2' height='2' fill='%23000'/><rect x='0' y='8' width='2' height='2' fill='%23000'/><rect x='2' y='8' width='2' height='2' fill='%23fff'/><rect x='4' y='8' width='2' height='2' fill='%23fff'/><rect x='6' y='8' width='2' height='2' fill='%23fff'/><rect x='8' y='8' width='2' height='2' fill='%23000'/><rect x='0' y='10' width='2' height='2' fill='%23000'/><rect x='2' y='10' width='2' height='2' fill='%23fff'/><rect x='4' y='10' width='2' height='2' fill='%23fff'/><rect x='6' y='10' width='2' height='2' fill='%23fff'/><rect x='8' y='10' width='2' height='2' fill='%23fff'/><rect x='10' y='10' width='2' height='2' fill='%23000'/><rect x='0' y='12' width='2' height='2' fill='%23000'/><rect x='2' y='12' width='2' height='2' fill='%23fff'/><rect x='4' y='12' width='2' height='2' fill='%23fff'/><rect x='6' y='12' width='2' height='2' fill='%23fff'/><rect x='8' y='12' width='2' height='2' fill='%23fff'/><rect x='10' y='12' width='2' height='2' fill='%23fff'/><rect x='12' y='12' width='2' height='2' fill='%23000'/><rect x='0' y='14' width='2' height='2' fill='%23000'/><rect x='2' y='14' width='2' height='2' fill='%23fff'/><rect x='4' y='14' width='2' height='2' fill='%23fff'/><rect x='6' y='14' width='2' height='2' fill='%23fff'/><rect x='8' y='14' width='2' height='2' fill='%23fff'/><rect x='10' y='14' width='2' height='2' fill='%23fff'/><rect x='12' y='14' width='2' height='2' fill='%23fff'/><rect x='14' y='14' width='2' height='2' fill='%23000'/><rect x='0' y='16' width='2' height='2' fill='%23000'/><rect x='2' y='16' width='2' height='2' fill='%23fff'/><rect x='4' y='16' width='2' height='2' fill='%23fff'/><rect x='6' y='16' width='2' height='2' fill='%23fff'/><rect x='8' y='16' width='2' height='2' fill='%23fff'/><rect x='10' y='16' width='2' height='2' fill='%23fff'/><rect x='12' y='16' width='2' height='2' fill='%23fff'/><rect x='14' y='16' width='2' height='2' fill='%23fff'/><rect x='16' y='16' width='2' height='2' fill='%23000'/><rect x='0' y='18' width='2' height='2' fill='%23000'/><rect x='2' y='18' width='2' height='2' fill='%23fff'/><rect x='4' y='18' width='2' height='2' fill='%23fff'/><rect x='6' y='18' width='2' height='2' fill='%23fff'/><rect x='8' y='18' width='2' height='2' fill='%23fff'/><rect x='10' y='18' width='2' height='2' fill='%23fff'/><rect x='12' y='18' width='2' height='2' fill='%23fff'/><rect x='14' y='18' width='2' height='2' fill='%23fff'/><rect x='16' y='18' width='2' height='2' fill='%23fff'/><rect x='18' y='18' width='2' height='2' fill='%23000'/><rect x='0' y='20' width='2' height='2' fill='%23000'/><rect x='2' y='20' width='2' height='2' fill='%23fff'/><rect x='4' y='20' width='2' height='2' fill='%23fff'/><rect x='6' y='20' width='2' height='2' fill='%23fff'/><rect x='8' y='20' width='2' height='2' fill='%23fff'/><rect x='10' y='20' width='2' height='2' fill='%23fff'/><rect x='12' y='20' width='2' height='2' fill='%23000'/><rect x='14' y='20' width='2' height='2' fill='%23000'/><rect x='16' y='20' width='2' height='2' fill='%23000'/><rect x='18' y='20' width='2' height='2' fill='%23000'/><rect x='20' y='20' width='2' height='2' fill='%23000'/><rect x='0' y='22' width='2' height='2' fill='%23000'/><rect x='2' y='22' width='2' height='2' fill='%23fff'/><rect x='4' y='22' width='2' height='2' fill='%23fff'/><rect x='6' y='22' width='2' height='2' fill='%23000'/><rect x='8' y='22' width='2' height='2' fill='%23fff'/><rect x='10' y='22' width='2' height='2' fill='%23fff'/><rect x='12' y='22' width='2' height='2' fill='%23000'/><rect x='0' y='24' width='2' height='2' fill='%23000'/><rect x='2' y='24' width='2' height='2' fill='%23fff'/><rect x='4' y='24' width='2' height='2' fill='%23000'/><rect x='8' y='24' width='2' height='2' fill='%23000'/><rect x='10' y='24' width='2' height='2' fill='%23fff'/><rect x='12' y='24' width='2' height='2' fill='%23fff'/><rect x='14' y='24' width='2' height='2' fill='%23000'/><rect x='0' y='26' width='2' height='2' fill='%23000'/><rect x='2' y='26' width='2' height='2' fill='%23000'/><rect x='8' y='26' width='2' height='2' fill='%23000'/><rect x='10' y='26' width='2' height='2' fill='%23fff'/><rect x='12' y='26' width='2' height='2' fill='%23fff'/><rect x='14' y='26' width='2' height='2' fill='%23000'/><rect x='0' y='28' width='2' height='2' fill='%23000'/><rect x='10' y='28' width='2' height='2' fill='%23000'/><rect x='12' y='28' width='2' height='2' fill='%23fff'/><rect x='14' y='28' width='2' height='2' fill='%23fff'/><rect x='16' y='28' width='2' height='2' fill='%23000'/><rect x='10' y='30' width='2' height='2' fill='%23000'/><rect x='12' y='30' width='2' height='2' fill='%23fff'/><rect x='14' y='30' width='2' height='2' fill='%23fff'/><rect x='16' y='30' width='2' height='2' fill='%23000'/><rect x='12' y='32' width='2' height='2' fill='%23000'/><rect x='14' y='32' width='2' height='2' fill='%23000'/></svg>")
+      0 0,
+    default;
+  --hand:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='38' shape-rendering='crispEdges'><rect x='8' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='10' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='10' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='12' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='12' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='4' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='6' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='14' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='6' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='16' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='18' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='20' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='30' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='32' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='22' y='34' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='14' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='16' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='18' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='20' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='26' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='24' y='28' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='16' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='18' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='20' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='22' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='26' y='24' width='2' height='2' fill='%23000' fill-opacity='.35'/><rect x='8' y='0' width='2' height='2' fill='%23000'/><rect x='10' y='0' width='2' height='2' fill='%23000'/><rect x='6' y='2' width='2' height='2' fill='%23000'/><rect x='8' y='2' width='2' height='2' fill='%23fff'/><rect x='10' y='2' width='2' height='2' fill='%23fff'/><rect x='12' y='2' width='2' height='2' fill='%23000'/><rect x='6' y='4' width='2' height='2' fill='%23000'/><rect x='8' y='4' width='2' height='2' fill='%23fff'/><rect x='10' y='4' width='2' height='2' fill='%23fff'/><rect x='12' y='4' width='2' height='2' fill='%23000'/><rect x='6' y='6' width='2' height='2' fill='%23000'/><rect x='8' y='6' width='2' height='2' fill='%23fff'/><rect x='10' y='6' width='2' height='2' fill='%23fff'/><rect x='12' y='6' width='2' height='2' fill='%23000'/><rect x='6' y='8' width='2' height='2' fill='%23000'/><rect x='8' y='8' width='2' height='2' fill='%23fff'/><rect x='10' y='8' width='2' height='2' fill='%23fff'/><rect x='12' y='8' width='2' height='2' fill='%23000'/><rect x='14' y='8' width='2' height='2' fill='%23000'/><rect x='16' y='8' width='2' height='2' fill='%23000'/><rect x='6' y='10' width='2' height='2' fill='%23000'/><rect x='8' y='10' width='2' height='2' fill='%23fff'/><rect x='10' y='10' width='2' height='2' fill='%23fff'/><rect x='12' y='10' width='2' height='2' fill='%23000'/><rect x='14' y='10' width='2' height='2' fill='%23fff'/><rect x='16' y='10' width='2' height='2' fill='%23fff'/><rect x='18' y='10' width='2' height='2' fill='%23000'/><rect x='20' y='10' width='2' height='2' fill='%23000'/><rect x='2' y='12' width='2' height='2' fill='%23000'/><rect x='4' y='12' width='2' height='2' fill='%23000'/><rect x='6' y='12' width='2' height='2' fill='%23000'/><rect x='8' y='12' width='2' height='2' fill='%23fff'/><rect x='10' y='12' width='2' height='2' fill='%23fff'/><rect x='12' y='12' width='2' height='2' fill='%23000'/><rect x='14' y='12' width='2' height='2' fill='%23fff'/><rect x='16' y='12' width='2' height='2' fill='%23fff'/><rect x='18' y='12' width='2' height='2' fill='%23000'/><rect x='20' y='12' width='2' height='2' fill='%23fff'/><rect x='22' y='12' width='2' height='2' fill='%23000'/><rect x='0' y='14' width='2' height='2' fill='%23000'/><rect x='2' y='14' width='2' height='2' fill='%23fff'/><rect x='4' y='14' width='2' height='2' fill='%23fff'/><rect x='6' y='14' width='2' height='2' fill='%23000'/><rect x='8' y='14' width='2' height='2' fill='%23fff'/><rect x='10' y='14' width='2' height='2' fill='%23fff'/><rect x='12' y='14' width='2' height='2' fill='%23fff'/><rect x='14' y='14' width='2' height='2' fill='%23fff'/><rect x='16' y='14' width='2' height='2' fill='%23fff'/><rect x='18' y='14' width='2' height='2' fill='%23fff'/><rect x='20' y='14' width='2' height='2' fill='%23fff'/><rect x='22' y='14' width='2' height='2' fill='%23000'/><rect x='0' y='16' width='2' height='2' fill='%23000'/><rect x='2' y='16' width='2' height='2' fill='%23fff'/><rect x='4' y='16' width='2' height='2' fill='%23fff'/><rect x='6' y='16' width='2' height='2' fill='%23fff'/><rect x='8' y='16' width='2' height='2' fill='%23fff'/><rect x='10' y='16' width='2' height='2' fill='%23fff'/><rect x='12' y='16' width='2' height='2' fill='%23fff'/><rect x='14' y='16' width='2' height='2' fill='%23fff'/><rect x='16' y='16' width='2' height='2' fill='%23fff'/><rect x='18' y='16' width='2' height='2' fill='%23fff'/><rect x='20' y='16' width='2' height='2' fill='%23fff'/><rect x='22' y='16' width='2' height='2' fill='%23000'/><rect x='2' y='18' width='2' height='2' fill='%23000'/><rect x='4' y='18' width='2' height='2' fill='%23fff'/><rect x='6' y='18' width='2' height='2' fill='%23fff'/><rect x='8' y='18' width='2' height='2' fill='%23fff'/><rect x='10' y='18' width='2' height='2' fill='%23fff'/><rect x='12' y='18' width='2' height='2' fill='%23fff'/><rect x='14' y='18' width='2' height='2' fill='%23fff'/><rect x='16' y='18' width='2' height='2' fill='%23fff'/><rect x='18' y='18' width='2' height='2' fill='%23fff'/><rect x='20' y='18' width='2' height='2' fill='%23fff'/><rect x='22' y='18' width='2' height='2' fill='%23000'/><rect x='2' y='20' width='2' height='2' fill='%23000'/><rect x='4' y='20' width='2' height='2' fill='%23fff'/><rect x='6' y='20' width='2' height='2' fill='%23fff'/><rect x='8' y='20' width='2' height='2' fill='%23fff'/><rect x='10' y='20' width='2' height='2' fill='%23fff'/><rect x='12' y='20' width='2' height='2' fill='%23fff'/><rect x='14' y='20' width='2' height='2' fill='%23fff'/><rect x='16' y='20' width='2' height='2' fill='%23fff'/><rect x='18' y='20' width='2' height='2' fill='%23fff'/><rect x='20' y='20' width='2' height='2' fill='%23fff'/><rect x='22' y='20' width='2' height='2' fill='%23000'/><rect x='4' y='22' width='2' height='2' fill='%23000'/><rect x='6' y='22' width='2' height='2' fill='%23fff'/><rect x='8' y='22' width='2' height='2' fill='%23fff'/><rect x='10' y='22' width='2' height='2' fill='%23fff'/><rect x='12' y='22' width='2' height='2' fill='%23fff'/><rect x='14' y='22' width='2' height='2' fill='%23fff'/><rect x='16' y='22' width='2' height='2' fill='%23fff'/><rect x='18' y='22' width='2' height='2' fill='%23fff'/><rect x='20' y='22' width='2' height='2' fill='%23000'/><rect x='4' y='24' width='2' height='2' fill='%23000'/><rect x='6' y='24' width='2' height='2' fill='%23fff'/><rect x='8' y='24' width='2' height='2' fill='%23fff'/><rect x='10' y='24' width='2' height='2' fill='%23fff'/><rect x='12' y='24' width='2' height='2' fill='%23fff'/><rect x='14' y='24' width='2' height='2' fill='%23fff'/><rect x='16' y='24' width='2' height='2' fill='%23fff'/><rect x='18' y='24' width='2' height='2' fill='%23fff'/><rect x='20' y='24' width='2' height='2' fill='%23000'/><rect x='6' y='26' width='2' height='2' fill='%23000'/><rect x='8' y='26' width='2' height='2' fill='%23fff'/><rect x='10' y='26' width='2' height='2' fill='%23fff'/><rect x='12' y='26' width='2' height='2' fill='%23fff'/><rect x='14' y='26' width='2' height='2' fill='%23fff'/><rect x='16' y='26' width='2' height='2' fill='%23fff'/><rect x='18' y='26' width='2' height='2' fill='%23000'/><rect x='6' y='28' width='2' height='2' fill='%23000'/><rect x='8' y='28' width='2' height='2' fill='%23fff'/><rect x='10' y='28' width='2' height='2' fill='%23fff'/><rect x='12' y='28' width='2' height='2' fill='%23fff'/><rect x='14' y='28' width='2' height='2' fill='%23fff'/><rect x='16' y='28' width='2' height='2' fill='%23fff'/><rect x='18' y='28' width='2' height='2' fill='%23000'/><rect x='6' y='30' width='2' height='2' fill='%23000'/><rect x='8' y='30' width='2' height='2' fill='%23000'/><rect x='10' y='30' width='2' height='2' fill='%23000'/><rect x='12' y='30' width='2' height='2' fill='%23000'/><rect x='14' y='30' width='2' height='2' fill='%23000'/><rect x='16' y='30' width='2' height='2' fill='%23000'/><rect x='18' y='30' width='2' height='2' fill='%23000'/></svg>")
+      9 1,
+    pointer;
 }
-html, body, * { cursor: var(--arrow); }
-a, a *, button, button *, [role="button"], summary, label, select, .btn, .chip, .copy, [data-cursor] { cursor: var(--hand) !important; }
-input, textarea, [contenteditable] { cursor: text !important; }
-.btn[disabled], [aria-disabled="true"] { cursor: not-allowed !important; }
-.cursor-ring, .cursor-dot { display: none !important; }
+html,
+body,
+* {
+  cursor: var(--arrow);
+}
+a,
+a *,
+button,
+button *,
+[role="button"],
+summary,
+label,
+select,
+.btn,
+.chip,
+.copy,
+[data-cursor] {
+  cursor: var(--hand) !important;
+}
+input,
+textarea,
+[contenteditable] {
+  cursor: text !important;
+}
+.btn[disabled],
+[aria-disabled="true"] {
+  cursor: not-allowed !important;
+}
+.cursor-ring,
+.cursor-dot {
+  display: none !important;
+}
 
 /* page entrance: the new page rises in smoothly, then its panels stagger in (the old stepped easing made this choppy) */
 @keyframes terminal-enter {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ---------- page layout: full-width framed panels, like a terminal split ---------- */
-.page:not(.home) { max-width: 1840px; padding-inline: 40px; }
-@media (max-width: 720px) { .page:not(.home) { padding-inline: var(--s-4); } }
+.page:not(.home) {
+  max-width: 1840px;
+  padding-inline: 40px;
+}
+@media (max-width: 720px) {
+  .page:not(.home) {
+    padding-inline: var(--s-4);
+  }
+}
 /* panel labels sit on the frame without brackets */
-.card > .label.l::before, .card > .label.l::after { content: none; }
+.card > .label.l::before,
+.card > .label.l::after {
+  content: none;
+}
 /* the page header is one framed panel: path on the frame, prompt, big mixed-case title */
-.ph.card { margin-top: var(--s-5); padding: var(--s-6) var(--s-5); }
-.ph h1 { text-transform: none; font-size: clamp(2.5rem, 2rem + 2.4vw, 4.5rem); }
-.ph .prompt { margin-bottom: var(--s-4); }
+.ph.card {
+  margin-top: var(--s-5);
+  padding: var(--s-6) var(--s-5);
+}
+.ph h1 {
+  text-transform: none;
+  font-size: clamp(2.5rem, 2rem + 2.4vw, 4.5rem);
+}
+.ph .prompt {
+  margin-bottom: var(--s-4);
+}
 /* resume: sidebar of small panels beside one long markdown-style panel */
-.resume-layout { display: grid; grid-template-columns: minmax(260px, 460px) 1fr; gap: 0 var(--s-5); align-items: start; }
-.resume-side { display: grid; }
-.resume-side .card { margin-top: var(--s-5); }
-.resume-layout > .resume-md { margin-top: var(--s-5); padding: var(--s-6) var(--s-5); }
-.resume-md .name { font-size: var(--step-3); text-transform: none; margin: 0 0 var(--s-3); color: var(--bright); }
-.resume-md .contact-line { display: inline-block; border: 1px solid var(--line-strong); padding: var(--s-3) var(--s-4); color: var(--mid); }
-.resume-md h3 { font-size: var(--step-1); margin: var(--s-6) 0 var(--s-3); text-transform: none; }
-.resume-md h3::before { content: "## "; color: var(--dim); }
-@media (max-width: 900px) { .resume-layout { grid-template-columns: 1fr; } }
+.resume-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 460px) 1fr;
+  gap: 0 var(--s-5);
+  align-items: start;
+}
+.resume-side {
+  display: grid;
+}
+.resume-side .card {
+  margin-top: var(--s-5);
+}
+.resume-layout > .resume-md {
+  margin-top: var(--s-5);
+  padding: var(--s-6) var(--s-5);
+}
+.resume-md .name {
+  font-size: var(--step-3);
+  text-transform: none;
+  margin: 0 0 var(--s-3);
+  color: var(--bright);
+}
+.resume-md .contact-line {
+  display: inline-block;
+  border: 1px solid var(--line-strong);
+  padding: var(--s-3) var(--s-4);
+  color: var(--mid);
+}
+/* resume type scale: name > section title > role > body (all the same size) > meta (smaller, dimmer) */
+.resume-md h3 {
+  font-size: var(--step-1);
+  line-height: 1.2;
+  margin: var(--s-6) 0 var(--s-4);
+  text-transform: none;
+  color: var(--bright);
+}
+.resume-md h3::before {
+  content: "## ";
+  color: var(--dim);
+}
+.resume-md .name {
+  margin-bottom: var(--s-4);
+}
+.resume-md .entry-text {
+  font-size: var(--step-0);
+  line-height: var(--leading-body);
+  max-width: 78ch;
+  margin: 0;
+  color: var(--fg);
+}
+.resume-md .entry {
+  margin: 0 0 var(--s-5);
+  max-width: 90ch;
+}
+.resume-md .entry:last-child {
+  margin-bottom: 0;
+}
+.resume-md .entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+}
+.resume-md .entry-title {
+  font-size: var(--step-0);
+  color: var(--bright);
+}
+.resume-md .entry-when {
+  font-size: var(--fs-sm);
+  color: var(--dim);
+  white-space: nowrap;
+}
+.resume-md .entry-org {
+  font-size: var(--fs-sm);
+  color: var(--dim);
+  margin: var(--s-1) 0 var(--s-3);
+}
+.resume-md .entry-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-2);
+}
+.resume-md .entry-points li {
+  position: relative;
+  padding-left: var(--s-4);
+  font-size: var(--step-0);
+  line-height: var(--leading-body);
+  color: var(--fg);
+}
+.resume-md .entry-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 6px;
+  height: 6px;
+  background: var(--dim);
+}
+.resume-md .skill-rows {
+  display: grid;
+  grid-template-columns: minmax(160px, 260px) 1fr;
+  gap: var(--s-3) var(--s-5);
+  margin: 0;
+  max-width: 100ch;
+}
+.resume-md .skill-rows dt {
+  font-size: var(--fs-sm);
+  color: var(--dim);
+}
+.resume-md .skill-rows dd {
+  margin: 0;
+  font-size: var(--step-0);
+  line-height: var(--leading-body);
+}
+.resume-side .card > div:not(.gauge):not(.btns) {
+  margin-top: var(--s-2);
+  font-size: var(--fs-sm);
+}
+@media (max-width: 720px) {
+  .resume-md .skill-rows {
+    grid-template-columns: 1fr;
+    gap: var(--s-1);
+  }
+  .resume-md .skill-rows dd {
+    margin-bottom: var(--s-3);
+  }
+}
+@media (max-width: 900px) {
+  .resume-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* resume sidebar stays in view while the long panel scrolls; if it is taller than the screen it scrolls on its own */
+.resume-side {
+  position: sticky;
+  top: calc(var(--bar-top) + var(--s-2));
+  max-height: calc(100dvh - var(--bar-top) - var(--bar-bottom) - var(--s-4));
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-bottom: var(--s-2);
+}
+.resume-side::-webkit-scrollbar {
+  display: none;
+}
+@media (max-width: 900px) {
+  .resume-side {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* about: same split as the resume (sidebar of small panels on the left, long panels on the right) */
+.about-grid { grid-template-columns: minmax(260px, 460px) minmax(0, 1fr); gap: 0 var(--s-5); }
+.about-grid .side-col { display: grid; position: sticky; top: calc(var(--bar-top) + var(--s-2)); max-height: calc(100dvh - var(--bar-top) - var(--bar-bottom) - var(--s-4)); overflow-y: auto; scrollbar-width: none; padding-bottom: var(--s-2); }
+.about-grid .side-col::-webkit-scrollbar { display: none; }
+.about-grid .side-col .card, .about-grid .col .card { margin-top: var(--s-5); }
+.about-grid .col .card, .about-grid .side-col .card { padding: var(--s-6) var(--s-5) var(--s-5); }
+.exp li { grid-template-columns: 20ch 1fr auto; }
+.about-grid .col .card p { font-size: var(--step-0); line-height: var(--leading-body); max-width: 78ch; }
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-grid .side-col { position: static; max-height: none; overflow: visible; order: 2; }
+  .exp li { grid-template-columns: 1fr; gap: var(--s-1); }
+}
+
+/* ---------- every page has its own shape ---------- */
+
+/* header variants: frame (default panel), plain (open title with a rule), center (centred panel) */
+.ph.plain.card { background: none; background-image: none; border: 0; border-bottom: 1px solid var(--line-strong); padding: 0 0 var(--s-5); margin-top: var(--s-6); }
+.ph.plain > .label { position: static; display: block; padding: 0; margin-bottom: var(--s-3); background: none; color: var(--accent); }
+.ph.plain > .label::before { content: "> "; }
+.ph.center.card { text-align: center; padding: var(--s-7) var(--s-5); }
+.ph.center .sub { margin-inline: auto; }
+
+/* about: main column left, small panels right (the resume is the opposite: sidebar left) */
+.about-grid { grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr); gap: 0 var(--s-5); }
+.about-grid .side-col { position: static; max-height: none; overflow: visible; order: 2; }
+@media (max-width: 900px) { .about-grid .side-col { order: 0; } }
+
+/* quotes: one wide column of large pull-quotes */
+.quote-list { display: grid; gap: var(--s-5); max-width: 980px; margin: var(--s-6) auto 0; }
+.quote-list .quote { padding: var(--s-6) var(--s-6); position: relative; }
+.quote-list .quote p { font-size: var(--step-2); line-height: 1.35; color: var(--bright); margin: var(--s-3) 0 var(--s-4); }
+.quote-list .quote::before { content: "\201C"; position: absolute; right: var(--s-5); top: var(--s-2); font-size: 6rem; line-height: 1; color: var(--line-strong); pointer-events: none; }
+.quote-list .by { display: block; margin-bottom: var(--s-4); color: var(--dim); }
+
+/* bits: a log feed, date in the gutter, one rule down the left */
+.bits-feed { margin-top: var(--s-6); border-left: 1px solid var(--line-strong); }
+.bit { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--s-5); padding: var(--s-5) 0 var(--s-5) var(--s-5); position: relative; border-bottom: 1px dashed var(--line); }
+.bit::before { content: ""; position: absolute; left: -4px; top: calc(var(--s-5) + 0.4em); width: 7px; height: 7px; background: var(--bright); }
+.bit-date { color: var(--dim); font-size: var(--fs-sm); }
+.bit-body h2 { margin: 0 0 var(--s-2); font-size: var(--step-0); color: var(--bright); }
+.bit-body p { margin: 0 0 var(--s-3); max-width: 78ch; }
+@media (max-width: 720px) { .bit { grid-template-columns: 1fr; gap: var(--s-2); } }
+
+/* tutorials: a roadmap, numbered nodes on a vertical track */
+.track { list-style: none; margin: var(--s-5) 0 var(--s-6); padding: 0 0 0 var(--s-7); position: relative; display: grid; gap: var(--s-5); }
+.track::before { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: repeating-linear-gradient(to bottom, var(--line-strong) 0 6px, transparent 6px 12px); }
+.track .step { position: relative; }
+.track .node { position: absolute; left: calc(-1 * var(--s-7) + 4px); top: var(--s-4); width: 38px; height: 38px; display: grid; place-items: center; background: var(--bg); border: 2px solid var(--accent); color: var(--accent); font-size: var(--fs-sm); }
+.track .tcard { margin: 0; }
+@media (max-width: 720px) { .track { padding-left: var(--s-6); } .track .node { left: calc(-1 * var(--s-6)); width: 30px; height: 30px; } .track::before { left: 14px; } }
+
+/* blog table: dates and read times stay on one line */
+table.posts th:nth-child(-n + 2), table.posts td:nth-child(-n + 2) { white-space: nowrap; }
+table.posts td:first-child { width: 14ch; }
+table.posts td:nth-child(2) { width: 9ch; }
+
+/* ---------- journey: compact pinned story, no dead space ---------- */
+.journey { height: calc(var(--steps, 4) * 55vh + 60vh); margin-top: var(--s-5); }
+.journey .stick { top: calc(var(--bar-top) + var(--s-3)); height: calc(100dvh - var(--bar-top) - var(--bar-bottom) - var(--s-5)); min-height: 0; align-content: center; align-items: center; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s-6); }
+.journey .now { padding: var(--s-6) var(--s-5) var(--s-5); }
+.journey .now .when { font-size: var(--fs-sm); margin: 0 0 var(--s-2); }
+.journey .now h3 { font-size: var(--step-1); line-height: 1.2; margin: 0 0 var(--s-1); }
+.journey .now .kicker { margin: 0 0 var(--s-4); }
+.journey .now p { font-size: var(--step-0); line-height: var(--leading-body); margin: 0 0 var(--s-4); }
+.journey .now .pts { margin: 0 0 var(--s-4); }
+.journey .now .chips { margin: 0 0 var(--s-3); }
+.journey ol { gap: 0; }
+.journey li { padding: var(--s-3) 0 var(--s-3) var(--s-5); font-size: var(--fs-sm); }
+.journey li[aria-current="step"] { transform: none; }
+.journey li strong { display: inline-block; min-width: 9ch; }
+.journey li .kicker { font-size: var(--step--2); }
+@media (max-width: 720px) {
+  .journey { height: auto; }
+  .journey .stick { position: static; height: auto; grid-template-columns: 1fr; }
+  .journey .now { display: none; }
+}
+
+/* ---------- projects: three-column text panels with collapsible technical details ---------- */
+.pj-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--s-5); align-items: start; margin-top: var(--s-2); }
+.pj.card { margin-top: var(--s-5); padding: var(--s-6) var(--s-5) var(--s-5); display: block; }
+.pj.card.is-leaving { opacity: 0; transform: scale(0.97); }
+.pj.card[hidden] { display: none; }
+.pj .badge { position: absolute; right: var(--s-4); top: var(--s-3); border: 1px dashed var(--accent); color: var(--accent); font-size: var(--step--2); padding: 2px 8px; letter-spacing: 0.08em; }
+.pj .pj-tag { margin: 0 0 var(--s-3); font-size: var(--step--2); letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); }
+.pj-title { margin: 0 0 var(--s-3); font-size: var(--step-1); line-height: 1.2; text-transform: none; color: var(--bright); }
+.pj-title::before { content: none; }
+.pj-title a { text-decoration: none; color: inherit; }
+.pj-title a:hover { text-decoration: underline; }
+.pj .pj-sum { margin: 0 0 var(--s-4); font-size: var(--step-0); line-height: var(--leading-body); color: var(--fg); }
+.pj-more { border: 1px solid var(--line-strong); margin: 0 0 var(--s-4); }
+.pj-more > summary { display: flex; justify-content: space-between; align-items: center; padding: var(--s-3) var(--s-4); list-style: none; color: var(--bright); }
+.pj-more > summary::-webkit-details-marker { display: none; }
+.pj-more > summary::after { content: "[+]"; color: var(--dim); }
+.pj-more[open] > summary::after { content: "[-]"; }
+.pj-more > :not(summary) { padding: 0 var(--s-4); }
+.pj-more dl { display: grid; grid-template-columns: 8ch 1fr; gap: var(--s-2) var(--s-3); margin: var(--s-2) 0 var(--s-3); font-size: var(--fs-sm); }
+.pj-more dt { color: var(--dim); }
+.pj-more dd { margin: 0; }
+.pj-more ul { margin: 0 0 var(--s-4); padding: 0 var(--s-4) 0 var(--s-6); font-size: var(--fs-sm); display: grid; gap: var(--s-1); }
+.pj-stack { margin: 0 0 var(--s-4); }
+.pj-links { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.pj-links .btn { min-width: 0; }
+@media (max-width: 1280px) { .pj-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .pj-grid { grid-template-columns: 1fr; } }
+
+/* ---------- project page: title on top, case study left, "at a glance" sidebar right ---------- */
+.page.case { max-width: 1400px; }
+.case .back { text-decoration: none; display: inline-block; margin-top: var(--s-4); }
+.case-head { margin: var(--s-5) 0 var(--s-4); max-width: 80ch; }
+.case-head h1 { text-transform: none; font-size: clamp(2.2rem, 1.8rem + 2vw, 4rem); margin: var(--s-2) 0 var(--s-3); }
+.case-head .lead { color: var(--mid); margin: 0; }
+.case-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 380px); gap: 0 var(--s-5); align-items: start; }
+.case-main .card, .case-side .card { margin-top: var(--s-5); padding: var(--s-6) var(--s-5) var(--s-5); }
+.case-side { position: sticky; top: calc(var(--bar-top) + var(--s-2)); }
+.case .card p, .case .card li { font-size: var(--step-0); line-height: var(--leading-body); }
+.case .card > p:last-child { margin-bottom: 0; }
+.case-list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s-2); }
+.case-list li { position: relative; padding-left: var(--s-4); }
+.case-list li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 6px; height: 6px; background: var(--dim); }
+.case .challenge { border-left: 2px solid var(--line-strong); padding-left: var(--s-4); margin: 0 0 var(--s-4); }
+.case .challenge:last-child { margin-bottom: 0; }
+.case .challenge strong { color: var(--bright); }
+.case .challenge p { margin: var(--s-1) 0 0; color: var(--mid); }
+.case-side dl { grid-template-columns: 9ch 1fr; margin: 0; font-size: var(--fs-sm); }
+.case-side dd:nth-of-type(2) { text-transform: capitalize; }
+.case .prose h2 { font-size: var(--step-1); text-transform: none; margin: var(--s-5) 0 var(--s-3); color: var(--bright); }
+.case .prose h2::before { content: "## "; color: var(--dim); }
+.case .prose h2:first-of-type { margin-top: 0; }
+@media (max-width: 960px) { .case-layout { grid-template-columns: 1fr; } .case-side { position: static; } }

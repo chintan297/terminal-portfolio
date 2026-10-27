@@ -18,6 +18,7 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
+    tagline: z.string().optional(), // short line shown above the title on the projects page
     year: z.number(),
     status: z.enum(["live", "archived", "in-progress"]).default("live"),
     sample: z.boolean().default(false),

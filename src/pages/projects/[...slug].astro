@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import BrowserMockup from "../../components/BrowserMockup.astro";
 import { site } from "../../data/site.js";
 
 export async function getStaticPaths() {
@@ -18,54 +17,72 @@ const { Content } = await render(project);
 ---
 
 <Layout title={`${d.title} | ${site.name}`} description={d.summary}>
-  <main class="page wide case">
-    <a class="kicker" href="/projects">← ~/projects</a>
-    <h1 class="reveal">{d.title}</h1>
-    <p class="lead reveal" style="--i:1">{d.summary}</p>
-    <p class="kicker reveal" style="--i:2">{d.year} · {d.status.toUpperCase()}{d.sample && " · SAMPLE CONTENT"}</p>
+  <main class="page case">
+    <a class="kicker back" href="/projects">← ~/projects</a>
+    <header class="case-head">
+      <p class="kicker reveal" style="--i:1">{d.tagline ?? `${d.year} · ${d.status}`}{d.sample && " · SAMPLE CONTENT"}</p>
+      <h1 class="reveal" style="--i:2">{d.title}</h1>
+      <p class="lead reveal" style="--i:3">{d.summary}</p>
+    </header>
 
-    <div class="reveal" style="--i:3">
-      <BrowserMockup url={`${project.id}.example.com`} alt={`${d.title} preview`} toggle />
+    <div class="case-layout">
+      <div class="case-main">
+        <section class="card reveal" style="--i:4">
+          <span class="label l">PROBLEM</span>
+          <p>{d.problem}</p>
+        </section>
+
+        {
+          d.features.length > 0 && (
+            <section class="card reveal" style="--i:5">
+              <span class="label l">FEATURES</span>
+              <ul class="case-list">{d.features.map((f) => <li>{f}</li>)}</ul>
+            </section>
+          )
+        }
+        {
+          d.challenges.length > 0 && (
+            <section class="card reveal" style="--i:6">
+              <span class="label l">CHALLENGES</span>
+              {d.challenges.map((c) => (
+                <div class="challenge"><strong>{c.title}</strong><p>{c.solution}</p></div>
+              ))}
+            </section>
+          )
+        }
+        <section class="card prose reveal" style="--i:7">
+          <span class="label l">WRITE-UP</span>
+          <Content />
+        </section>
+      </div>
+
+      <aside class="case-side">
+        <section class="card reveal" style="--i:4">
+          <span class="label l">AT A GLANCE</span>
+          <dl>
+            <dt>Year</dt><dd>{d.year}</dd>
+            <dt>Status</dt><dd>{d.status}</dd>
+            <dt>My role</dt><dd>{d.role}</dd>
+          </dl>
+        </section>
+        <section class="card reveal" style="--i:5">
+          <span class="label l">STACK</span>
+          <div>{d.stack.map((t) => <span class="tag">{t}</span>)}</div>
+        </section>
+        {
+          d.links.filter((l) => l.href && l.href !== "#").length > 0 && (
+            <section class="card reveal" style="--i:6">
+              <span class="label l">LINKS</span>
+              <div class="btns" style="margin:0">
+                {d.links.filter((l) => l.href && l.href !== "#").map((l) => (
+                  <a class="btn" href={l.href} rel="noopener" target={l.href.startsWith("http") ? "_blank" : undefined}>{l.label} <span class="arrow" aria-hidden="true">→</span></a>
+                ))}
+              </div>
+            </section>
+          )
+        }
+      </aside>
     </div>
-
-    <dl class="reveal" style="--i:4">
-      <dt>Problem</dt><dd>{d.problem}</dd>
-      <dt>My role</dt><dd>{d.role}</dd>
-      <dt>Stack</dt><dd>{d.stack.map((t) => <span class="tag">{t}</span>)}</dd>
-    </dl>
-
-    {
-      d.features.length > 0 && (
-        <section class="scroll-in">
-          <h2>Features</h2>
-          <ul>{d.features.map((f) => <li>{f}</li>)}</ul>
-        </section>
-      )
-    }
-    {
-      d.challenges.length > 0 && (
-        <section class="scroll-in">
-          <h2>Challenges and solutions</h2>
-          {d.challenges.map((c) => (
-            <div class="challenge"><strong>{c.title}</strong><p>{c.solution}</p></div>
-          ))}
-        </section>
-      )
-    }
-    <section class="scroll-in prose">
-      <h2>Write-up</h2>
-      <Content />
-    </section>
-
-    {
-      d.links.length > 0 && (
-        <div class="btns">
-          {d.links.map((l) => (
-            <a class="btn" href={l.href} rel="noopener" target={l.href.startsWith("http") ? "_blank" : undefined}>{l.label} <span class="arrow" aria-hidden="true">→</span></a>
-          ))}
-        </div>
-      )
-    }
 
     <nav class="pn" aria-label="More projects">
       {prev ? <a class="btn" href={`/projects/${prev.id}`}>← {prev.data.title}</a> : <span></span>}

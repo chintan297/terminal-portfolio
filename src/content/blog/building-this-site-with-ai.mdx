@@ -1,0 +1,43 @@
+---
+title: "Building this terminal portfolio with an AI assistant"
+description: "What worked, what needed a human, and the small technical lessons from building a pixel-styled Astro site in pair-programming sessions."
+date: 2026-10-27
+mins: 5
+tags: ["AI", "ASTRO", "FRONT-END"]
+---
+
+I built this site together with an AI coding assistant. The short version: it is very good at the tedious parts and fast at trying ideas, and it still needs someone to decide what "right" looks like.
+
+## What the assistant was good at
+
+- Turning a vague request ("make the text look pixel-made") into a few concrete options and trying them.
+- Reading unfamiliar code before changing it, then keeping edits small.
+- Chores: fixing TypeScript errors, removing dead code, keeping build output clean.
+
+## What I still had to do
+
+- Look at the result. Several effects were technically correct but felt wrong: too thick, too busy, too many glitches. Taste is not something to delegate.
+- Say no. A hover effect went from five simultaneous glitches down to one clean scramble.
+- Check claims. Anything the assistant could not see, such as how the page looks in a real browser, I verified myself.
+
+## Technical lessons
+
+### Crisp pixel text on a canvas
+
+Draw the text once to an off-screen canvas, then keep only whole grid cells. Pick the font size so that one pixel of the font equals a whole number of cells, or strokes end up uneven.
+
+### Persistent layers with Astro view transitions
+
+Elements created from script are dropped when the next page does not contain them. Put the element in the layout markup with `transition:persist` and look it up by id.
+
+### A missing tsconfig looks like many small errors
+
+If the editor reports "implicitly has an any type" on content collections, check that `tsconfig.json` exists and that `.astro/types.d.ts` is included, then run `astro sync`.
+
+### Easing is global
+
+Overriding a shared easing variable with a stepped timing function made every entrance animation choppy. Keep stylistic overrides local to the elements that need them.
+
+## Takeaway
+
+Treat the assistant as a fast pair, not an autopilot: give it clear goals, review every change in the browser, and keep the final decisions yours.

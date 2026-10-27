@@ -11,12 +11,12 @@ const first = series[0].items[0];
       path="TUTORIALS"
       cmd="tutorials --list"
       title="Tutorials"
+      variant="plain"
       sub="In-depth guides with worked examples."
     />
     <h2 class="level reveal" style="--i:4">SERIES LOG</h2>
     <p class="reveal" style="--i:5">
-      start here: {first.id}
-      {first.title}, {first.mins} min
+      start here: {first.id} · {first.title} · {first.mins} min
     </p>
     {
       series.map((s, si) => (
@@ -24,9 +24,10 @@ const first = series[0].items[0];
           <h2 class="level">
             {String(si + 1).padStart(2, "0")} {s.level}
           </h2>
-          <div class="grid2">
+          <ol class="track">
             {s.items.map((t, i) => (
-              <article class="tcard reveal" style={`--i:${i + 6}`}>
+              <li class="step reveal" style={`--i:${i + 6}`}><span class="node" aria-hidden="true">{t.id}</span>
+              <article class="tcard">
                 <div class="kicker">TUTORIAL/{t.id}</div>
                 <h3>{t.title}</h3>
                 <p>{t.desc}</p>
@@ -37,9 +38,9 @@ const first = series[0].items[0];
                 <div>
                   <a href={t.href}>Read tutorial →</a>
                 </div>
-              </article>
+              </article></li>
             ))}
-          </div>
+          </ol>
         </>
       ))
     }

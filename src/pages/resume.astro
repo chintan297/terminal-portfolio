@@ -27,13 +27,13 @@ import { site, about, resumeData as r } from "../data/site.js";
         </section>
         <section class="card reveal" style="--i:6">
           <span class="label l">CONTACT</span>
-          {r.contact.map((c) => <div>{c}</div>)}
+          {r.contact.map((c) => <div>{c.href ? <a href={c.href} rel="noopener">{c.label}</a> : c.label}</div>)}
         </section>
         <section class="card reveal" style="--i:7">
           <span class="label l">FOCUS</span>
           {r.focus.map((f) => <span class="tag">{f}</span>)}
         </section>
-        <section class="card reveal" style="--i:8">
+        {r.languages.length > 0 && <section class="card reveal" style="--i:8">
           <span class="label l">LANGUAGES</span>
           {
             r.languages.map((l) => (
@@ -43,53 +43,56 @@ import { site, about, resumeData as r } from "../data/site.js";
               </div>
             ))
           }
-        </section>
+        </section>}
       </aside>
     <section class="card resume-md reveal" style="--i:9">
       <span class="label l">RESUME.MD</span>
       <h2 class="name">{site.name}</h2>
-      <p class="meta contact-line">{site.location} | {site.email}</p>
-      <h3>Summary</h3><p>{r.summary}</p>
+      <p class="meta contact-line">{site.location} | <a href={`mailto:${site.email}`}>{site.email}</a> | <a href="https://www.linkedin.com/in/chintan-akbari/" rel="noopener">LinkedIn</a></p>
+      <h3>Summary</h3>
+      <p class="entry-text">{r.summary}</p>
       <h3>Work Experience</h3>
       {
         r.work.map((w) => (
-          <div>
-            <>
-              <strong>{w.role}</strong>
-              <div class="meta">
-                {w.org} · {w.when}
-              </div>
-              <ul>
-                {w.points.map((p) => (
-                  <li>{p}</li>
-                ))}
-              </ul>
-            </>
-          </div>
+          <article class="entry">
+            <div class="entry-head">
+              <strong class="entry-title">{w.role}</strong>
+              <span class="entry-when">{w.when}</span>
+            </div>
+            <div class="entry-org">{w.org}</div>
+            <ul class="entry-points">
+              {w.points.map((p) => (
+                <li>{p}</li>
+              ))}
+            </ul>
+          </article>
         ))
       }
       <h3>Education</h3>
       {
         r.education.map((e) => (
-          <div>
-            <>
-              <strong>{e.degree}</strong>
-              <div class="meta">
-                {e.org} · {e.when}
-              </div>
-            </>
-          </div>
+          <article class="entry">
+            <div class="entry-head">
+              <strong class="entry-title">{e.degree}</strong>
+              {e.when && <span class="entry-when">{e.when}</span>}
+            </div>
+            <div class="entry-org">{e.org}</div>
+          </article>
         ))
       }
       <h3>Skills</h3>
-      {
-        Object.entries(r.skills).map(([k, v]) => (
-          <p>
-            <strong>{k}:</strong> {v.join(", ")}
-          </p>
-        ))
-      }
-      <h3>Interests</h3><p>{r.interests.join(", ")}</p>
+      <dl class="skill-rows">
+        {
+          Object.entries(r.skills).map(([k, v]) => (
+            <>
+              <dt>{k}</dt>
+              <dd>{v.join(", ")}</dd>
+            </>
+          ))
+        }
+      </dl>
+      <h3>Interests</h3>
+      <p class="entry-text">{r.interests.join(", ")}</p>
     </section>
     </div>
   </main>

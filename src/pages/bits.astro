@@ -10,16 +10,19 @@ import { site, bits } from "../data/site.js";
       path="BITS"
       cmd="bits --recent"
       title="Bits"
+      variant="plain"
       sub="Small notes, snippets and things learned along the way."
     />
-    <div class="grid2" style="margin-top:28px">
+    <div class="bits-feed">
       {
         bits.map((b, i) => (
-          <article class="tcard reveal" style={`--i:${i + 4}`}>
-            <div class="kicker">{b.date}</div>
-            <h2>{b.title}</h2>
-            <p>{b.body}</p>
-            <pre class="code">{b.code}</pre>
+          <article class="bit reveal" style={`--i:${i + 4}`}>
+            <time class="bit-date">{b.date}</time>
+            <div class="bit-body">
+              <h2>{b.title}</h2>
+              <p>{b.body}</p>
+              <pre class="code">{b.code}</pre>
+            </div>
           </article>
         ))
       }

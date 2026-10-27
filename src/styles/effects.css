@@ -399,7 +399,7 @@ body::before {
 #splash .row.ok {
   color: var(--mid);
 }
-#splash .row .tag {
+#splash .row .ok-tag {
   color: var(--accent);
 }
 #splash .caret {

@@ -10,9 +10,10 @@ import { site, quotes } from "../data/site.js";
       path="QUOTES"
       cmd="quotes --random"
       title="Quotes"
+      variant="center"
       sub="Quotes worth keeping on engineering, computing, and how to think."
     />
-    <div class="grid2" style="margin-top:28px">
+    <div class="quote-list">
       {
         quotes.map((q, i) => (
           <div class="quote reveal" style={`--i:${i + 4}`}>

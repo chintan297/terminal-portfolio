@@ -11,7 +11,7 @@ const techs = [...new Set(projects.flatMap((p) => p.data.stack))].sort((a, b) =>
 
 <Layout title={`Projects | ${site.name}`} description="Case studies of things I have built.">
   <main class="page wide">
-    <PageHeader path="PROJECTS" cmd="projects --list" title="Projects" sub="Case studies: the problem, my role, the stack and what I learned." />
+    <PageHeader path="PROJECTS" cmd="projects --list" title="Projects" variant="plain" sub="Case studies: the problem, my role, the stack and what I learned." />
 
     <div class="chips reveal" style="--i:4" role="group" aria-label="Filter by technology">
       <button class="chip" type="button" data-filter="all" aria-pressed="true">All ({projects.length})</button>
@@ -19,8 +19,9 @@ const techs = [...new Set(projects.flatMap((p) => p.data.stack))].sort((a, b) =>
     </div>
     <p id="filter-status" class="sr-only" role="status" aria-live="polite"></p>
 
-    <div class="pgrid reveal" style="--i:5" id="pgrid">
-      {projects.map((p) => <ProjectCard project={p} level={2} />)}
+    <h2 class="level reveal" style="--i:5">01 FEATURED</h2>
+    <div class="pgrid pj-grid reveal" style="--i:6" id="pgrid">
+      {projects.map((p, i) => <ProjectCard project={p} index={i} level={2} />)}
     </div>
     <p class="empty" id="empty" hidden>No projects use that technology yet.</p>
   </main>
@@ -30,7 +31,7 @@ const techs = [...new Set(projects.flatMap((p) => p.data.stack))].sort((a, b) =>
   // Filter chips: fade cards out, then hide them, so the grid reflows without a jump. State lives in the URL hash.
   function init() {
     const chips = [...document.querySelectorAll<HTMLButtonElement>(".chip")];
-    const cards = [...document.querySelectorAll<HTMLElement>(".pcard")];
+    const cards = [...document.querySelectorAll<HTMLElement>(".pj")];
     const empty = document.getElementById("empty");
     const status = document.getElementById("filter-status");
     if (!chips.length) return;

@@ -17,7 +17,7 @@ const LINES = [
   ["[  OK  ] Started Journal Service", "ok"],
   ["[  OK  ] Reached target Local File Systems", "ok"],
   ["[  OK  ] Started Network Manager", "ok"],
-  ["[  OK  ] Loaded fonts: Departure Mono, Press Start 2P", "ok"],
+  ["[  OK  ] Loaded font: Departure Mono", "ok"],
   ["[  OK  ] Started Portfolio Daemon", "ok", "wait"],
   ["[  OK  ] Reached target Graphical Interface", "ok"],
 ];
@@ -68,7 +68,7 @@ export function runBoot() {
       row.className = `row ${kind}`;
       if (kind === "ok") {
         const tag = document.createElement("span");
-        tag.className = "tag";
+        tag.className = "ok-tag";
         tag.textContent = "  OK  ";
         row.append("[", tag, `]${text.slice(8)}`);
       } else row.textContent = text;

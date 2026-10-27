@@ -40,7 +40,7 @@ const { steps, heading = "JOURNEY" } = Astro.props;
     cleanup?.();
     const root = document.querySelector<HTMLElement>("[data-journey]");
     if (!root) return;
-    const items = [...root.querySelectorAll<HTMLElement>("li")];
+    const items = [...root.querySelectorAll<HTMLElement>("ol > li")];
     const text = (sel: string) => root.querySelector<HTMLElement>(sel)!;
     const steps = items.map((li) => ({
       when: li.querySelector("strong")!.textContent!,

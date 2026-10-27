@@ -1,18 +1,29 @@
 ---
-import BrowserMockup from "./BrowserMockup.astro";
-
-const { project, level = 3 } = Astro.props;
+// Project panel for the projects page: number on the frame, tagline, title, summary, collapsible technical details,
+// stack tags and link buttons. `index` is the position in the list (0-based).
+const { project, index = 0, level = 2 } = Astro.props;
 const Heading = `h${level}`;
 const d = project.data;
+const num = String(index + 1).padStart(2, "0");
 ---
 
-<a class="pcard spot" href={`/projects/${project.id}`} data-stack={d.stack.map((s) => s.toLowerCase()).join("|")} data-cursor="view">
+<article class="pj card" data-stack={d.stack.map((s) => s.toLowerCase()).join("|")}>
+  <span class="label l">PROJECT/{num}</span>
   {d.sample && <span class="badge">SAMPLE</span>}
-  <div class="media"><BrowserMockup url={`${project.id}.example.com`} alt={`${d.title} preview`} /></div>
-  <div class="body">
-    <div class="kicker">{d.year} · {d.status.toUpperCase()}</div>
-    <Heading>{d.title}</Heading>
-    <p>{d.summary}</p>
-    <div>{d.stack.map((t) => <span class="tag">{t}</span>)}</div>
+  <p class="pj-tag">{d.tagline ?? `${d.year} · ${d.status}`}</p>
+  <Heading class="pj-title"><a href={`/projects/${project.id}`}>{d.title}</a></Heading>
+  <p class="pj-sum">{d.summary}</p>
+  <details class="pj-more">
+    <summary>Technical details</summary>
+    <dl>
+      <dt>Role</dt><dd>{d.role}</dd>
+      <dt>Problem</dt><dd>{d.problem}</dd>
+    </dl>
+    {d.features.length > 0 && <ul>{d.features.map((f) => <li>{f}</li>)}</ul>}
+  </details>
+  <div class="pj-stack">{d.stack.map((t) => <span class="tag">{t}</span>)}</div>
+  <div class="pj-links">
+    <a class="btn" href={`/projects/${project.id}`}>Case study</a>
+    {d.links.filter((l) => l.href && l.href !== "#").map((l) => <a class="btn" href={l.href} rel="noopener" target="_blank">{l.label}</a>)}
   </div>
-</a>
+</article>
