@@ -26,7 +26,7 @@ import { site } from "../data/site.js";
           aria-controls="photo-pop"
           aria-label={`${site.name}: click for a surprise`}
         >
-          <img id="photo-thumb" src={site.photo} alt="" width="64" height="64" crossorigin="anonymous" referrerpolicy="no-referrer" />
+          <img id="photo-thumb" src={site.photo} data-src={site.photo} alt="" width="64" height="64" crossorigin="anonymous" referrerpolicy="no-referrer" />
         </button>
         <div>
           <div class="prompt">$ whoami</div>
@@ -52,13 +52,21 @@ import { site } from "../data/site.js";
               style={`--i:${i + 3}`}
               href={s.href}
               rel="noopener"
-              target="_blank"
+              target={s.href.startsWith("http") ? "_blank" : undefined}
               aria-label={s.label}
               title={s.label}
             >
               <Icon name={s.icon} />
             </a>
           ))
+        }
+        {
+          /^https?:/.test(site.photo) && (
+            <button class="cat-new" type="button" id="cat-new" title="Show a different cat" style={`--i:${site.socials.length + 3}`}>
+              <Icon name="lucide:cat" />
+              <span class="sr-only">Show a different profile cat</span>
+            </button>
+          )
         }
       </div>
     </section>
@@ -146,6 +154,29 @@ import { site } from "../data/site.js";
         if (!thumb.src.endsWith("/avatar.svg")) { thumb.src = "/avatar.svg"; still = "/avatar.svg"; big.src = still; }
       }, { once: true });
       if (thumb.complete && thumb.naturalWidth) copy(); else thumb.addEventListener("load", copy, { once: true });
+
+      // "NEW CAT": ask the picture service for another random cat; on failure the previous picture stays
+      const fresh = document.getElementById("cat-new") as HTMLButtonElement | null;
+      const base = thumb.dataset.src ?? "";
+      if (fresh && /^https?:/.test(base)) {
+        const live = document.getElementById("live");
+        fresh.addEventListener("click", () => {
+          if (fresh.disabled) return;
+          const previous = thumb.src;
+          const done = (ok: boolean) => {
+            fresh.disabled = false;
+            fresh.classList.remove("busy");
+            if (!ok) thumb.src = previous;
+            else copy();
+            if (live) live.textContent = ok ? "New cat loaded" : "Could not load a new cat";
+          };
+          fresh.disabled = true;
+          fresh.classList.add("busy");
+          thumb.addEventListener("load", () => done(true), { once: true });
+          thumb.addEventListener("error", () => done(false), { once: true });
+          thumb.src = `${base}${base.includes("?") ? "&" : "?"}_=${Date.now()}`;
+        });
+      }
     }
 
     // a small pulsing "?" invites the first click; it stays gone once the surprise has been opened (per browser)

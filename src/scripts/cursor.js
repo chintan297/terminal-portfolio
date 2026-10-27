@@ -70,6 +70,8 @@ export function initCursor() {
     if (moved) ring.style.opacity = "";
   });
 
+  // the loop only runs while something is still moving, then sleeps until the pointer moves again
+  let awake = false;
   const loop = () => {
     rx += (x - rx) * 0.2;
     ry += (y - ry) * 0.2;
@@ -78,7 +80,10 @@ export function initCursor() {
     dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
     ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
     spot.style.transform = `translate3d(${sx}px, ${sy}px, 0)`;
-    requestAnimationFrame(loop);
+    if (Math.abs(x - sx) + Math.abs(y - sy) + Math.abs(x - rx) + Math.abs(y - ry) > 0.5) requestAnimationFrame(loop);
+    else awake = false;
   };
-  loop();
+  const wake = () => { if (!awake) { awake = true; requestAnimationFrame(loop); } };
+  addEventListener("pointermove", wake, { passive: true });
+  wake();
 }

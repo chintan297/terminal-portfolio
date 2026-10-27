@@ -129,7 +129,7 @@ function createField(hero, canvas, bloom) {
 
   // ---------- grid + title ----------
   function build() {
-    const dpr = Math.min(devicePixelRatio || 1, 3); // full device resolution (4K / retina)
+    const dpr = Math.min(devicePixelRatio || 1, 2); // retina sharpness without paying for 3x pixels
     w = hero.clientWidth;
     h = hero.clientHeight;
     cell = w >= 1400 ? 7 : w >= 720 ? 6 : 5;
@@ -234,7 +234,7 @@ function createField(hero, canvas, bloom) {
     // title + gap + intro card are centred as one block in the hero (the card sits `gap` px under the title), snapped to the grid
     const gap = narrow ? 40 : 70;
     const groupH = maxY - minY + 1 + gap + (card?.offsetHeight || 0);
-    const topInk = Math.max(24, Math.round((h - groupH) / 2));
+    const topInk = Math.max(narrow ? 56 : 24, Math.round((h - groupH) / 2));
     drawTitle(
       minX < gw ? -(minX % cell) : 0,
       minY < gh ? Math.round((topInk - oy) / cell) * cell - minY : 0,
@@ -750,9 +750,14 @@ function createField(hero, canvas, bloom) {
     bctx.drawImage(canvas, 0, 0, bloom.width, bloom.height);
   }
 
+  // phones and low-core machines draw the field at 30 fps; the animation is timed in seconds, so it looks the same
+  const slow = matchMedia("(pointer: coarse)").matches || (navigator.hardwareConcurrency || 8) <= 4;
+  let lastRotate = "";
   function frame(now) {
     if (!running) return;
     raf = requestAnimationFrame(frame); // re-arm first so one bad frame can never stop the loop
+    if (root.classList.contains("photo-open")) { last = now; return; } // the full-screen surprise covers the hero: do no work
+    if (slow && now - last < 30) return; // skip every other frame
     const dt = Math.min(0.05, (now - last) / 1000 || 0);
     last = now;
     const fxOn = root.dataset.fx === "on";
@@ -774,10 +779,11 @@ function createField(hero, canvas, bloom) {
       const ax = -sy * 2.2,
         ay = sx * 3,
         ang = Math.hypot(ax, ay);
-      card.style.rotate =
+      const rot =
         ang > 0.02 && !reduce && w >= 720 && fxOn
           ? `${ax.toFixed(3)} ${ay.toFixed(3)} 0 ${ang.toFixed(3)}deg`
           : "";
+      if (rot !== lastRotate) { card.style.rotate = rot; lastRotate = rot; } // only touch the DOM when it changed
     }
     if (!paused) draw();
   }

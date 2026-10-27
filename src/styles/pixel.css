@@ -33,7 +33,7 @@ body {
       transparent 1px
     );
   background-size: 8px 8px;
-  background-attachment: fixed;
+  background-attachment: scroll; /* a fixed background repaints the whole screen on every scroll frame */
 }
 
 /* no circles */
@@ -2041,9 +2041,6 @@ html {
 
 /* ---------- phone status bar: only what a thumb can use, evenly spaced, nothing clipped ---------- */
 @media (max-width: 720px) {
-  #keys-btn {
-    display: none;
-  } /* single-key shortcuts need a keyboard */
   .statusbar {
     font-size: var(--fs-xs);
   }
@@ -2076,4 +2073,39 @@ html {
 @media (max-width: 720px) {
   .to-top { width: 40px; height: 40px; right: var(--s-3); background: color-mix(in srgb, var(--bg) 82%, transparent); }
   .to-top.show, .to-top[data-show="true"] { opacity: 0.9; }
+}
+
+/* ---------- social icons: equal tiles that fill the row, one icon size, same look as the buttons above ---------- */
+.socials { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 16px; }
+.socials a { width: auto; height: 48px; min-height: 48px; display: grid; place-items: center; color: var(--mid); background: none; border: 1px solid var(--line-strong); }
+.socials a svg { width: 22px; height: 22px; display: block; fill: currentColor; }
+.socials a:hover, .socials a:focus-visible { background: var(--accent); color: var(--bg); border-color: var(--accent); transform: none; }
+@media (max-width: 720px) { .socials { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px; } .socials a { height: 48px; } }
+
+/* "NEW CAT": the last tile at the right end of the social links row, icon only, same size and look as the other tiles */
+.socials .cat-new { height: 48px; min-height: 48px; display: grid; place-items: center; padding: 0; background: none; color: var(--mid); border: 1px solid var(--line-strong); cursor: pointer; }
+.socials .cat-new svg { width: 22px; height: 22px; display: block; }
+.socials .cat-new:hover, .socials .cat-new:focus-visible { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.socials .cat-new:disabled { opacity: 0.6; cursor: progress; }
+.socials .cat-new.busy svg { animation: cat-bob 0.5s steps(4) infinite; }
+@keyframes cat-bob { 50% { transform: translateY(-3px) rotate(-8deg); } }
+@media (prefers-reduced-motion: reduce) { .socials .cat-new.busy svg { animation: none; } }
+
+/* phones: five tiles share one row, and the pause button sits in the free strip above the title instead of over the icons */
+@media (max-width: 720px) {
+  .socials { grid-template-columns: repeat(auto-fit, minmax(48px, 1fr)); gap: 8px; }
+  .hero .pause { top: 6px; bottom: auto; right: 8px; width: 44px; height: 44px; }
+}
+
+/* phone status bar: every control stays visible; on the narrowest screens the buttons simply get tighter */
+@media (max-width: 720px) {
+  .statusbar #keys-btn { min-width: 48px; justify-content: center; }
+  .statusbar #scrollpct { min-width: 48px; }
+}
+@media (max-width: 360px) {
+  .statusbar > *, .statusbar button { padding: 0 var(--s-2); }
+  .statusbar .mode { padding: 0 var(--s-2); }
+  .statusbar #fx-btn, .statusbar #search-btn, .statusbar #keys-btn { min-width: 40px; }
+  .statusbar #scrollpct { min-width: 44px; }
+  .statusbar { font-size: 0.6875rem; }
 }

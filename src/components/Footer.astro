@@ -23,7 +23,7 @@ import { site, nav } from "../data/site.js";
       <ul>
         {
           site.socials.slice(0, 5).map((s) => (
-            <li><a href={s.href} rel="noopener" target="_blank"><Icon name={s.icon} />&nbsp;{s.label}</a></li>
+            <li><a href={s.href} rel="noopener" target={s.href.startsWith("http") ? "_blank" : undefined}><Icon name={s.icon} />&nbsp;{s.label}</a></li>
           ))
         }
       </ul>

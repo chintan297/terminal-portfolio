@@ -43,6 +43,9 @@ export const site = {
   // Add a social link by adding one line. `icon` is a simple-icons name (github, x, medium, ...).
   socials: [
     { label: "LinkedIn", icon: "linkedin", href: "https://www.linkedin.com/in/chintan-akbari/" },
+    { label: "WhatsApp", icon: "whatsapp", href: "https://wa.me/917990960490" },
+    { label: "Telegram", icon: "telegram", href: "https://t.me/chintan_akbari" },
+    { label: "Gmail", icon: "gmail", href: "mailto:chintanakbari7706@gmail.com" },
   ],
 };
 

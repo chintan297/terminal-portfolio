@@ -76,7 +76,7 @@ export function runBoot() {
       cursor.remove();
       body.append(row, cursor);
       scroll();
-      await wait(pause ? 260 : 25 + Math.random() * 70);
+      await wait(pause ? 180 : 18 + Math.random() * 45);
     }
     if (stopped) return;
     const line = document.createElement("span");
@@ -87,13 +87,13 @@ export function runBoot() {
     cursor.remove();
     body.append(line, cursor);
     scroll();
-    await wait(350);
+    await wait(220);
     for (const ch of COMMAND) {
       if (stopped) return;
       typed.data += ch;
-      await wait(45 + Math.random() * 50);
+      await wait(28 + Math.random() * 30);
     }
-    await wait(450);
+    await wait(280);
     finish();
   })();
 }
