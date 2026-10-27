@@ -2,8 +2,8 @@
 const { path, cmd, title, sub } = Astro.props;
 ---
 
-<header class="ph">
-  <div class="path reveal">~/{path}</div>
+<header class="ph card reveal">
+  <span class="label l">~/{path}</span>
   <div class="prompt reveal cursor" style="--i:1">$ {cmd}</div>
   <h1 class="reveal" style="--i:2">{title}</h1>
   {

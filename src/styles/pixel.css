@@ -3,7 +3,6 @@
 
 :root {
   --pxl: 4px; /* one site pixel: the size of a corner notch and of a grid dot */
-  --ease: steps(4, end);
 }
 
 /* text and images are never smoothed */
@@ -83,3 +82,29 @@ a, a *, button, button *, [role="button"], summary, label, select, .btn, .chip, 
 input, textarea, [contenteditable] { cursor: text !important; }
 .btn[disabled], [aria-disabled="true"] { cursor: not-allowed !important; }
 .cursor-ring, .cursor-dot { display: none !important; }
+
+/* page entrance: the new page rises in smoothly, then its panels stagger in (the old stepped easing made this choppy) */
+@keyframes terminal-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- page layout: full-width framed panels, like a terminal split ---------- */
+.page:not(.home) { max-width: 1840px; padding-inline: 40px; }
+@media (max-width: 720px) { .page:not(.home) { padding-inline: var(--s-4); } }
+/* panel labels sit on the frame without brackets */
+.card > .label.l::before, .card > .label.l::after { content: none; }
+/* the page header is one framed panel: path on the frame, prompt, big mixed-case title */
+.ph.card { margin-top: var(--s-5); padding: var(--s-6) var(--s-5); }
+.ph h1 { text-transform: none; font-size: clamp(2.5rem, 2rem + 2.4vw, 4.5rem); }
+.ph .prompt { margin-bottom: var(--s-4); }
+/* resume: sidebar of small panels beside one long markdown-style panel */
+.resume-layout { display: grid; grid-template-columns: minmax(260px, 460px) 1fr; gap: 0 var(--s-5); align-items: start; }
+.resume-side { display: grid; }
+.resume-side .card { margin-top: var(--s-5); }
+.resume-layout > .resume-md { margin-top: var(--s-5); padding: var(--s-6) var(--s-5); }
+.resume-md .name { font-size: var(--step-3); text-transform: none; margin: 0 0 var(--s-3); color: var(--bright); }
+.resume-md .contact-line { display: inline-block; border: 1px solid var(--line-strong); padding: var(--s-3) var(--s-4); color: var(--mid); }
+.resume-md h3 { font-size: var(--step-1); margin: var(--s-6) 0 var(--s-3); text-transform: none; }
+.resume-md h3::before { content: "## "; color: var(--dim); }
+@media (max-width: 900px) { .resume-layout { grid-template-columns: 1fr; } }
