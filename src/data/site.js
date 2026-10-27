@@ -3,7 +3,7 @@
 export const site = {
   sample: true,
   name: "Chintan Akbari",
-  heroLines: ["CHINTAN", "AKBARI"],
+  heroLines: ["CHINTAN"],
   host: "chintan",
   title: "Chintan Akbari | Software Engineer",
   location: "Gujarat, India",
@@ -58,14 +58,24 @@ export const about = {
     { name: "project-two", level: 55 },
     { name: "this-portfolio", level: 95 },
   ],
-  interests: ["Open source", "Low-level engineering", "Space", "Music", "Cricket"],
+  interests: [
+    "Open source",
+    "Low-level engineering",
+    "Space",
+    "Music",
+    "Cricket",
+  ],
 };
 
 // Work and education in one list, newest first.
 export const experience = [
   { when: "2024 - Present", what: "Software Engineer", where: "Company" },
   { when: "2021 - 2024", what: "Junior Engineer", where: "Another Company" },
-  { when: "2017 - 2021", what: "B.Tech in Computer Science", where: "University" },
+  {
+    when: "2017 - 2021",
+    what: "B.Tech in Computer Science",
+    where: "University",
+  },
 ];
 
 // Grouped, no proficiency percentages: groups describe what you work with, not how well.

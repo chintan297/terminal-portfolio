@@ -9,20 +9,21 @@
 
 /* Design tokens. Four themes; --accent is the loud colour, --surface a faint lift off the page. */
 :root {
-  --bg: #050505;
-  --fg: oklch(0.925 0.004 250);
-  --mid: oklch(0.815 0.006 250);
-  --dim: oklch(0.745 0.007 250);
-  --bright: oklch(0.985 0.004 250);
-  --line: #2a2a2a;
-  --accent: #f2f2f2;
+  --bg: #000000;
+  --fg: #e8e8e8;
+  --mid: #bdbdbd;
+  --dim: #8c8c8c;
+  --bright: #ffffff;
+  --line: #2b2b2b;
+  --accent: #ffffff;
 
   /* control borders need 3:1 against the page (WCAG 1.4.11); --line stays for decorative frames */
   --line-strong: color-mix(in srgb, var(--fg) 50%, var(--bg));
   --surface: color-mix(in srgb, var(--bg) 94%, var(--fg));
   --glow: color-mix(in srgb, var(--accent) 22%, transparent);
 
-  --font-mono: "Departure Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --font-mono:
+    "Departure Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
   --font-pixel: "Press Start 2P", ui-monospace, monospace;
 
   /* fluid type scale (step 0 is body; steps scale smoothly between 320px and 1920px) */
@@ -77,6 +78,30 @@
   --z-cursor: 3000;
   --z-splash: 3500;
 }
-:root[data-theme="ember"] { --bg: #0b0504; --fg: #ffb08a; --mid: var(--fg); --bright: var(--accent); --dim: #c98a6e; --line: #4a2018; --accent: #ff9360; }
-:root[data-theme="green"] { --bg: #030a05; --fg: #7dffa0; --mid: var(--fg); --bright: var(--accent); --dim: #55b06e; --line: #153d20; --accent: #6bff8c; }
-:root[data-theme="amber"] { --bg: #0a0702; --fg: #ffd36a; --mid: var(--fg); --bright: var(--accent); --dim: #bf9a42; --line: #4a3a12; --accent: #ffc23a; }
+:root[data-theme="ember"] {
+  --bg: #0b0504;
+  --fg: #ffb08a;
+  --mid: var(--fg);
+  --bright: var(--accent);
+  --dim: #c98a6e;
+  --line: #4a2018;
+  --accent: #ff9360;
+}
+:root[data-theme="green"] {
+  --bg: #030a05;
+  --fg: #7dffa0;
+  --mid: var(--fg);
+  --bright: var(--accent);
+  --dim: #55b06e;
+  --line: #153d20;
+  --accent: #6bff8c;
+}
+:root[data-theme="amber"] {
+  --bg: #0a0702;
+  --fg: #ffd36a;
+  --mid: var(--fg);
+  --bright: var(--accent);
+  --dim: #bf9a42;
+  --line: #4a3a12;
+  --accent: #ffc23a;
+}

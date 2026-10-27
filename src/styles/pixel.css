@@ -1,0 +1,44 @@
+/* Pixel layer: loaded last. Everything is built from square pixels: no round shapes, stepped motion,
+   notched corners, crisp images and a faint pixel grid behind the page. */
+
+:root {
+  --pxl: 4px; /* one site pixel: the size of a corner notch and of a grid dot */
+  --ease: steps(4, end);
+}
+
+/* text and images are never smoothed */
+html { -webkit-font-smoothing: none; font-smooth: never; text-rendering: optimizeSpeed; }
+img, canvas, video { image-rendering: pixelated; }
+
+/* faint pixel grid behind everything */
+body {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--accent) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--accent) 7%, transparent) 1px, transparent 1px);
+  background-size: 8px 8px;
+  background-attachment: fixed;
+}
+
+/* no circles */
+.cursor-dot, .cursor-ring, .mock .bar i { border-radius: 0; }
+
+/* panels and controls: corners are one-pixel stair steps instead of right angles */
+.tcard, .quote, .svc, .pcard, .gauge, .mock, .btn, .chip, .tag, .copy, .socials a, .hero .pause, .hero .path, .to-top, .device-toggle, pre.code {
+  clip-path: polygon(
+    0 var(--pxl), var(--pxl) var(--pxl), var(--pxl) 0,
+    calc(100% - var(--pxl)) 0, calc(100% - var(--pxl)) var(--pxl), 100% var(--pxl),
+    100% calc(100% - var(--pxl)), calc(100% - var(--pxl)) calc(100% - var(--pxl)), calc(100% - var(--pxl)) 100%,
+    var(--pxl) 100%, var(--pxl) calc(100% - var(--pxl)), 0 calc(100% - var(--pxl))
+  );
+}
+/* the card's label sits on its top edge, so only the bottom corners step */
+.card {
+  clip-path: polygon(
+    0 -24px, 100% -24px,
+    100% calc(100% - var(--pxl)), calc(100% - var(--pxl)) calc(100% - var(--pxl)), calc(100% - var(--pxl)) 100%,
+    var(--pxl) 100%, var(--pxl) calc(100% - var(--pxl)), 0 calc(100% - var(--pxl))
+  );
+}
+/* a clipped box would hide an offset shadow, so hover reads through the border and fill instead */
+.tcard:hover, .quote:hover, .svc:hover, .pcard:hover, .pcard:focus-visible, .btn:hover { box-shadow: none; }
+.tcard:hover, .quote:hover, .svc:hover, .pcard:hover { background-color: color-mix(in srgb, var(--bg) 88%, var(--accent)); }

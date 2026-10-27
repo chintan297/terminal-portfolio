@@ -1,0 +1,440 @@
+/* Hacker-terminal pass: sharp 1px edges, hard shadows, phosphor-green accents, visible scanlines and detail marks. Loaded last so it can be tuned or removed in one place. */
+
+/* ---------- crisp text ---------- */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ---------- CRT layers: fine, clearly visible scanlines; no blur anywhere ---------- */
+.fx-scan {
+  display: none !important;
+} /* no scanline stripes: they cut through the text */
+.fx-vig {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+  animation: none;
+}
+[data-fx="on"] .noise-overlay,
+body::before,
+body::after {
+  display: none !important;
+} /* no grain or jitter */
+
+/* ---------- square everything, solid bars ---------- */
+.topbar,
+.statusbar {
+  background: var(--bg);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.topbar {
+  border-bottom-color: var(--line-strong);
+}
+.statusbar {
+  border-top-color: var(--line-strong);
+}
+.topbar .host,
+.statusbar .mode {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- layout rhythm ---------- */
+.page {
+  padding-top: var(--s-6);
+  padding-bottom: var(--s-7);
+}
+.page.home {
+  padding: 0;
+}
+.ph {
+  margin-bottom: var(--s-5);
+}
+.ph .path {
+  color: var(--accent);
+}
+.ph .path::before {
+  content: "> ";
+}
+.ph h1 {
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.ph p.sub {
+  color: var(--mid);
+}
+h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+h2::before {
+  content: "## ";
+  color: var(--accent);
+}
+.site-footer h2::before,
+.card h2::before,
+.pcard h2::before,
+.tcard h2::before,
+table.posts h2::before,
+.prose h2::before {
+  content: none;
+}
+.level {
+  margin: var(--s-6) 0 var(--s-4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.level::before {
+  content: "[";
+}
+.level::after {
+  height: 1px;
+  background: var(--line-strong);
+}
+.grid2,
+.grid3,
+.pgrid {
+  gap: var(--s-5);
+}
+
+/* ---------- panels: 1px frame with bright corner ticks ---------- */
+.card,
+.tcard,
+.quote,
+.svc,
+.pcard,
+.journey .now,
+.gauge {
+  background: color-mix(in srgb, var(--bg) 94%, var(--accent));
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+}
+.card,
+.tcard,
+.quote,
+.svc {
+  background-image:
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-size:
+    10px 2px,
+    2px 10px,
+    10px 2px,
+    2px 10px,
+    10px 2px,
+    2px 10px,
+    10px 2px,
+    2px 10px;
+  background-position:
+    left top,
+    left top,
+    right top,
+    right top,
+    left bottom,
+    left bottom,
+    right bottom,
+    right bottom;
+}
+.card {
+  margin-top: var(--s-6);
+  padding: var(--s-6) var(--s-5) var(--s-5);
+}
+.card > .label {
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  background: var(--bg);
+}
+.card > .label.l::before {
+  content: "[";
+}
+.card > .label.l::after {
+  content: "]";
+}
+.tcard:hover,
+.quote:hover,
+.svc:hover,
+.pcard:hover,
+.pcard:focus-visible {
+  border-color: var(--accent);
+  transform: none;
+  box-shadow: 4px 4px 0 var(--line-strong);
+}
+.pcard .media {
+  border-bottom: 1px solid var(--line-strong);
+}
+.tcard p,
+.quote p {
+  color: var(--mid);
+}
+
+/* ---------- controls: hard edges, inverted on hover ---------- */
+.btn,
+.chip,
+.tag,
+.socials a,
+.hero .pause,
+.hero .path,
+.to-top,
+.device-toggle,
+pre.code,
+.mock {
+  border-radius: 0;
+}
+.btn {
+  padding: 8px 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.btn.primary:hover {
+  box-shadow: none;
+}
+.btn:hover {
+  box-shadow: 3px 3px 0 var(--line-strong);
+}
+.btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: none;
+}
+.tag {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-color: var(--line-strong);
+}
+.chip {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+pre.code {
+  border-color: var(--line-strong);
+  border-left: 2px solid var(--accent);
+}
+.mock {
+  border-color: var(--line-strong);
+}
+
+/* ---------- hero: readable, balanced, nothing overlapping ---------- */
+.hero {
+  border-bottom: 1px solid var(--line-strong);
+}
+.hero::before,
+.hero::after {
+  opacity: 0.45;
+}
+.hero .glow {
+  top: 22%;
+  opacity: 0.5;
+}
+[data-fx="on"] .hero .glow {
+  animation-duration: 8s;
+}
+.hero canvas.bloom {
+  display: none;
+} /* the soft blurred halo made the title look out of focus */
+.hero .path {
+  top: auto;
+  bottom: 20px;
+  left: 70px;
+  padding: 8px 10px;
+  font-size: 12.9px;
+  line-height: 1.15;
+  background: var(--bg);
+  color: var(--fg);
+  border-color: var(--line-strong);
+}
+.hero .pause {
+  top: 20px;
+  right: 70px;
+  border-color: var(--line-strong);
+}
+/* corner brackets sit on the canvas grid (one cell thick, one cell in) and under the canvas, so the corner shots run over them */
+.br {
+  --c: var(--cell, 7px);
+  width: calc(var(--c) * 6);
+  height: calc(var(--c) * 6);
+  z-index: 0;
+  opacity: 0.7;
+  border-color: var(--dim);
+  transform: none;
+  right: auto;
+  bottom: auto;
+}
+.br.tl {
+  top: calc(var(--oy, 0px) + var(--c));
+  left: calc(var(--ox, 0px) + var(--c));
+  border-width: var(--c) 0 0 var(--c);
+}
+.br.tr {
+  top: calc(var(--oy, 0px) + var(--c));
+  left: calc(var(--ox, 0px) + var(--gw, 100%) - var(--c) * 7);
+  border-width: var(--c) var(--c) 0 0;
+}
+.br.bl {
+  top: calc(var(--oy, 0px) + var(--gh, 100%) - var(--c) * 7);
+  left: calc(var(--ox, 0px) + var(--c));
+  border-width: 0 0 var(--c) var(--c);
+}
+.br.brr {
+  top: calc(var(--oy, 0px) + var(--gh, 100%) - var(--c) * 7);
+  left: calc(var(--ox, 0px) + var(--gw, 100%) - var(--c) * 7);
+  border-width: 0 var(--c) var(--c) 0;
+}
+
+/* 3D: the intro card tilts a little toward the pointer (rotate is set from hero-field.js) */
+.page.home {
+  perspective: 1600px;
+  perspective-origin: 50% 30%;
+}
+.home-card {
+  transform-origin: 50% 40%;
+  will-change: rotate;
+}
+
+/* intro card: 912px wide, same proportions as the reference (32px side padding, 16px grid gaps, 44px controls) */
+.home-card {
+  margin: calc(var(--tb, var(--hero-h) * 0.42) - var(--hero-h) + 70px) auto 0;
+  padding: 40px 32px 32px;
+  background-color: color-mix(in srgb, var(--bg) 94%, transparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  background-image: none;
+}
+.home-card > .label::before,
+.home-card > .label::after {
+  content: none !important;
+}
+.whoami {
+  gap: 32px;
+  align-items: flex-start;
+}
+.whoami img {
+  width: 88px;
+  height: 88px;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 0;
+  border-color: var(--line-strong);
+  flex: none;
+}
+.lead {
+  margin: 0 0 var(--s-2);
+}
+.home-card p {
+  color: var(--mid);
+  max-width: 60ch;
+}
+.home-card .lead {
+  color: var(--bright);
+}
+.home-card .prompt {
+  color: var(--accent);
+}
+.btns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+.btns .btn {
+  width: 100%;
+}
+.socials {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+  padding: 0;
+  border: 0;
+}
+.socials a {
+  width: auto;
+  border-color: var(--line-strong);
+}
+
+/* "copy link" buttons on quotes */
+.copy { min-height: 44px; padding: 0 var(--s-4); background: none; color: var(--fg); border: 1px solid var(--line-strong); border-radius: 0; font: inherit; font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+.copy:hover { background: var(--accent); color: var(--bg); }
+
+/* ---------- lists and tables: ruled like terminal output ---------- */
+table.posts th {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom-color: var(--line-strong);
+}
+table.posts td {
+  border-bottom: 1px dashed var(--line-strong);
+}
+.exp li {
+  border-top-style: dashed;
+  border-top-color: var(--line-strong);
+}
+.timeline .when,
+.exp .when {
+  color: var(--accent);
+}
+.site-footer {
+  border-top-color: var(--line-strong);
+}
+.site-footer h2 {
+  color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding-top: var(--s-5);
+    padding-bottom: var(--s-6);
+  }
+  .site-footer {
+    margin-top: var(--s-6);
+    padding-top: var(--s-5);
+  }
+  .card {
+    padding: var(--s-5) var(--s-4) var(--s-4);
+    margin-top: var(--s-5);
+  }
+  .home-card {
+    margin: calc(var(--tb, var(--hero-h) * 0.42) - var(--hero-h) + 40px)
+      var(--s-3) 0;
+    padding: var(--s-5) var(--s-4);
+  }
+  .hero .path {
+    display: none; /* it would sit on top of the intro card at this width */
+  }
+  .hero .pause {
+    right: 56px;
+    top: var(--s-4);
+  }
+  .whoami {
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+  .whoami img {
+    width: 64px;
+    height: 64px;
+  }
+  .btns {
+    grid-template-columns: 1fr;
+  }
+  .socials {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+}
