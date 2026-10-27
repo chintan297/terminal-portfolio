@@ -12,9 +12,8 @@ import Footer from "../components/Footer.astro";
 import Cursor from "../components/Cursor.astro";
 import Seo from "../components/Seo.astro";
 import { getCollection } from "astro:content";
-import { site, nav, quotes, series, bits } from "../data/site.js";
+import { site, nav } from "../data/site.js";
 
-const posts = await getCollection("blog");
 const projects = await getCollection("projects");
 const {
   title = site.title,
@@ -38,32 +37,6 @@ const index = [
     title: p.data.title,
     detail: "Projects",
     href: `/projects/${p.id}`,
-  })),
-  ...quotes.map((q) => ({
-    kind: "heading",
-    title: q.text.slice(0, 70),
-    detail: "Quotes",
-    href: "/quotes",
-  })),
-  ...bits.map((b) => ({
-    kind: "heading",
-    title: b.title,
-    detail: "Bits",
-    href: "/bits",
-  })),
-  ...series.flatMap((s) =>
-    s.items.map((t) => ({
-      kind: "heading",
-      title: t.title,
-      detail: "Tutorials",
-      href: "/tutorials",
-    })),
-  ),
-  ...posts.map((p) => ({
-    kind: "heading",
-    title: p.data.title,
-    detail: "Blog",
-    href: `/blog/${p.id}`,
   })),
 ];
 ---

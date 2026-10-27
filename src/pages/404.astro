@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { site, nav, fortunes } from "../data/site.js";
-const f = fortunes[Math.floor(Math.random() * fortunes.length)];
+import { site, nav } from "../data/site.js";
 ---
 
 <Layout title={`404 | ${site.name}`}>
@@ -22,11 +21,6 @@ const f = fortunes[Math.floor(Math.random() * fortunes.length)];
           ))
         }
       </div>
-    </section>
-    <section class="card reveal" style="--i:3">
-      <span class="label l">FORTUNE</span>
-      <p>“{f.text}”</p>
-      <span class="by prompt">-- {f.by.toUpperCase()}</span>
     </section>
   </main>
 </Layout>

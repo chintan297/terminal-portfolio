@@ -15,8 +15,6 @@ export function GET() {
     ...r.education.map((e) => `${e.degree}, ${e.org}${e.when ? ` (${e.when})` : ""}`),
     rule("Skills"),
     ...Object.entries(r.skills).map(([k, v]) => `${k}: ${(v as string[]).join(", ")}`),
-    rule("Interests"),
-    r.interests.join(", "),
     "",
   ];
   return new Response(lines.join("\n"), { headers: { "Content-Type": "text/plain; charset=utf-8" } });

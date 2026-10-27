@@ -10,7 +10,7 @@ import { site, about, resumeData as r } from "../data/site.js";
       path="RESUME"
       cmd="cat resume.md"
       title="Resume & Experience"
-      sub="Full professional background and work history. Download as PDF or plain text."
+      sub="Work history, skills and education. Download as PDF or plain text."
     />
     <div class="resume-layout">
       <aside class="resume-side">
@@ -21,17 +21,13 @@ import { site, about, resumeData as r } from "../data/site.js";
         <section class="card reveal" style="--i:5">
           <span class="label l">DOWNLOADS</span>
           <div class="btns" style="margin:0">
-            <button class="btn primary" type="button" onclick="print()">PDF</button>
+            <a class="btn primary" href="/chintan-akbari-resume.pdf" download="CHINTAN-AKBARI-Resume.pdf" style="min-width:0">PDF</a>
             <a class="btn" href="/resume.txt" download="chintan-akbari-resume.txt" style="min-width:0">TXT</a>
           </div>
         </section>
         <section class="card reveal" style="--i:6">
           <span class="label l">CONTACT</span>
           {r.contact.map((c) => <div>{c.href ? <a href={c.href} rel="noopener">{c.label}</a> : c.label}</div>)}
-        </section>
-        <section class="card reveal" style="--i:7">
-          <span class="label l">FOCUS</span>
-          {r.focus.map((f) => <span class="tag">{f}</span>)}
         </section>
         {r.languages.length > 0 && <section class="card reveal" style="--i:8">
           <span class="label l">LANGUAGES</span>
@@ -91,8 +87,6 @@ import { site, about, resumeData as r } from "../data/site.js";
           ))
         }
       </dl>
-      <h3>Interests</h3>
-      <p class="entry-text">{r.interests.join(", ")}</p>
     </section>
     </div>
   </main>

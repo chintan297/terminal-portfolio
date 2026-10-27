@@ -2,8 +2,8 @@
 // Edit this file for anything that appears on the home page, the top bar, the footer or the About page.
 
 export const site = {
-  // true shows a "Sample content" notice in the footer. Set it to false once blog, tutorials and social links are real.
-  sample: true,
+  // true shows a "Sample content" notice in the footer.
+  sample: false,
   name: "Chintan Akbari",
   heroLines: ["CHINTAN"], // big pixel title on the home page (one string per line)
   host: "chintan", // shown as [chintan] in the top bar
@@ -54,27 +54,20 @@ export const nav = [
   { key: 1, label: "home", file: "index.js", href: "/" },
   { key: 2, label: "about", file: "about.html", href: "/about" },
   { key: 3, label: "projects", file: "projects.json", href: "/projects" },
-  { key: 4, label: "quotes", file: "quotes.csv", href: "/quotes" },
-  { key: 5, label: "bits", file: "bits.log", href: "/bits" },
-  { key: 6, label: "resume", file: "resume.md", href: "/resume" },
-  { key: 7, label: "tutorials", file: "tutorials.jsonl", href: "/tutorials" },
-  { key: 8, label: "blog", file: "blog.md", href: "/blog" },
+  { key: 4, label: "resume", file: "resume.md", href: "/resume" },
 ];
 
+// About page: everything here comes from the resume.
 export const about = {
   heading: "Engineering Profile",
   lead: "Frontend developer building high-performance, responsive interfaces.",
   name: "Chintan Akbari",
   title: "Frontend Developer",
-  bio: "I build responsive, scalable web applications with React.js, Next.js and TypeScript, with a focus on clean architecture and maintainable code. I have worked on admin dashboards, marketing sites, AI-driven platforms and internal tools, and on interactive 3D web experiences with Three.js and React Three Fiber. I like working close to designers, product managers and backend teams, owning a feature from requirements to release, and mentoring newer developers.",
+  bio: "Frontend Developer specializing in React.js, Next.js and TypeScript. I build responsive, scalable web applications, integrate REST APIs, and deliver 3D experiences with Three.js and React Three Fiber. Proficient in Material-UI, monorepo architecture (Turborepo), and third-party integrations such as Clover, SproutVideo and Avaturn.",
   tags: ["REACT.JS", "NEXT.JS", "TYPESCRIPT", "THREE.JS"],
   skills: [
-    "React.js", "Next.js", "TypeScript", "JavaScript (ES6+)", "Redux", "Three.js",
-    "React Three Fiber", "REST APIs", "Material-UI", "Tailwind", "Turborepo", "Git",
+    "HTML", "JavaScript (ES6+)", "TypeScript", "React.js", "Next.js", "Redux", "Supabase", "Node.js", "REST APIs",
+    "CSS", "Material-UI", "Tailwind", "Emotion", "Three.js", "React Three Fiber", "Avaturn",
+    "Turborepo", "pnpm", "Git", "GitHub", "Bitbucket",
   ],
-  building: [
-    { name: "this-portfolio", note: "Canvas, CSS" },
-    { name: "Vasana", note: "health platform" },
-  ],
-  interests: ["Frontend performance", "3D on the web", "AI products", "Mentoring"],
 };

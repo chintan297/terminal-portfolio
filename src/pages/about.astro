@@ -15,14 +15,6 @@ import { site, about, experience, resumeData, journey } from "../data/site.js";
           <span class="label l" id="skills-h">SKILLS</span>
           <div>{about.skills.map((s) => <span class="tag">{s}</span>)}</div>
         </section>
-        <section class="card reveal" style="--i:5" aria-labelledby="build-h">
-          <span class="label l" id="build-h">BUILDING</span>
-          {about.building.map((s) => <div class="gauge"><span>{s.name}</span><span class="prompt">{s.note}</span></div>)}
-        </section>
-        <section class="card reveal" style="--i:6" aria-labelledby="int-h">
-          <span class="label l" id="int-h">INTERESTS</span>
-          <div>{about.interests.map((t) => <span class="tag">{t}</span>)}</div>
-        </section>
         {resumeData.languages.length > 0 && <section class="card reveal" style="--i:7" aria-labelledby="lang-h">
           <span class="label l" id="lang-h">LANGUAGES</span>
           {
