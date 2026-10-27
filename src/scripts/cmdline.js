@@ -85,6 +85,8 @@ export function bindCmdline() {
   const pin = $("pin");
   if (!pin || pin.dataset.bound) return;
   pin.dataset.bound = "1";
+  $("cmd-close")?.addEventListener("click", closeCmd); // touch users have no Escape key
+  document.addEventListener("pointerdown", (e) => { if (isOpen() && !e.target.closest("#cmd, #search-btn")) closeCmd(); });
   pin.addEventListener("input", () => { sel = 0; render(); });
   $("plist").addEventListener("click", (e) => {
     const li = e.target.closest("li");

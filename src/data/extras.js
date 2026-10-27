@@ -1,23 +1,53 @@
 // Quotes, tutorial series, short notes ("bits") and the footer fortunes. Newest bit first.
+// Quotes. `topic` drives the filter chips on the quotes page; `source` and `year` are optional and shown under the author;
+// `note` is a one-line takeaway in your own words. Add a quote by adding one object.
 export const quotes = [
   {
     text: "Premature optimization is the root of all evil.",
     by: "Donald Knuth",
+    source: "Structured Programming with go to Statements",
+    year: 1974,
+    topic: "Performance",
+    note: "Measure first. Tune only the code a profile points at.",
   },
   {
     text: "Simplicity is prerequisite for reliability.",
     by: "Edsger W. Dijkstra",
+    source: "EWD498",
+    year: 1975,
+    topic: "Design",
+    note: "Every extra moving part is one more thing that can fail.",
   },
   {
     text: "The most dangerous phrase is: we've always done it this way.",
     by: "Grace Hopper",
+    source: "Widely attributed, exact source unclear",
+    topic: "Teams",
+    note: "A habit is not a reason. Ask why before copying a process.",
   },
-  { text: "Talk is cheap. Show me the code.", by: "Linus Torvalds" },
+  {
+    text: "Talk is cheap. Show me the code.",
+    by: "Linus Torvalds",
+    source: "Linux kernel mailing list",
+    year: 2000,
+    topic: "Practice",
+    note: "A working change settles more arguments than a long discussion.",
+  },
   {
     text: "Programs must be written for people to read.",
     by: "Harold Abelson",
+    source: "Structure and Interpretation of Computer Programs",
+    year: 1985,
+    topic: "Readability",
+    note: "Code is read far more often than it is written. Write for the next reader.",
   },
-  { text: "Make it work, make it right, make it fast.", by: "Kent Beck" },
+  {
+    text: "Make it work, make it right, make it fast.",
+    by: "Kent Beck",
+    source: "Attributed to Kent Beck",
+    topic: "Process",
+    note: "Order matters: correct first, clean second, fast last.",
+  },
 ];
 
 export const series = [

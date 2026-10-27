@@ -41,7 +41,7 @@ export function runBoot() {
   box.append(body);
   const skip = document.createElement("span");
   skip.className = "skip";
-  skip.textContent = "press any key to skip";
+  skip.textContent = matchMedia("(pointer: coarse)").matches ? "tap to skip" : "press any key to skip";
   const cursor = document.createElement("span");
   cursor.className = "caret";
   splash.replaceChildren(box, skip);

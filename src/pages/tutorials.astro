@@ -36,7 +36,7 @@ const first = series[0].items[0];
                   <span class="tag">{g}</span>
                 ))}
                 <div>
-                  <a href={t.href}>Read tutorial →</a>
+                  {t.href && t.href !== "#" ? <a href={t.href}>Read tutorial →</a> : <span class="soon" aria-disabled="true">Coming soon</span>}
                 </div>
               </article></li>
             ))}

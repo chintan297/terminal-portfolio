@@ -2,9 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import { site, quotes } from "../data/site.js";
+
+const topics = [...new Set(quotes.map((q) => q.topic))];
 ---
 
-<Layout title={`Quotes | ${site.name}`}>
+<Layout title={`Quotes | ${site.name}`} description="Quotes worth keeping on engineering, computing, and how to think.">
   <main class="page">
     <PageHeader
       path="QUOTES"
@@ -13,33 +15,80 @@ import { site, quotes } from "../data/site.js";
       variant="center"
       sub="Quotes worth keeping on engineering, computing, and how to think."
     />
+
+    <div class="chips reveal" style="--i:4" role="group" aria-label="Filter by topic">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">All ({quotes.length})</button>
+      {topics.map((t) => <button class="chip" type="button" data-filter={t.toLowerCase()} aria-pressed="false">{t}</button>)}
+    </div>
+    <p id="quote-status" class="sr-only" role="status" aria-live="polite"></p>
+
     <div class="quote-list">
       {
         quotes.map((q, i) => (
-          <div class="quote reveal" style={`--i:${i + 4}`}>
-            <span class="kicker">QUOTE/{String(i + 1).padStart(2, "0")}</span>
-            <p>“{q.text}”</p>
-            <span class="by">-- {q.by.toUpperCase()}</span>
-            <button class="copy" type="button" data-id={i + 1}>
-              copy link
-            </button>
-          </div>
+          <figure class="quote reveal" id={String(i + 1)} data-topic={q.topic.toLowerCase()} style={`--i:${i + 5}`}>
+            <figcaption class="quote-meta">
+              <span class="kicker">QUOTE/{String(i + 1).padStart(2, "0")}</span>
+              <span class="tag">{q.topic}</span>
+            </figcaption>
+            <blockquote>
+              <p>“{q.text}”</p>
+            </blockquote>
+            <p class="by">
+              — <strong>{q.by}</strong>
+              {(q.source || q.year) && <span class="src">{[q.source, q.year].filter(Boolean).join(", ")}</span>}
+            </p>
+            {q.note && <p class="quote-note"><span aria-hidden="true">→</span> {q.note}</p>}
+            <div class="quote-actions">
+              <button class="copy" type="button" data-id={i + 1}>copy link</button>
+              <button class="copy" type="button" data-text={`“${q.text}” — ${q.by}`}>copy quote</button>
+            </div>
+          </figure>
         ))
       }
     </div>
+    <p class="empty" id="quote-empty" hidden>No quotes for that topic yet.</p>
   </main>
 </Layout>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
-    document.querySelectorAll<HTMLButtonElement>(".copy").forEach((b) => {
-      b.onclick = async () => {
-        await navigator.clipboard?.writeText(
-          `${location.origin}/quotes#${b.dataset.id}`,
-        );
-        b.textContent = "copied!";
-        setTimeout(() => (b.textContent = "copy link"), 1200);
-      };
+  function init() {
+    const chips = [...document.querySelectorAll<HTMLButtonElement>(".chips .chip")];
+    const cards = [...document.querySelectorAll<HTMLElement>(".quote-list .quote")];
+    const status = document.getElementById("quote-status");
+    const empty = document.getElementById("quote-empty");
+
+    function apply(filter: string, push = true) {
+      let shown = 0;
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.filter === filter)));
+      cards.forEach((card) => {
+        const match = filter === "all" || card.dataset.topic === filter;
+        card.hidden = !match;
+        if (match) shown++;
+      });
+      if (empty) empty.hidden = shown > 0;
+      if (status) status.textContent = `${shown} quote${shown === 1 ? "" : "s"} shown`;
+      if (push) history.replaceState(null, "", filter === "all" ? location.pathname : `#topic-${encodeURIComponent(filter)}`);
+    }
+    chips.forEach((c) => c.addEventListener("click", () => apply(c.dataset.filter!)));
+    const m = decodeURIComponent(location.hash).match(/^#topic-(.+)$/);
+    if (m && chips.some((c) => c.dataset.filter === m[1])) apply(m[1], false);
+
+    // copy buttons: a link to this quote, or the quote text itself
+    document.querySelectorAll<HTMLButtonElement>(".quote .copy").forEach((b) => {
+      if (b.dataset.bound) return;
+      b.dataset.bound = "1";
+      const label = b.textContent;
+      b.addEventListener("click", async () => {
+        const value = b.dataset.text ?? `${location.origin}/quotes#${b.dataset.id}`;
+        try {
+          await navigator.clipboard.writeText(value);
+          b.textContent = "copied!";
+        } catch {
+          b.textContent = "copy failed";
+        }
+        setTimeout(() => (b.textContent = label), 1400);
+      });
     });
-  });
+  }
+  document.addEventListener("astro:page-load", init);
 </script>

@@ -88,7 +88,7 @@ const index = [
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
     />
     <meta name="theme-color" content="#000000" />
     <link
@@ -202,6 +202,7 @@ const index = [
           aria-label="Search or run a command"
         />
         <span id="cmd-status" class="sr-only" aria-live="polite"></span>
+        <button id="cmd-close" class="cmd-close" type="button" aria-label="Close search"><span aria-hidden="true">✕</span></button>
       </div>
     </div>
     <button id="to-top" class="to-top" type="button"
