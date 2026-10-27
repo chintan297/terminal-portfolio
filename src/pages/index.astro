@@ -12,7 +12,9 @@ import { site } from "../data/site.js";
       <span class="label l">TTY1</span>
       <span class="label r">{site.location}</span>
       <div class="whoami">
-        <img src={site.photo} alt={`Portrait of ${site.name}`} width="64" height="64" />
+        <button class="photo-btn" type="button" id="photo-btn" aria-haspopup="dialog" aria-controls="photo-pop" aria-label={`Open photo of ${site.name}`}>
+          <img src={site.photo} alt="" width="64" height="64" />
+        </button>
         <div>
           <div class="prompt">$ whoami</div>
           <p class="lead">{site.role}</p>
@@ -35,4 +37,57 @@ import { site } from "../data/site.js";
       </div>
     </section>
   </main>
+
+  <div class="photo-pop" id="photo-pop" role="dialog" aria-modal="true" aria-label={`Photo of ${site.name}`} hidden>
+    <button class="photo-esc" type="button" id="photo-close"><span class="sr-only">Close photo </span><span aria-hidden="true">ESC</span></button>
+    <img class="photo-big" src={site.photoPopup ?? site.photo} alt={`Portrait of ${site.name}`} />
+  </div>
 </Layout>
+
+<script>
+  // Click the photo: the page dims and the picture grows out of the thumbnail to the middle of the screen.
+  // ESC, the ESC badge, a click anywhere or a swipe-free tap closes it. Focus moves into the dialog and back.
+  function init() {
+    const btn = document.getElementById("photo-btn");
+    const pop = document.getElementById("photo-pop");
+    const close = document.getElementById("photo-close");
+    const big = pop?.querySelector<HTMLImageElement>(".photo-big");
+    if (!btn || !pop || !close || !big || btn.dataset.bound) return;
+    btn.dataset.bound = "1";
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const root = document.documentElement;
+    let anim: Animation | undefined;
+
+    function open() {
+      pop!.hidden = false;
+      root.classList.add("photo-open");
+      close!.focus({ preventScroll: true });
+      if (reduce) return;
+      const from = btn!.getBoundingClientRect();
+      const to = big!.getBoundingClientRect();
+      const s = from.width / to.width;
+      anim = big!.animate(
+        [
+          { transform: `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ${from.top + from.height / 2 - (to.top + to.height / 2)}px) scale(${s})`, opacity: 0.4 },
+          { transform: "translate(0, 0) scale(1.06)", opacity: 1, offset: 0.75 },
+          { transform: "none", opacity: 1 },
+        ],
+        { duration: 420, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" },
+      );
+    }
+    function shut() {
+      anim?.cancel();
+      pop!.hidden = true;
+      root.classList.remove("photo-open");
+      btn!.focus({ preventScroll: true });
+    }
+    btn.addEventListener("click", open);
+    pop.addEventListener("click", shut);
+    close.addEventListener("click", (e) => { e.stopPropagation(); shut(); });
+    pop.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { e.preventDefault(); shut(); }
+      else if (e.key === "Tab") { e.preventDefault(); close.focus(); } // the badge is the only control, keep focus on it
+    });
+  }
+  document.addEventListener("astro:page-load", init);
+</script>

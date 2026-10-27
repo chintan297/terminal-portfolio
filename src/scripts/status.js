@@ -38,25 +38,4 @@ export function bindStatus() {
   updateScroll();
   document.getElementById("to-top")?.addEventListener("click", scrollToTop);
 
-  const menuBtn = document.getElementById("menu-btn");
-  const nav = document.getElementById("nav");
-  menuBtn?.addEventListener("click", () => {
-    const open = nav.classList.toggle("open");
-    menuBtn.setAttribute("aria-expanded", String(open));
-  });
-  // tapping a link or anywhere outside the menu closes it
-  document.addEventListener("pointerdown", (e) => {
-    if (nav?.classList.contains("open") && !e.target.closest("#nav, #menu-btn")) {
-      nav.classList.remove("open");
-      menuBtn?.setAttribute("aria-expanded", "false");
-    }
-  });
-  // Escape closes the mobile menu and returns focus to its button.
-  nav?.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && nav.classList.contains("open")) {
-      nav.classList.remove("open");
-      menuBtn.setAttribute("aria-expanded", "false");
-      menuBtn.focus();
-    }
-  });
 }

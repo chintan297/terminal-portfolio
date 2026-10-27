@@ -144,24 +144,6 @@ body::before {
   }
 }
 
-/* ---------- page transitions (Astro ClientRouter) ---------- */
-@keyframes terminal-exit {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-@keyframes terminal-enter {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 /* ---------- hero ---------- */
 .page.home {
   max-width: none;

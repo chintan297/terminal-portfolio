@@ -13,6 +13,8 @@ export const site = {
   roles: ["Frontend Developer", "React.js Developer", "Next.js Developer", "Three.js Developer"],
   summary: "High-performance, responsive user interfaces with React.js, Next.js and TypeScript.",
   photo: "/avatar.svg",
+  // Image shown big when the photo on the home page is clicked. Use a transparent PNG cut-out in public/ for the pop-out look.
+  photoPopup: "/avatar.svg",
   email: "chintanakbari7706@gmail.com",
   user: "chintan@tagline", // shown in the top bar
   // Add a social link by adding one line. `icon` is a simple-icons name (github, x, medium, ...).
@@ -21,15 +23,16 @@ export const site = {
   ],
 };
 
+// `file` is the made-up file name shown in the phone menu (~/index.js).
 export const nav = [
-  { key: 1, label: "home", href: "/" },
-  { key: 2, label: "about", href: "/about" },
-  { key: 3, label: "projects", href: "/projects" },
-  { key: 4, label: "quotes", href: "/quotes" },
-  { key: 5, label: "bits", href: "/bits" },
-  { key: 6, label: "resume", href: "/resume" },
-  { key: 7, label: "tutorials", href: "/tutorials" },
-  { key: 8, label: "blog", href: "/blog" },
+  { key: 1, label: "home", file: "index.js", href: "/" },
+  { key: 2, label: "about", file: "about.html", href: "/about" },
+  { key: 3, label: "projects", file: "projects.json", href: "/projects" },
+  { key: 4, label: "quotes", file: "quotes.csv", href: "/quotes" },
+  { key: 5, label: "bits", file: "bits.log", href: "/bits" },
+  { key: 6, label: "resume", file: "resume.md", href: "/resume" },
+  { key: 7, label: "tutorials", file: "tutorials.jsonl", href: "/tutorials" },
+  { key: 8, label: "blog", file: "blog.md", href: "/blog" },
 ];
 
 export const about = {

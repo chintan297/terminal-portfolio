@@ -5,11 +5,13 @@
   --pxl: 4px; /* one site pixel: the size of a corner notch and of a grid dot */
 }
 
-/* text and images are never smoothed */
+/* images stay crisp; text keeps normal smoothing (turning it off made the pixel font look heavy on phones), and the
+   fonts have one weight only, so the browser must not fake a bold */
 html {
-  -webkit-font-smoothing: none;
-  font-smooth: never;
-  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: auto;
+  font-synthesis: none;
 }
 img,
 canvas,
@@ -232,18 +234,6 @@ textarea,
 .cursor-ring,
 .cursor-dot {
   display: none !important;
-}
-
-/* page entrance: the new page rises in smoothly, then its panels stagger in (the old stepped easing made this choppy) */
-@keyframes terminal-enter {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 /* ---------- page layout: full-width framed panels, like a terminal split ---------- */
@@ -1361,3 +1351,66 @@ html {
 .site-footer .btns { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }
 .site-footer .btns .btn { width: auto; max-width: 100%; }
 .site-footer .btn [data-label] { min-width: 0; overflow-wrap: anywhere; }
+
+/* ---------- photo pop-out on the home page ---------- */
+.photo-btn { padding: 0; border: 0; background: none; line-height: 0; flex: none; cursor: pointer; }
+.photo-btn img { transition: transform var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.photo-btn:hover img, .photo-btn:focus-visible img { border-color: var(--accent); transform: translate(-2px, -2px); }
+.photo-pop { position: fixed; inset: 0; z-index: calc(var(--z-cursor) - 1); display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 62%, transparent); cursor: pointer; }
+.photo-pop[hidden] { display: none; }
+.photo-big { width: min(62vmin, 440px); height: auto; max-height: 70dvh; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(6px 6px 0 rgba(0, 0, 0, 0.6)); }
+.photo-esc { position: absolute; top: calc(var(--bar-top) + var(--s-3)); left: 50%; transform: translateX(-50%); min-width: 64px; min-height: 40px; padding: 0 var(--s-4); background: var(--surface); color: var(--mid); border: 1px solid var(--line-strong); font: inherit; letter-spacing: 0.1em; cursor: pointer; }
+.photo-esc:hover { color: var(--bright); border-color: var(--accent); }
+/* behind the dialog the page stays visible but dim, and the bars step back */
+.photo-open .hero, .photo-open .home-card { filter: brightness(0.55); transition: filter var(--t-base) var(--ease); }
+.photo-open .statusbar { opacity: 0.4; }
+@media (prefers-reduced-motion: reduce) { .photo-open .hero, .photo-open .home-card { transition: none; } }
+
+/* ---------- phone menu: a "select page" panel ---------- */
+.menu-btn, .crumb, .menu-panel, .menu-scrim { display: none; }
+@media (max-width: 720px) {
+  #nav { display: none !important; }
+  .topbar { justify-content: flex-start; }
+  .topbar .menu-btn { display: flex; align-items: center; gap: var(--s-2); min-height: 100%; padding: 0 var(--s-4); border-right: 1px solid var(--line); letter-spacing: 0.06em; }
+  .topbar .menu-btn[aria-expanded="true"] { background: var(--accent); color: var(--bg); }
+  .topbar .crumb { display: flex; align-items: center; padding: 0 var(--s-3); color: var(--dim); font-size: var(--fs-sm); min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .topbar .right { margin-left: auto; }
+  .menu-scrim { position: fixed; inset: 0; z-index: calc(var(--z-bars) - 1); background: color-mix(in srgb, var(--bg) 70%, transparent); }
+  .menu-scrim:not([hidden]), .menu-panel:not([hidden]) { display: block; }
+  .menu-panel.card {
+    position: fixed; z-index: var(--z-bars); top: calc(var(--bar-top) + var(--s-3)); left: var(--s-3); right: var(--s-3); margin: 0; padding: 0;
+    max-height: calc(100dvh - var(--bar-top) - var(--bar-bottom) - var(--s-5)); overflow-y: auto; background: var(--bg); display: none;
+  }
+  .menu-panel.card:not([hidden]) { display: flex; flex-direction: column; }
+  .menu-panel > .label { top: -10px; }
+  .menu-head { display: flex; justify-content: space-between; gap: var(--s-3); margin: 0; padding: var(--s-4) var(--s-4) var(--s-3); font-size: var(--fs-sm); color: var(--mid); }
+  .menu-panel ol { list-style: none; margin: 0; padding: 0; }
+  .menu-panel li a { display: grid; grid-template-columns: 3ch minmax(0, 1fr) auto; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-4); min-height: 56px; border-top: 1px solid var(--line); text-decoration: none; color: var(--fg); }
+  .menu-panel li a .num { color: var(--dim); }
+  .menu-panel li a .ttl { display: grid; font-size: var(--step-0); color: var(--bright); }
+  .menu-panel li a .ttl small { font-size: var(--fs-xs); color: var(--dim); }
+  .menu-panel li a kbd { font: inherit; font-size: var(--fs-xs); color: var(--dim); }
+  .menu-panel li a[aria-current="page"], .menu-panel li a:active, .menu-panel li a:focus-visible { background: var(--accent); color: var(--bg); outline-offset: -3px; }
+  .menu-panel li a[aria-current="page"] :is(.num, .ttl, small, kbd), .menu-panel li a:active :is(.num, .ttl, small, kbd), .menu-panel li a:focus-visible :is(.num, .ttl, small, kbd) { color: var(--bg); }
+  .menu-foot { display: flex; justify-content: space-between; align-items: center; padding: 0 0 0 var(--s-4); border-top: 1px solid var(--line-strong); font-size: var(--fs-sm); color: var(--mid); position: sticky; bottom: 0; background: var(--bg); }
+  .menu-foot button { min-height: 48px; padding: 0 var(--s-4); background: none; border: 0; border-left: 1px solid var(--line); color: var(--dim); font: inherit; letter-spacing: 0.06em; }
+  .menu-foot button b { font-weight: 400; color: var(--bright); }
+  .menu-open .to-top { display: none; }
+}
+@media (max-width: 720px) {
+  /* the PAGES label sits on the frame, so the frame must not clip; only the list scrolls on short screens */
+  .menu-panel.card { overflow: visible; max-height: none; }
+  .menu-panel ol { max-height: calc(100dvh - var(--bar-top) - var(--bar-bottom) - 190px); overflow-y: auto; }
+}
+
+/* ---------- page transition canvas ---------- */
+.page-wipe { position: fixed; inset: 0; width: 100%; height: 100%; z-index: calc(var(--z-splash) - 1); pointer-events: none; }
+
+/* phones: the pixel font is wide and bright on a small dark screen, so body copy gets a calmer tone and slightly smaller size */
+@media (max-width: 720px) {
+  body { font-size: var(--step--1); }
+  .lead, .home-card .lead { color: var(--fg); }
+  .home-card p, .card p, .prose p, .case p, .ph .sub { color: var(--mid); }
+  .card .lead, .home-card .lead, .quote-list blockquote p, .pj-title, .entry-title, strong, b { color: var(--bright); }
+  h3 { font-size: var(--step-0); }
+}
